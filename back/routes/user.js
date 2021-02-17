@@ -8,7 +8,6 @@ router.get('/account', user_ctrl.getAllAccount); //get tous les comptes
 
 router.get('/account:id', user_ctrl.getOneAccount); //get tous les comptes
 
-//router.get('/account:id/nom_prenom', user_ctrl.getOneOtherAccount); //get un compte autre
 router.delete('/account:id',user_ctrl.deleteAccount); // delete 1 compte
 
 router.put('/account:id',user_ctrl.modifyAccount); //modifier 1 compt

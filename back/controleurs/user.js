@@ -32,17 +32,17 @@ function createUser(req, res){
             dataBase.query(sqlRequete, function(err, result){
     
                 if(err) {
-                    res.status(400).json({message:"POST EST BOGGER"});
+                    res.status(404).json({message:"POST EST BOGGER"});
                     console.log(err);
                     return;
                 }else {
-                    res.status(200).json({message:'tout est ok sur le POST, Utilisateur enregistre'});
-                    //return;
+                    res.status(201).json({message:'tout est ok sur le POST, Utilisateur enregistre'});
+                    return;
                 }
             });
         })
     }else{
-        res.status(400).json({message:'Verifiez votre adresse email et / ou votre mot de pass'});
+        res.status(401).json({message:'Verifiez votre adresse email et / ou votre mot de pass'});
         return;
     }
 }
@@ -60,7 +60,8 @@ exports.signup = (req, res, next)=>{
                 if(adressMail[i].adresse_email!= req.body.adresse_email) {
                     createUser(req, res);
                 }else{
-                    res.status(400).json({message:'Adresse email deja dans la BDD'});
+                    console.log('adresse email deja dans la bdd')
+                    res.status(500).json({message:'Adresse email deja dans la BDD'});
                     return;
                 }
             }
@@ -74,7 +75,7 @@ exports.getAllAccount = (req,res,next)=>{
                 res.status(404).json({message:'GET EST BOGGER'});
                 throw err
             }else{
-                res.status(200).json({message:'tout est ok sur le get'});
+                res.status(200).json({message:'tout est ok sur le get', result});
                 console.log(result)
             }
         }
@@ -98,21 +99,7 @@ exports.getOneAccount = (req, res, next) => {
         )
     }
 }
-exports.getOneOtherAccount = (req, res, next) => {
-    const otherAccount = req.body;
-    console.log(otherAccount.nom)
-    dataBase.query(
-        `SELECT users.nom, users.prenom FROM users WHERE nom = "${otherAccount.nom}","${otherAccount.prenom}" ;`, function(err, result){
-            if(err){
-                res.status(404).json({message:"GET ON other EST BOGGER"});
-            }
-            else{
-                console.log(result)
-                res.status(200).json({message:'get one other est ok'})
-            }
-        }
-    )
-}
+
 exports.deleteAccount = (req,res,next)=>{
     const idCourant = req.params.id.split(':')[1];
 
@@ -146,7 +133,6 @@ exports.modifyAccount = (req,res,next) => {
         }else{
             const RecupBD = result;
             RecupBD.forEach(element => {  
-                // UsersModify.mot_de_passe = user.pass
                 console.log(element)
                 console.log(UsersModify)
                 bcrypt.compare(req.body.mot_de_passe, element.mot_de_passe)

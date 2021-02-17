@@ -16,7 +16,9 @@ dotenv.config();
 
 
 // importation des routes 
-const usersRoutes = require("./routes/user")
+const usersRoutes = require("./routes/user");
+const postRoutes = require("./routes/post");
+const commentRoutes = require("./routes/comment");
 
 // connection a la base de donnée 
 
@@ -42,9 +44,9 @@ app.use((req, res, next) => {
 // callback de l'application
 app.use(bodyParser.json())
 app.use('/images', express.static(path.join(__dirname, "images")));
-//app.use("/api/posts", ROUTES);
+app.use("/api/post", postRoutes);
 app.use("/api/auth", usersRoutes);
-
+app.use("/api/comment", commentRoutes)
 
 
 //exportation de l'application express
