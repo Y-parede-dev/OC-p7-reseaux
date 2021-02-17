@@ -1,0 +1,4 @@
+/back/node_modules
+/back/.env
+/back/todo
+/front/node_modules/
