@@ -4,20 +4,19 @@ const dotenv = require('dotenv');
 dotenv.config();
 //creation de la fontion de la validation de token
 module.exports = (req, res, next)=>{
+   
     try {
         const token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, `${process.env.JSW_SECRET}`);
-        const userId = decodedToken.userId;
-
-        if(req.body.userId && req.body.userId !== userId){
+        const userId = decodedToken.user_id;
+        
+        if(req.body.user_id && req.body.user_id !== userId){
             throw "user id non valable";
         } else {
-            next();
+            next(); 
         }
     } catch {
-        res.status(401).json({
-            error: new Error('Invalid request!')
-
-        });
+       
+        res.status(400).json({message:"Un pb avec le auth"});
     }
 }

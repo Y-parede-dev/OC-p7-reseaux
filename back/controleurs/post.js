@@ -3,9 +3,11 @@ const fs = require('fs');
 
 exports.newPost = (req,res,next) => {
 const post = req.body;
-//const uID = req.params;
+
 console.log(post.content)
-    dataBase.query(`INSERT INTO posts(content,user_id) VALUES("${post.content}",${post.user_id})`, function(err,result){
+    dataBase.query(`INSERT INTO posts(content,user_id)
+                    VALUES("${post.content}",${post.user_id})`,
+                    function(err,result){
         if(err){
             res.status(400).json({message:"POST EST BOGGER"});
             console.log(err);
@@ -17,13 +19,7 @@ console.log(post.content)
     })
 }
 exports.getAllPost = (req,res,next)=>{
-    dataBase.query(`SELECT posts.content AS post, users.nom, users.prenom,
-                    comment.content AS comments ,comment.user_id AS user_on_comment
-                    FROM posts
-                    INNER JOIN users
-                    ON posts.user_id = users.id
-                    INNER JOIN comment
-                    ON comment.post_id = posts.id;`, function(err, result){
+    dataBase.query(`select * from all_cont_post;`, function(err, result){
         if(err){
             res.status(404).json({message:"GET ALL EST BUGER"});
             console.log(err)
@@ -32,42 +28,51 @@ exports.getAllPost = (req,res,next)=>{
             res.status(200).json({message:"voici le resultat", result});
             console.log(result)
         }
-    })
-    
+    }) 
 }
 exports.getOneUserPost = (req,res,next)=>{
     const post = req.body;
-    const reqSQL = `SELECT posts.content,
+    const idCourant = req.params.user;
+    if(idCourant == post.user_id){
+        const reqSQL = `SELECT posts.content,
                     users.nom,
                     users.prenom
                     FROM posts
                     INNER JOIN
                     users ON posts.user_id = users.id
                     WHERE users.id = ${post.user_id}`;
-    dataBase.query(reqSQL, function(err, result){
-        if(err){
-            res.status(404).json({message:"GET ONE EST BUGER"});
-            console.log(err)
-            return;
-        }else{
-            const resLength = result.length;
-            if(resLength>0){
-                res.status(202).json({message:"voici le resultat de get one", result, resLength});
-                console.log(result);
+        dataBase.query(reqSQL, function(err, result){
+            if(err){
+                res.status(404).json({message:"GET ONE EST BUGER"});
+                console.log(err)
                 return;
             }else{
-                res.status(200).json({message:"cet utilisateur n'a rien poster pour le moment"});
-                return;
+                const resLength = result.length;
+                if(resLength>0){
+                    res.status(202).json({message:"voici le resultat de get one", result, resLength});
+                    console.log(result);
+                    return;
+                }else{
+                    res.status(200).json({message:"cet utilisateur n'a rien poster pour le moment"});
+                    return;
+                }
             }
-            
-        }
-    })
+        })
+    }else {
+        res.status(404).json({message:"not found"})
+    }
 }
+/*
+params for modify = 
+user_id,
+post_id,
+content 
+ */
 exports.modifyPost = (req,res,next)=>{
     const post = req.body;
     const idCourant = req.params.id;
-    if(post.user_id == idCourant){
-        const reqSQL = `UPDATE posts SET content = "${post.content}" WHERE id = ${req.body.post_id}`;
+    if(post.post_id == idCourant){
+        const reqSQL = `UPDATE posts SET content = "${post.content}" WHERE id = ${post.post_id}`;
         dataBase.query(reqSQL, function(err, result){
             if(err){
                 console.log(err);
@@ -80,13 +85,18 @@ exports.modifyPost = (req,res,next)=>{
     }else{
         console.log("pour modifier le post conecter vous avec le compte de l'auteur");
         res.status(500).json({message:"verifier votre id"})
-    }
-    
+    }   
 }
+/*
+params for delete = 
+user_id, --> for auth
+post_id,
+content 
+ */
 exports.deletePost=(req,res,next)=>{
     const post = req.body;
     const idCourant = req.params.id;
-    if(post.user_id==idCourant){
+    if(post.post_id==idCourant){
         const reqSQL = `DELETE FROM posts WHERE id = ${post.post_id}`;
         dataBase.query(reqSQL, function(err, result){
             if(err){
@@ -103,5 +113,4 @@ exports.deletePost=(req,res,next)=>{
         res.status(500).json({message:"id non identique"});
         console.log('verifier vos id');
     }
-    
 }
