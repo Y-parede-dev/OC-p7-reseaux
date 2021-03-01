@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 
+
 // reGex email
 function isValidEmail(value){
     let reGex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
