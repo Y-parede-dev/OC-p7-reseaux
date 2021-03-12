@@ -1,7 +1,14 @@
+
+
+import RecipeReviewCard from './Card';
+import CreatePost from './CreatePost';
 function Main(){
-   
-        return(
-        <p>Notre site est en maintenance merci de vous reconnecter ultérieurement<br/> ou de joindre un admin si ce problème persiste <br/> 👍</p>
+    
+    return(
+        <div>
+            <CreatePost />
+            <RecipeReviewCard />
+        </div>
     )
 }
 export default Main;

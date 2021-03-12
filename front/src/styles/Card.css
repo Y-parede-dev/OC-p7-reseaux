@@ -1,0 +1,34 @@
+.cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-content {
+    margin:15px;
+    width:30%;
+    //max-height: 350px;
+}
+.MuiCardHeader-root{
+    color: white !important;
+    background: #FF6219 !important;
+    text-align: left;
+    
+}
+.MuiCardHeader-root> span {
+    font-size: 2rem !important;
+}
+.comment-title {
+    display: flex;
+    justify-content: center;
+    text-align: center !important;
+    margin: 0 auto!important;
+}
+.makeStyles-expand-3 {
+    margin: 0!important;
+}
+.MuiCardContent-root:last-child {
+    background-color: gray;
+    color: white;
+}

@@ -5,21 +5,21 @@ exports.newPost = (req,res,next) => {
 const post = req.body;
 
 console.log(post.content)
-    dataBase.query(`INSERT INTO posts(content,user_id)
-                    VALUES("${post.content}",${post.user_id})`,
+    dataBase.query(`INSERT INTO posts(content ,image_url, user_id)
+                    VALUES("${post.content}", "${post.image_url}",${post.user_id})`,
                     function(err,result){
         if(err){
             res.status(400).json({message:"POST EST BOGGER"});
             console.log(err);
             return;
         }else{
-            res.status(200).json({"message":"test"})
+            res.status(200).json({message:"le post a bien étais enregistré dans la BDD"})
             console.log(post)
         }
     })
 }
 exports.getAllPost = (req,res,next)=>{
-    dataBase.query(`select * from all_cont_post;`, function(err, result){
+    dataBase.query(`select posts.id AS id_post ,posts.content AS content_post, users.nom AS nom_post, users.prenom AS prenom_post from posts, users WHERE posts.user_id = users.id;`, function(err, result){ // recupere le post 
         if(err){
             res.status(404).json({message:"GET ALL EST BUGER"});
             console.log(err)

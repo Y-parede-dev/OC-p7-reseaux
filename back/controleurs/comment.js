@@ -1,9 +1,9 @@
 const dataBase = require("../BDD/dbConnect");
 
 exports.postComment = (req,res,next) => {
-    const post = req.body;
+    const comment = req.body;
     const sqlRequete = `INSERT INTO comment(content, user_id, post_id)
-                        VALUES("${post.content}", ${post.user_id}, ${post.post_id});`;
+                        VALUES("${comment.content}", ${comment.user_id}, ${comment.post_id});`;
     dataBase.query(sqlRequete, function(err, result){
         if(err){
             res.status(400).json({message:"probleme avec le post comment"})
@@ -17,12 +17,8 @@ exports.postComment = (req,res,next) => {
     })
 }
 exports.getComment = (req,res,next) => {
- 
-    const sqlRequete = `SELECT posts.content AS post, posts.id AS post_id, users.nom, users.prenom,
-                        comment.content 
-                        FROM posts, comment
-                        INNER JOIN users ON users.id = comment.user_id
-                        WHERE posts.id = comment.post_id ;`;
+    
+    const sqlRequete = `SELECT comment.id AS id_comment, comment.post_id AS post_id_comment, comment.content AS content_comment, users.nom AS nom_comment, users.prenom AS prenom_comment FROM comment, users WHERE users.id = comment.user_id;`;
     dataBase.query(sqlRequete, function(err, result){
         if(err){
             res.status(400).json({message:'PROBLEME AVEC LE GET'});
@@ -35,7 +31,7 @@ exports.getComment = (req,res,next) => {
         }
     })
 }
-exports.getCommentOnePost = (req,res,next) => {
+exports.getCommentOnePost = (req,res,next) => { //BOGGUES
     const post = req.body;
     const idCourant = parseInt(req.params.id);
     if(idCourant === post.post_id){
@@ -68,7 +64,7 @@ exports.modifyComment = (req,res,next)=>{
     const comment = req.body;
     
     if(idCourant == comment.post_id){
-        const sqlRequeteSelect = `SELECT * from comment WHERE user_id = 196; `
+        const sqlRequeteSelect = `SELECT * from comment WHERE user_id = ${req.body.user_id}; `
         dataBase.query(sqlRequeteSelect, function(err, result){
             if(err){
                 res.status(400).json({message:"erreur ID.params != req.body.post_id"});

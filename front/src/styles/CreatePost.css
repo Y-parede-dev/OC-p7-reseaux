@@ -1,0 +1,21 @@
+#form-create-post {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    margin: auto;
+    background: grey;
+}
+.title-form-post {
+    color: white;
+}
+.form-control {
+    resize: none;
+    margin: 15px;
+}
+.form-control-submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 15%;
+}
