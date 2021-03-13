@@ -62,7 +62,7 @@ exports.signup = (req, res, next)=>{
 
 
 
-    /*dataBase.query(
+    dataBase.query(
         `SELECT users.adresse_email FROM users;`, function(present, result){
             
             const adressMail = result;
@@ -80,7 +80,7 @@ exports.signup = (req, res, next)=>{
             }
             
         }
-    )*/
+    )
 }
 exports.getAllAccount = (req,res,next)=>{
     dataBase.query( 
@@ -96,22 +96,27 @@ exports.getAllAccount = (req,res,next)=>{
     )
 }
 exports.getOneAccount = (req, res, next) => {
-    const idCourant = req.params.id.split(':');
-    if(idCourant==req.body.id)
-    {
+    const idCourant = req.params.id;
+    const idReq = req.body.id;
+    const idReqJson = JSON.stringify(idReq);
+
+    console.log('id req json ',typeof idReqJson)
+
+    console.log("id params ", typeof idCourant)
+    
         dataBase.query(
-            `SELECT * FROM users WHERE id = ${req.body.id};`, function(err, result){
+            `SELECT * FROM users WHERE id = ${idCourant};`, function(err, result){
                 if(err){
                     // res.status(404).json({message:"GET ON EST BOGGER"});
                     console.log(err)
                 }
                 else{
                     console.log(result)
-                    res.status(200).json({message:'get one est ok'})
+                    res.status(200).json({message:'get one est ok', result})
                 }
             }
         )
-    }
+    
 }
 
 exports.deleteAccount = (req,res,next)=>{

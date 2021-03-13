@@ -1,6 +1,12 @@
 import logo from '../logo.svg';
 import '../styles/Header.css';
 
+const disconnect = () =>{
+    //localStorage.clear()
+    sessionStorage.removeItem('isCo');
+    sessionStorage.removeItem('token+id')
+
+}
 
 function Header({isConected, setIsConected}){
     const titleHeader = "groupomania";
@@ -28,6 +34,9 @@ function Header({isConected, setIsConected}){
                 </li>
                 <li>
                     <a className='selected-li' href='./account'>Mon compte</a>
+                </li>
+                <li>
+                    <a className='selected-li' onClick={()=>disconnect()} href='./'>Se déconnecter</a>
                 </li>
                 
                 

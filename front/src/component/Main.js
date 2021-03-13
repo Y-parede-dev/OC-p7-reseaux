@@ -2,12 +2,16 @@
 
 import RecipeReviewCard from './Card';
 import CreatePost from './CreatePost';
-function Main(){
+function Main({isConected, setIsConected}){
     
     return(
         <div>
-            <CreatePost />
-            <RecipeReviewCard />
+            { isConected &&
+            <div key={Date.now()}>
+                <CreatePost />
+                <RecipeReviewCard />
+            </div>
+            }
         </div>
     )
 }

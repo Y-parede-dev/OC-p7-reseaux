@@ -1,24 +1,22 @@
 import {useEffect, useState} from 'react';
-function Account(){
+import createHeader from '../assets/Function';
+function Account({isConected, setIsConected}){
     const [user, setUser] = useState([]);
     useEffect(() => {
-        
+        console.log(isConected)
         const userStorage = localStorage.getItem("token+id")
         const userStorageJson = JSON.parse(userStorage);
         const userStorageId = userStorageJson.user_id;
         
-        console.log(userStorageId)
-        const myHeaders = new Headers();
-        const url = "http://localhost:3001/api/auth/account/:"+userStorageId;
-        console.log(url)
-        const requete = {
-            user_id :userStorageId
-        }
+        //const myHeaders = new Headers();
+        const url = "http://localhost:3001/api/auth/account/"+userStorageId;
+        
+        //console.log('type of id req',typeof requete.id)
         const myInit = { method: 'GET',
-                        headers: myHeaders,
+                        headers: createHeader(),
                         mode: 'cors',
                         cache: 'default',
-                        body: JSON.stringify(requete)
+                        
                     };
                     
         fetch(url, myInit)
@@ -27,7 +25,7 @@ function Account(){
             (result) => {
                 
                 setUser(result.result);
-                console.log( user)
+                console.log( result.result)
 
             },
             // Remarque : il faut gérer les erreurs ici plutôt que dans
@@ -39,17 +37,21 @@ function Account(){
             )
         },[])
     return(
-        <div>
-        <div>
-            <h2>PROFIL</h2>
-            <p>nom : </p>
-            <p>prenom : </p>
-            <p>adresse email : </p>
-            <p>mot de passe : </p>
-            <img src="#" alt='Avatar utilisateur'/>
+        <div>{ isConected &&
+            <div>{user.map(item=>(
+                
+                <div key={Date.now()}>
+                    <h2>PROFIL</h2>
+                    <p>nom : {item.nom}</p>
+                    <p>prenom : {item.prenom}</p>
+                    <p>adresse email : {item.adresse_email}</p>
+                    <p>mot de passe : {item.mot_de_passe}</p>
+                    <img src={item.image_url} alt='Avatar utilisateur'/>
+                </div>))}
+                <div><button > modifier</button></div>
+            </div>
+            }
         </div>
-        <div><button > modifier</button></div>
-    </div>
     )
 }
 

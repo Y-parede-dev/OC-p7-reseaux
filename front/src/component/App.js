@@ -27,11 +27,11 @@ function App() {
         <Route path="/signup" exact component={Signup}/>
         <Route path="/login" exact component={() => <Login isConected={isConected} setIsConected={setIsConected}  />}/> 
         <Route path="/main" exact component={() => <Main isConected={isConected} setIsConected={setIsConected}  />}/>
-        <Route path="/account" exact component={() => <Account isConected={isConected} setIsConected={setIsConected}  />}/>
+        <Route path="/account" exact component={() => <Account onClick={Account} isConected={isConected} setIsConected={setIsConected}  />}/>
         
 
       </Router>
-
+      {!isConected || isConected == false? <p>Veuillez vous connecter pour accéder au site </p>: <p>connected</p>}
     </div>
   );
 }

@@ -1,12 +1,12 @@
-const express = require('express');
-const router = express.Router();
+
+const router = require('express').Router({ mergeParams: true });
 const auth = require("../middlleware/auth");
 const user_ctrl = require('../controleurs/user');
 const multer = require('../middlleware/multer-config');
 
 router.post('/signup', user_ctrl.signup); // Inscription
 
-router.get('/account', user_ctrl.getAllAccount); //get tous les comptes
+//router.get('/account', user_ctrl.getAllAccount); //get tous les comptes
 
 router.get('/account/:id', user_ctrl.getOneAccount); //get un comptes
 
