@@ -1,11 +1,18 @@
 import {useEffect, useState} from 'react';
-import createHeader from '../assets/Function';
+import {createHeader} from '../assets/js/Function';
+import ModifAccount from './ModifAccount';
+
 function Account({isConected, setIsConected}){
     const [user, setUser] = useState([]);
+
+    const handleSubmit = (path) =>{
+        window.location.href= `${path}`;
+    }
+    const userStorage = sessionStorage.getItem("token+id")
+    const userStorageJson = JSON.parse(userStorage);
     useEffect(() => {
         console.log(isConected)
-        const userStorage = localStorage.getItem("token+id")
-        const userStorageJson = JSON.parse(userStorage);
+       
         const userStorageId = userStorageJson.user_id;
         
         //const myHeaders = new Headers();
@@ -25,7 +32,7 @@ function Account({isConected, setIsConected}){
             (result) => {
                 
                 setUser(result.result);
-                console.log( result.result)
+                console.log( user)
 
             },
             // Remarque : il faut gérer les erreurs ici plutôt que dans
@@ -39,16 +46,19 @@ function Account({isConected, setIsConected}){
     return(
         <div>{ isConected &&
             <div>{user.map(item=>(
-                
+                    
                 <div key={Date.now()}>
-                    <h2>PROFIL</h2>
-                    <p>nom : {item.nom}</p>
-                    <p>prenom : {item.prenom}</p>
-                    <p>adresse email : {item.adresse_email}</p>
-                    <p>mot de passe : {item.mot_de_passe}</p>
+                    <h2 className='profil'>PROFIL  {sessionStorage.setItem('userIsCo', JSON.stringify(user))}</h2>
+                    <p className='profil-info'>nom : {item.nom}</p>
+                    <p className='profil-info'>prenom : {item.prenom}</p>
+                    <p className='profil-info'>adresse email : {item.adresse_email}</p>
+                    <p className='profil-info profil-info-password'>mot de passe : {userStorageJson.password}</p>
                     <img src={item.image_url} alt='Avatar utilisateur'/>
                 </div>))}
-                <div><button > modifier</button></div>
+                <div key={Date.now() + Date.now()}>
+                    <button onClick={()=>handleSubmit('modify')}> modifier</button>
+                    <button onClick={()=>handleSubmit('del')}> suprimer le compte</button>
+                </div>
             </div>
             }
         </div>

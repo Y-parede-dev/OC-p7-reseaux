@@ -111,7 +111,8 @@ exports.getOneAccount = (req, res, next) => {
                     console.log(err)
                 }
                 else{
-                    console.log(result)
+                   
+
                     res.status(200).json({message:'get one est ok', result})
                 }
             }
@@ -123,7 +124,8 @@ exports.deleteAccount = (req,res,next)=>{
     const idCourant = req.params.id;
 
     const user_out = req.body;
-    if(user_out.user_id == idCourant){
+    console.log('id courant : ',idCourant, 'user out id: ', user_out.id)
+    if(idCourant === user_out.id){
         const sql = `DELETE FROM users WHERE id = ${user_out.id};`;
         dataBase.query( sql, function(err, result){
                 if(err){
@@ -131,6 +133,7 @@ exports.deleteAccount = (req,res,next)=>{
                 }
                 else{
                     res.status(200).json({message:"supression OK"});
+                    console.log('supression ok')
                 }
             }
         )
@@ -256,6 +259,7 @@ exports.login = (req, res, next) => {
                     else{
                         res.status(200).json({
                             user_id : userBdd.id,
+                            password:userLog.mot_de_passe,
                             token:jwt.sign(
                                 { user_id: userBdd.id },
                                 `${process.env.JSW_SECRET}`,

@@ -1,6 +1,6 @@
 import '../styles/Signup.css';
 import {useState} from 'react';
-import createHeader from '../assets/Function';
+import {createHeader} from '../assets/js/Function';
 
 function Signup(){
   const [items, setItems] = useState([]);
@@ -85,7 +85,7 @@ function saveUser(){
         <input id="email-signup" className="email" name="email" type='text' placeholder="*email" value={emailData} onChange={handleChangeEmail} />
 
         <label name="password-label" htmlFor="password"></label>
-        <input id="password-signup" className="password" name='password' type='text' placeholder="*mot de passe" value={passwordData} onChange={handleChangePassword} />
+        <input id="password-signup" className="password" name='password' type='password' placeholder="*mot de passe" value={passwordData} onChange={handleChangePassword} />
         
         <label name="submit-label" htmlFor="submit"></label>
         <button id="submit-signup"  className="submit" name='submit' type='submit'>envoyer</button>

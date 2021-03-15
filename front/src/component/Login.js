@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import createHeader from "../assets/Function";
+import {createHeader} from "../assets/js/Function";
 
 function Login({isConected, setIsConected}){
  
@@ -20,7 +20,7 @@ function Login({isConected, setIsConected}){
 
     }
     const connected = (result) => {
-      const localLoggin = localStorage.getItem("token+id");
+      const localLoggin = sessionStorage.getItem("token+id");
       const localLogginParse = JSON.parse(localLoggin);
 
       const recupUserId = localLogginParse.user_id;
@@ -34,7 +34,7 @@ function Login({isConected, setIsConected}){
     }
     const saveLocal = (result) => {
       const resultJson = JSON.stringify(result)
-      localStorage.setItem('token+id', resultJson);
+      sessionStorage.setItem('token+id', resultJson);
 
     };
   
