@@ -56,7 +56,6 @@ const myInit = {
 console.log(requete)
 
 
-
 function saveUser(){
   fetch("http://localhost:3001/api/auth/signup", myInit)
       .then(res => res.json())

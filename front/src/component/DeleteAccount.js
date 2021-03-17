@@ -10,17 +10,20 @@ const DeleteAccount = () => {
         id: JSON.stringify(userStorageId),
         token: userStorageJson.token
      }
+     const headerWithToken = new Headers()
+     headerWithToken.append('Content-type','application/json')
+     headerWithToken.append('Authorization', 'Bearer ' + userStorageJson.token)
      console.log(typeof requete.user_id, ' - ', typeof url)
     const delInit = {
         method: 'DELETE',
-        headers: createHeader(),
+        headers: headerWithToken,
         mode: 'cors',
         cache: 'default',
         body: JSON.stringify(requete)
     }
     function delUser(){
         fetch(url, delInit)
-            .then(res => res.json())
+            .then(res => res.json(requete.token))
             .then(
                 (result)=>{
                     console.log(result)

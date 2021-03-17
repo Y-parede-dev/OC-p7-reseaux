@@ -52,7 +52,7 @@ function Account({isConected, setIsConected}){
                     <p className='profil-info'>nom : {item.nom}</p>
                     <p className='profil-info'>prenom : {item.prenom}</p>
                     <p className='profil-info'>adresse email : {item.adresse_email}</p>
-                    <p className='profil-info profil-info-password'>mot de passe : {userStorageJson.password}</p>
+                    <p type='password' className='profil-info profil-info-password'>mot de passe : {userStorageJson.password}</p>
                     <img src={item.image_url} alt='Avatar utilisateur'/>
                 </div>))}
                 <div key={Date.now() + Date.now()}>

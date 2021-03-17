@@ -20,15 +20,13 @@ function Login({isConected, setIsConected}){
 
     }
     const connected = (result) => {
-      const localLoggin = sessionStorage.getItem("token+id");
-      const localLogginParse = JSON.parse(localLoggin);
-
-      const recupUserId = localLogginParse.user_id;
-      const recupUserToken = localLogginParse.token;
-      if(result.user_id === recupUserId && result.token === recupUserToken){
-        setIsConected(true);
+      
+      if(result.isConected){
+        setIsConected(result.isConected);
         sessionStorage.setItem('isCo', true)
         console.log('is conected : ', isConected)
+      }else {
+        alert('Verifiez votre mot de passe et /ou votre adresse email')
       }
       
     }
@@ -43,6 +41,32 @@ function Login({isConected, setIsConected}){
     adresse_email : emailData,
     mot_de_passe: passwordData
    };
+   const usersBDD = [];
+   const usersEmails = [];
+   function findUser(){
+    fetch('http://localhost:3001/api/auth/account')
+      .then(res=>res.json())
+      .then((result)=>{
+        const allUsers = result.result;
+        allUsers.map((item)=>{
+          usersBDD.push(item)
+
+          return usersBDD;
+        })
+        usersBDD.map((itemUser)=>{
+         
+          usersEmails.push(itemUser)
+          return usersEmails
+        })
+
+      })
+      console.log(usersEmails[0])
+      
+
+  }
+  console.log(usersBDD)
+  
+  findUser()
   const myInit = { 
       method: 'POST',
       headers: createHeader(),
@@ -62,7 +86,7 @@ function Login({isConected, setIsConected}){
             saveLocal(result)
             connected(result)
             console.log(isConected)
-
+            console.log(result)
             //localStorage.clear()
           },
           (error) => {

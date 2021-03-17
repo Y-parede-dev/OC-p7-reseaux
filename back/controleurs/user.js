@@ -19,7 +19,6 @@ function createUser(req, res){
     //console.log(corpRequete)
     if(isValidEmail(corpRequete.adresse_email) && isValidPassword(corpRequete.mot_de_passe)){
         console.log(req.body)
-
         bcrypt.hash(corpRequete.mot_de_passe, 10)
         .then(hash => {
             const user = {
@@ -40,7 +39,6 @@ function createUser(req, res){
     
                 if(err) {
                     res.status(500).json({message:"POST EST BOGGER / Verifier votre adresse email il se peut qu'elle existe déjà dans la BDD"});
-                    //console.log(err); 
                     return;
                 }else {
                     res.status(201).json({message:'tout est ok sur le POST, Utilisateur enregistre'});
@@ -56,21 +54,15 @@ function createUser(req, res){
 }
 exports.signup = (req, res, next)=>{
     let isPresent = false;
-    createUser(req, res);
-
-    // a voir si je supr la logique ou non 
-
-
-
     dataBase.query(
         `SELECT users.adresse_email FROM users;`, function(present, result){
-            
+            // voir cree une fonction qui implémente adress mail 
             const adressMail = result;
-            for(i=0;i<adressMail.length;i++){
-                if(adressMail[i].adresse_email!= req.body.adresse_email) {
-                    
+            adressMail.map((test)=>{
+                if(test.adresse_email != req.body.adresse_email){
                     isPresent= false;
-                }else{
+                }
+                else{
                     isPresent = true;
                     return res.status(409).json({message:'Adresse email deja dans la BDD'});
                 }
@@ -78,8 +70,8 @@ exports.signup = (req, res, next)=>{
                     createUser(req, res);
                 }
             }
-            
-        }
+        )        
+    }
     )
 }
 exports.getAllAccount = (req,res,next)=>{
@@ -125,7 +117,7 @@ exports.deleteAccount = (req,res,next)=>{
 
     const user_out = req.body;
     console.log('id courant : ',idCourant, 'user out id: ', user_out.id)
-    if(idCourant === user_out.id){
+    if(idCourant == user_out.id){
         const sql = `DELETE FROM users WHERE id = ${user_out.id};`;
         dataBase.query( sql, function(err, result){
                 if(err){
@@ -238,6 +230,7 @@ exports.login = (req, res, next) => {
     const userLog = req.body;
     dataBase.query(`SELECT * FROM users WHERE users.adresse_email = "${userLog.adresse_email}";`,
     function(err,result){
+        let isCo = false;
         if(err){
             return res.status(400).json(err);
         }else{
@@ -253,24 +246,27 @@ exports.login = (req, res, next) => {
                 }else{
                     bcrypt.compare(userLog.mot_de_passe, userBdd.mot_de_passe)
                     .then(valid=>{
-                    if(!valid){
-                        return res.status(401).json({message:'mauvais mot de passe'})
+                        if(!valid){
+                            return res.status(401).json({message:'mauvais mot de passe'})
+                        }
+                        else{
+                            isCo = true;
+                            //isConOnBdd = true; 
+                            res.status(200).json({
+                                isConected : isCo,
+                                user_id : userBdd.id,
+                                password:userLog.mot_de_passe,
+                                token:jwt.sign(
+                                    { user_id: userBdd.id },
+                                    `${process.env.JSW_SECRET}`,
+                                    {expiresIn:`${process.env.TOKEN_EXPIRE}`}
+                                )
+                            })
+                        }
+                    })
+                    .catch(
+                        error=>res.status(500).json(error))
                     }
-                    else{
-                        res.status(200).json({
-                            user_id : userBdd.id,
-                            password:userLog.mot_de_passe,
-                            token:jwt.sign(
-                                { user_id: userBdd.id },
-                                `${process.env.JSW_SECRET}`,
-                                {expiresIn:`${process.env.TOKEN_EXPIRE}`}
-                            )
-                        })
-                    }
-                })
-                .catch(
-                    error=>res.status(500).json(error))
-                }
             })
         }
     })

@@ -72,7 +72,7 @@ const ModifAccount = () =>{
         <div key= {Date.now() *3}>{userIsCoParse.map(item=>(
             <form  key={Date.now()} onSubmit={ handleSubmit} id='form-modif'>
                 <label htmlFor="nom-modif"></label>
-                <input name='nom-modif' type="text" placeholder= {nameData} value={UICParse.nom} onChange={handleChangeName}/>
+                <input name='nom-modif' type="text" placeholder= {nameData} value={nameData} onChange={handleChangeName}/>
                 <label htmlFor="prenom-modif"></label>
                 <input name='prenom-modif' type="text" placeholder='*Prenom' value={prenomData} onChange={handleChangePrenom}/>
                 <label htmlFor="email-modif"></label>
