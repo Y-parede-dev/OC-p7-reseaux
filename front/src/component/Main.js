@@ -14,5 +14,5 @@ function Main({isConected, setIsConected}){
             }
         </div>
     )
-}
+};
 export default Main;

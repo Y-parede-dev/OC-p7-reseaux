@@ -14,5 +14,5 @@ function CreatePost(){
         </form>
         
     )
-}
+};
 export default CreatePost;

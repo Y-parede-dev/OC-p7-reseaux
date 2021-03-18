@@ -1,6 +1,6 @@
 import Header from './Header';
 import React, { useState } from "react";
-import Main from './Main'
+import Main from './Main';
 import Signup from './Signup';
 import Login from './Login';
 import Account from './Account';
@@ -12,19 +12,19 @@ import DeleteAccount from './DeleteAccount';
 
 function App() {
   const isCo = sessionStorage.getItem('isCo');
-  const isCOJson = JSON.parse(isCo)
+  const isCOJson = JSON.parse(isCo);
   
-  console.log("is co json  ", isCOJson)
+  console.log("is co json  ", isCOJson);
   const [isConected, setIsConected] = useState(isCOJson);
-  console.log('is :', isConected)
+  console.log('is :', isConected);
   
   const returnConect = document.createElement('P');
   
   if(isConected || isConected === true){
 
     returnConect.innerHTML = 
-    console.log('good')
-  }
+    console.log('good');
+  };
 
   return (
     <div className="App">
@@ -44,6 +44,6 @@ function App() {
       {!isConected || isConected == false? <p>🔴 Veuillez vous connecter pour accéder au site </p> : <p>🟢 connected</p>}
     </div>
   );
-}
+};
    
 export default App;

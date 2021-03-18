@@ -5,12 +5,12 @@ const fs = require('fs');
 
 
 // reGex email
-function isValidEmail(value){
+const isValidEmail = (value) => {
     let reGex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     return reGex.test(value);
 };
 // reGex password (entre 8-15 caract. / au moins 1 chifre 1maj. une min et au moins un carct. spé.)
-function isValidPassword(value){
+const isValidPassword = (value) => {
     let reGex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$/;
     return reGex.test(value)
 }
@@ -136,8 +136,8 @@ exports.deleteAccount = (req,res,next)=>{
     }
 }
 exports.modifyAccount = (req,res,next) => {
-    function requeteSQL(sqlRequete){
-        dataBase.query(sqlRequete,
+    const requeteSQL=(requete)=>{
+        dataBase.query(requete,
             function(err,result){
                 if(err){
                     res.status(400).json({message:'probleme avec la modification'})

@@ -8,11 +8,18 @@
   }
 }
 
+.fas-custom-header-isCo {
+  font-size: 25px;
+}
+.selected-li {
+  display: flex;
+  flex-direction: column;
+}
 .App-header {
   background-color: #E63F03;
   height: fit-content;
   width: 100%;
-  display: flex;
+  display: fixed;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -32,6 +39,7 @@
     padding: 15px 0;
     margin: auto;
     width: 100%;
+    //height: 48px;
     background: #FF591C;
 }
 
@@ -40,14 +48,20 @@
     text-decoration: none;
     color:  white;
     font-weight: bold;
+    max-width: 200px;
+    min-width: 150px;
+    font-size: 1.35rem;
+    padding: 25px;
+
 }
+
+.ul-sign-log > li > a:active{
+    color:red
+}
+
 .ul-sign-log > li > a:hover{
-    font-size: 1.35rem;
-    color:#02E6B8
-}
-.ul-sign-log > li > a.selected{
-    font-size: 1.35rem;
-    color:greenyellow
+    border-radius: 60px;
+    background: #E63F03;
 }
 
 

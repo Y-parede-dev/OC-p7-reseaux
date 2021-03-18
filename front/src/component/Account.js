@@ -1,7 +1,9 @@
 import {useEffect, useState} from 'react';
 import {createHeader} from '../assets/js/Function';
 import ModifAccount from './ModifAccount';
+import '../styles/Account.css'
 
+const url = "http://localhost:3001/api/auth/account/";
 function Account({isConected, setIsConected}){
     const [user, setUser] = useState([]);
 
@@ -16,7 +18,7 @@ function Account({isConected, setIsConected}){
         const userStorageId = userStorageJson.user_id;
         
         //const myHeaders = new Headers();
-        const url = "http://localhost:3001/api/auth/account/"+userStorageId;
+        const urlRequete = url+userStorageId;
         
         //console.log('type of id req',typeof requete.id)
         const myInit = { method: 'GET',
@@ -26,7 +28,7 @@ function Account({isConected, setIsConected}){
                         
                     };
                     
-        fetch(url, myInit)
+        fetch(urlRequete, myInit)
             .then(res => res.json())
             .then(
             (result) => {
@@ -35,33 +37,31 @@ function Account({isConected, setIsConected}){
                 console.log( user)
 
             },
-            // Remarque : il faut gérer les erreurs ici plutôt que dans
-            // un bloc catch() afin que nous n’avalions pas les exceptions
-            // dues à de véritables bugs dans les composants.
+           
             (error) => {
                 console.log("error")
             }
             )
         },[])
     return(
-        <div>{ isConected &&
+        <section className='section-profil'>{ isConected &&
             <div>{user.map(item=>(
                     
-                <div key={Date.now()}>
+                <div className='content-profil' key={Date.now()}>
                     <h2 className='profil'>PROFIL  {sessionStorage.setItem('userIsCo', JSON.stringify(user))}</h2>
-                    <p className='profil-info'>nom : {item.nom}</p>
-                    <p className='profil-info'>prenom : {item.prenom}</p>
-                    <p className='profil-info'>adresse email : {item.adresse_email}</p>
-                    <p type='password' className='profil-info profil-info-password'>mot de passe : {userStorageJson.password}</p>
-                    <img src={item.image_url} alt='Avatar utilisateur'/>
+                    <p className='profil-info'><span className='profil-info-static'>nom :</span> <span className='profil-info-dynamique'>{item.nom}</span></p>
+                    <p className='profil-info'><span className='profil-info-static'>prenom :</span> <span className='profil-info-dynamique'>{item.prenom}</span></p>
+                    <p className='profil-info'><span className='profil-info-static'>adresse email :</span> <span className='profil-info-dynamique'>{item.adresse_email}</span></p>
+                    <p type='password' className='profil-info profil-info-password'><span className='profil-info-static'>mot de passe :</span> <span className='profil-info-dynamique password-clair'>{userStorageJson.password}</span></p>
+                    <img className="avatar-profil" src={url.split('api')[0]+"images/"+item.image_url} alt='Avatar utilisateur'/>
                 </div>))}
                 <div key={Date.now() + Date.now()}>
-                    <button onClick={()=>handleSubmit('modify')}> modifier</button>
-                    <button onClick={()=>handleSubmit('del')}> suprimer le compte</button>
+                    <button user={user} onClick={()=>handleSubmit('modify')}>🛠 modifier</button>
+                    <button onClick={()=>handleSubmit('del')}>⛔ suprimer le compte</button>
                 </div>
             </div>
             }
-        </div>
+        </section>
     )
 }
 

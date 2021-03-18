@@ -14,10 +14,9 @@ export default function Comment(postId) {
     //recup du post id 
     const postI = postId.postId;
     // on le stringify 
-    const postIdRecup = JSON.stringify(postI)
+    const postIdRecup = JSON.stringify(postI);
     //puis on le transforme en number
-    const postIdToNumber = parseInt(postIdRecup, 10)
-    
+    const postIdToNumber = parseInt(postIdRecup, 10);
     useEffect(() => {
         const myHeaders = new Headers();
 
@@ -41,7 +40,7 @@ export default function Comment(postId) {
                 setError(error);
             }
             )
-        },[])
+        },[]);
         
     if (error) {
       return <div>Erreur : {error.message}</div>;
@@ -67,5 +66,5 @@ export default function Comment(postId) {
        
             </div>
         )
-    }
-}
+    };
+};

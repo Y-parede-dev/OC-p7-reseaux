@@ -3,35 +3,35 @@ import {createHeader} from "../assets/js/Function";
 
 function Login({isConected, setIsConected}){
  
-  const [emailData, setEmailData] = useState('')
-  const [passwordData, setPasswordData] = useState('')
+  const [emailData, setEmailData] = useState('');
+  const [passwordData, setPasswordData] = useState('');
   
   
 
   const handleChangeEmail = (event) => {
     setEmailData(event.target.value);
-  }
+  };
   const handleChangePassword = (event) => {
     setPasswordData(event.target.value);
-  }
+  };
   const handleSubmit = (event) => {
       event.preventDefault()
       logUser();
 
-    }
+    };
     const connected = (result) => {
       
       if(result.isConected){
         setIsConected(result.isConected);
-        sessionStorage.setItem('isCo', true)
-        console.log('is conected : ', isConected)
+        sessionStorage.setItem('isCo', true);
+        console.log('is conected : ', isConected);
       }else {
-        alert('Verifiez votre mot de passe et /ou votre adresse email')
-      }
+        alert('Verifiez votre mot de passe et /ou votre adresse email');
+      };
       
-    }
+    };
     const saveLocal = (result) => {
-      const resultJson = JSON.stringify(result)
+      const resultJson = JSON.stringify(result);
       sessionStorage.setItem('token+id', resultJson);
 
     };
@@ -49,24 +49,24 @@ function Login({isConected, setIsConected}){
       .then((result)=>{
         const allUsers = result.result;
         allUsers.map((item)=>{
-          usersBDD.push(item)
+          usersBDD.push(item);
 
           return usersBDD;
         })
         usersBDD.map((itemUser)=>{
          
-          usersEmails.push(itemUser)
+          usersEmails.push(itemUser);
           return usersEmails
         })
 
       })
-      console.log(usersEmails[0])
+      console.log(usersEmails[0]);
       
 
-  }
-  console.log(usersBDD)
+  };
+  console.log(usersBDD);
   
-  findUser()
+  findUser();
   const myInit = { 
       method: 'POST',
       headers: createHeader(),
@@ -74,7 +74,7 @@ function Login({isConected, setIsConected}){
       cache: 'default',
       body: JSON.stringify(requete)
   };
-  console.log(requete)
+  console.log(requete);
   
   
 
@@ -93,7 +93,7 @@ function Login({isConected, setIsConected}){
             console.log(error)
           }
         )
-  }
+  };
   
     return(
       <div> { !isConected ?
@@ -110,6 +110,6 @@ function Login({isConected, setIsConected}){
       </div>
     )
 
-}
+};
 
 export default Login;

@@ -8,7 +8,7 @@ router.post('/signup', user_ctrl.signup); // Inscription
 
 router.get('/account', user_ctrl.getAllAccount); //get tous les comptes
 
-router.get('/account/:id', user_ctrl.getOneAccount); //get un comptes
+router.get('/account/:id',multer, user_ctrl.getOneAccount); //get un comptes
 
 router.delete('/account/:id',auth,user_ctrl.deleteAccount); // delete 1 compte
   

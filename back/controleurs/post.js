@@ -19,7 +19,7 @@ console.log(post.content)
     })
 }
 exports.getAllPost = (req,res,next)=>{
-    dataBase.query(`select posts.id AS id_post ,posts.content AS content_post, users.nom AS nom_post, users.prenom AS prenom_post from posts, users WHERE posts.user_id = users.id;`, function(err, result){ // recupere le post 
+    dataBase.query(`select posts.id AS id_post ,posts.content AS content_post, users.nom AS nom_post,users.image_url AS avatar, users.prenom AS prenom_post from posts, users WHERE posts.user_id = users.id;`, function(err, result){ // recupere le post 
         if(err){
             res.status(404).json({message:"GET ALL EST BUGER"});
             console.log(err)

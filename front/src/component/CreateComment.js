@@ -8,5 +8,5 @@ function CreateComment(){
 
         </form>
     )
-}
+};
 export default CreateComment;

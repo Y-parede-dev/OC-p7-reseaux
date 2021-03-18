@@ -18,6 +18,6 @@ const storage = multer.diskStorage({
         const extention = MIME_TYPES[file.mimetype];
         callback(null, name.split('.')[0] + Date.now() + '.' + extention);
     }
-});
+}); 
 
 module.exports = multer({ storage }).single("image");

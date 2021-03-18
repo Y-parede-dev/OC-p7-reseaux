@@ -6,7 +6,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
+//import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: red[500],
   },
 }));
+const url="http://localhost:3001/api/post/";
 
 export default function RecipeReviewCard() {
   const classes = useStyles();
@@ -53,11 +54,6 @@ export default function RecipeReviewCard() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
 
-  // Remarque : le tableau vide de dépendances [] indique
-  // que useEffect ne s’exécutera qu’une fois, un peu comme
-  // componentDidMount()
-
-  
   useEffect(() => {
     const myHeaders = new Headers();
 
@@ -65,16 +61,15 @@ export default function RecipeReviewCard() {
                    headers: myHeaders,
                    mode: 'cors',
                    cache: 'default' };
-    
-    fetch("http://localhost:3001/api/post/", myInit)
+    fetch(url, myInit)
       .then(res => res.json())
       .then(
         (result) => {
-          console.log(result)
+          console.log(result);
           // boucle de test
           result.result.forEach(it=>{(
-            console.log(it.nom_post)
-          )})
+            console.log("nom post", it.nom_post)
+          )});
 
           setIsLoaded(true);
           setItems(result.result);
@@ -84,7 +79,7 @@ export default function RecipeReviewCard() {
           setError(error);
         }
       )
-  }, [])
+  }, []);
 
   if (error) {
     return <div>Erreur : {error.message}</div>;
@@ -98,9 +93,8 @@ export default function RecipeReviewCard() {
         <Card key={Date.now()+item.id_post}id={`${item.id_post}`} className='card-content'> 
         <CardHeader
           /*metre photo de profil comme avatar*/avatar={ 
-            <Avatar aria-label="recipe" className={classes.avatar}> 
-              R 
-            </Avatar>
+            <img src={url.split("api")[0]+"images/"+item.avatar} className='avatar-on-post' /> 
+            
           }
           action={
             <IconButton aria-label="settings">
@@ -149,8 +143,8 @@ export default function RecipeReviewCard() {
       ))}
     </div>
     );
-  }
-}
+  };
+};
 
     /*<ul>
           {items.map(item => (

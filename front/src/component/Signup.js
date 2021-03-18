@@ -5,36 +5,36 @@ import {createHeader} from '../assets/js/Function';
 function Signup(){
   const [items, setItems] = useState([]);
 
-  const [nameData, setNameData] = useState('')
-  const [prenomData, setPrenomData] = useState('')
-  const [emailData, setEmailData] = useState('')
-  const [passwordData, setPasswordData] = useState('')
+  const [nameData, setNameData] = useState('');
+  const [prenomData, setPrenomData] = useState('');
+  const [emailData, setEmailData] = useState('');
+  const [passwordData, setPasswordData] = useState('');
   
   const [isConected, setIsConected] = useState(false);
 
   const handleChangeName = (event) => {
     setNameData(event.target.value);
-  }
+  };
   const handleChangePrenom = (event) => {
     setPrenomData(event.target.value);
-  }
+  };
   const handleChangeEmail = (event) => {
     setEmailData(event.target.value);
-  }
+  };
   const handleChangePassword = (event) => {
     setPasswordData(event.target.value);
-  }
+  };
   const handleSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     saveUser();
-    console.log(isConected)
+    console.log(isConected);
   
     if(requete.nom!==''&&requete.prenom!==''&&requete.adresse_email!==""&&requete.mot_de_passe!==""){
-      console.log(isConected)
+      console.log(isConected);
       return setIsConected(true);
       
-    }
-  }
+    };
+  };
   // Remarque : le tableau vide de dépendances [] indique
   // que useEffect ne s’exécutera qu’une fois, un peu comme
   // componentDidMount()
@@ -45,7 +45,7 @@ const requete = {
     prenom:prenomData,
     adresse_email :emailData,
     mot_de_passe: passwordData,
- }
+ };
 const myInit = { 
     method: 'POST',
     headers: createHeader(),
@@ -53,7 +53,7 @@ const myInit = {
     cache: 'default',
     body: JSON.stringify(requete)
 };
-console.log(requete)
+console.log(requete);
 
 
 function saveUser(){
@@ -69,7 +69,7 @@ function saveUser(){
           console.log(error)
         }
       )
-}
+};
 
   return(
     <div>
@@ -93,5 +93,5 @@ function saveUser(){
       {!isConected? "":window.location='../main'}
     </div>
   )
-}
+};
 export default Signup;
