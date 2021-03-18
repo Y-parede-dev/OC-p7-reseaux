@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import '../styles/ModifAccount.css';
-import {createHeader, headerWithTokens, isValidEmailFront, isValidPasswordFront} from '../assets/js/Function';
 
 
-const ModifAccount = ({user, setUser}) =>{
-    
+const ModifAccount = ({user}) =>{
+    console.log(window.location.pathname)
     const [nameData, setNameData] = useState('');
     const [prenomData, setPrenomData] = useState('');
     const [emailData, setEmailData] = useState('');
@@ -54,19 +53,19 @@ const ModifAccount = ({user, setUser}) =>{
     const UICParse = JSON.parse(UIC);
     console.log(UICParse.nom);
     
-    if(requete.nom == ""){
+    if(requete.nom === ""){
         requete.nom = UICParse.nom;
     };
-    if(requete.prenom == ""){
+    if(requete.prenom === ""){
         requete.prenom = UICParse.prenom;
     };
-    if(requete.adresse_email == ""){
+    if(requete.adresse_email === ""){
         requete.adresse_email = UICParse.adresse_email;
     };
-    if(requete.mot_de_passe == ""){
+    if(requete.mot_de_passe === ""){
         requete.mot_de_passe = userStorageJson.password;
     };
-    if(requete.image_url == "" ){
+    if(requete.image_url === "" ){
         requete.image_url = UICParse.image_url;
     };
     const headerWithToken = new Headers();
@@ -94,28 +93,33 @@ const ModifAccount = ({user, setUser}) =>{
           )
     };
     return(
-        <div >
+        <div >{ window.location.pathname === '/modify-pass'?
             <form onSubmit={ handleSubmit} id='form-modif'>
                
-                <label htmlFor="nom-modif"></label>
-                <input name='nom-modif' type="text" placeholder= '*Nom' value={nameData} onChange={handleChangeName}/>
-                
-                <label htmlFor="prenom-modif"></label>
-                <input name='prenom-modif' type="text" placeholder='*Prenom' value={prenomData} onChange={handleChangePrenom}/>
-               
-                <label htmlFor="email-modif"></label>
-                <input type="email" placeholder='*Email' value={emailData} onChange={handleChangeEmail}/>
                 
                 <label name='mot-de-passe-modif'></label>
-                <input htmlFor="avatar-modif" type="password" placeholder='*Mot de passe FORT' value={passwordData} onChange={handleChangePassword}/>
-                
-                <label name='avatar-modif'>Avatar</label>
-                <input type= "file" onChange={handleChangeImg} accept="image/png, image/jpeg, image/gif"/>
+                <input className="input-form" htmlFor="avatar-modif" type="password" placeholder='*Mot de passe FORT' value={passwordData} onChange={handleChangePassword}/>
                 
                 <button type='submit'>Validé la modification</button>
 
-            </form>
-            
+            </form> : <form onSubmit={ handleSubmit} id='form-modif'>
+               
+               <label htmlFor="nom-modif"></label>
+               <input className="input-form" name='nom-modif' type="text" placeholder= '*Nom' value={nameData} onChange={handleChangeName}/>
+               
+               <label htmlFor="prenom-modif"></label>
+               <input className="input-form" name='prenom-modif' type="text" placeholder='*Prenom' value={prenomData} onChange={handleChangePrenom}/>
+
+               <label htmlFor="email-modif"></label>
+               <input className="input-form" name='email-modif' type="text" placeholder='*Email' value={emailData} onChange={handleChangeEmail}/>
+              
+               <label name='avatar-modif'>Avatar</label>
+               <input className="input-file " type= "file" onChange={handleChangeImg} accept="image/png, image/jpeg, image/gif"/>
+               
+               <button className="input-form submit-modif" type='submit'>Validé la modification</button>
+
+           </form>
+            }
        </div>
   )
 };

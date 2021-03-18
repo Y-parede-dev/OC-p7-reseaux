@@ -53,11 +53,11 @@ export default function Comment(postId) {
                 <CreateComment/>
                 <ul>
                     {   
-                        comments.map(item=>(
+                        comments.forEach(item=>(
                             
                             postIdToNumber == item.post_id_comment ?
                             <li className='comment-content' id={`${item.post_id_comment} - ${item.post_id_comment}`} key={Date.now()*getRandomInt(98698898598) + item.post_id_comment }>
-                                <img className="avatar-comment" src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png'></img>
+                                <img alt="avatar user comment" className="avatar-comment" src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png'></img>
                                 {postIdToNumber == item.post_id_comment && <span className="comment-text">{`${item.nom_comment} ${item.prenom_comment} a commenter : ${item.content_comment}`}</span>}
                             </li>:''
                          ))

@@ -20,7 +20,7 @@ function App() {
   
   const returnConect = document.createElement('P');
   
-  if(isConected || isConected === true){
+  if(isConected || isConected == true){
 
     returnConect.innerHTML = 
     console.log('good');
@@ -37,6 +37,7 @@ function App() {
         <Route path="/main" exact component={() => <Main isConected={isConected} setIsConected={setIsConected}  />} />
         <Route path="/account" exact component={() => <Account onClick={Account} isConected={isConected} setIsConected={setIsConected}  />} />
         <Route path="/modify" exact component={() => <ModifAccount onClick={ModifAccount} /*isConected={isConected} setIsConected={setIsConected} */ />} />
+        <Route path="/modify-pass" exact component={() => <ModifAccount onClick={ModifAccount} /*isConected={isConected} setIsConected={setIsConected} */ />} />
         <Route path="/del" exact component={() => <DeleteAccount onClick={DeleteAccount} /*isConected={isConected} setIsConected={setIsConected} */ />} />
         
 

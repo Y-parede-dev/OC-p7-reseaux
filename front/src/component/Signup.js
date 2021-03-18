@@ -3,8 +3,7 @@ import {useState} from 'react';
 import {createHeader} from '../assets/js/Function';
 
 function Signup(){
-  const [items, setItems] = useState([]);
-
+  
   const [nameData, setNameData] = useState('');
   const [prenomData, setPrenomData] = useState('');
   const [emailData, setEmailData] = useState('');
@@ -62,7 +61,6 @@ function saveUser(){
       .then(
         (result) => {
           console.log(result)
-          setItems(result.result);
         },
        
         (error) => {
@@ -75,19 +73,19 @@ function saveUser(){
     <div>
       <form onSubmit={handleSubmit} id="form-signup" className="form-log-sign">
         <label name="nom-label" htmlFor='nom'></label>
-        <input id="nom-signup" className="nom" name="nom" type='text' placeholder="*nom" value={nameData} onChange={handleChangeName} />
+        <input id="nom-signup" className="input-form nom" name="nom" type='text' placeholder="*nom" value={nameData} onChange={handleChangeName} />
         
         <label name="prenom-label" htmlFor='prenom'></label>
-        <input id="prenom-signup" className="prenom" name="prenom" type='text' placeholder="*prenom" value={prenomData} onChange={handleChangePrenom} />
+        <input id="prenom-signup" className="input-form prenom" name="prenom" type='text' placeholder="*prenom" value={prenomData} onChange={handleChangePrenom} />
 
         <label name="email-label" htmlFor='email'></label>
-        <input id="email-signup" className="email" name="email" type='text' placeholder="*email" value={emailData} onChange={handleChangeEmail} />
+        <input id="email-signup" className="input-form email" name="email" type='text' placeholder="*email" value={emailData} onChange={handleChangeEmail} />
 
         <label name="password-label" htmlFor="password"></label>
-        <input id="password-signup" className="password" name='password' type='password' placeholder="*mot de passe" value={passwordData} onChange={handleChangePassword} />
+        <input id="password-signup" className="input-form password" name='password' type='password' placeholder="*mot de passe" value={passwordData} onChange={handleChangePassword} />
         
         <label name="submit-label" htmlFor="submit"></label>
-        <button id="submit-signup"  className="submit" name='submit' type='submit'>envoyer</button>
+        <button id="submit-signup"  className="input-form submit" name='submit' type='submit'>envoyer</button>
           
       </form>
       {!isConected? "":window.location='../main'}

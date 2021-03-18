@@ -1,10 +1,9 @@
 import {useEffect, useState} from 'react';
 import {createHeader} from '../assets/js/Function';
-import ModifAccount from './ModifAccount';
 import '../styles/Account.css'
 
 const url = "http://localhost:3001/api/auth/account/";
-function Account({isConected, setIsConected}){
+function Account({isConected}){
     const [user, setUser] = useState([]);
 
     const handleSubmit = (path) =>{
@@ -13,6 +12,8 @@ function Account({isConected, setIsConected}){
     const userStorage = sessionStorage.getItem("token+id")
     const userStorageJson = JSON.parse(userStorage);
     useEffect(() => {
+       
+
         console.log(isConected)
        
         const userStorageId = userStorageJson.user_id;
@@ -39,9 +40,10 @@ function Account({isConected, setIsConected}){
             },
            
             (error) => {
-                console.log("error")
+                console.log("error : ", error)
             }
             )
+            //eslint-disable-next-line react-hooks/exhaustive-deps
         },[])
     return(
         <section className='section-profil'>{ isConected &&
@@ -56,8 +58,10 @@ function Account({isConected, setIsConected}){
                     <img className="avatar-profil" src={url.split('api')[0]+"images/"+item.image_url} alt='Avatar utilisateur'/>
                 </div>))}
                 <div key={Date.now() + Date.now()}>
-                    <button user={user} onClick={()=>handleSubmit('modify')}>🛠 modifier</button>
+                    <button onClick={()=>handleSubmit('modify')}>🛠 modifier</button>
+                    <button onClick={()=>handleSubmit('modify-pass')}>🛠 modifier mot de passe</button>
                     <button onClick={()=>handleSubmit('del')}>⛔ suprimer le compte</button>
+                    <p className='contact-put-email'>Si vous Souhaitez changé vôtre adresse email veuillez envoyez un email au <a className="developpeur" href='mailto:magin.code@gmail.com'>développeur du site</a></p>
                 </div>
             </div>
             }

@@ -14,7 +14,7 @@ const isValidPassword = (value) => {
     let reGex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$/;
     return reGex.test(value)
 }
-function createUser(req, res){
+const createUser = (req, res) => {
     const corpRequete = req.body;
     //console.log(corpRequete)
     if(isValidEmail(corpRequete.adresse_email) && isValidPassword(corpRequete.mot_de_passe)){
@@ -58,7 +58,7 @@ exports.signup = (req, res, next)=>{
         `SELECT users.adresse_email FROM users;`, function(present, result){
             // voir cree une fonction qui implémente adress mail 
             const adressMail = result;
-            adressMail.map((test)=>{
+            adressMail.forEach((test)=>{
                 if(test.adresse_email != req.body.adresse_email){
                     isPresent= false;
                 }
@@ -69,7 +69,7 @@ exports.signup = (req, res, next)=>{
                 if(!isPresent){
                     createUser(req, res);
                 }
-            }
+            }//
         )        
     }
     )
@@ -172,28 +172,31 @@ exports.modifyAccount = (req,res,next) => {
                                     if(UsersModify.prenom!= element.prenom){
                                         const sqlRequete = `UPDATE users SET prenom = "${UsersModify.prenom}" WHERE id = ${idCourant};`;
                                         requeteSQL(sqlRequete);
-                                        res.status(200).json({message:'prenom utilisateur bien modifier'});
-                                        return; 
+                                       /* res.status(200).json({message:'prenom utilisateur bien modifier'});
+                                        return;*/
+                                        if(UsersModify.nom != element.nom) {
+                                            const sqlRequete = `UPDATE users SET nom = "${UsersModify.nom}" WHERE id = ${idCourant};`;
+                                            requeteSQL(sqlRequete);
+                                            /*res.status(200).json({message:'nom utilisateur bien modifier'});
+                                         return;*/
+                                            if(UsersModify.adresse_email != element.adresse_email){
+                                                const sqlRequete = `UPDATE users SET adresse_email = "${UsersModify.adresse_email}"WHERE id = ${idCourant};`;
+                                                requeteSQL(sqlRequete);
+                                                /*res.status(200).json({message:'email utilisateur bien modifier'});
+                                                return;*/
+                                                if(UsersModify.image_url != element.image_url){
+                                                    const sqlRequete = `UPDATE users SET image_url = "${UsersModify.image_url}"WHERE id = ${idCourant};`;
+                                                    requeteSQL(sqlRequete);
+                                                    /*res.status(200).json({message:'avatar utilisateur bien modifier'});
+                                                    return;*/
+                                                }
+
+                                            }
+
+                                        }
+                                        
                                     }
-                                    if(UsersModify.nom != element.nom) {
-                                        const sqlRequete = `UPDATE users SET nom = "${UsersModify.nom}" WHERE id = ${idCourant};`;
-                                        requeteSQL(sqlRequete);
-                                        res.status(200).json({message:'nom utilisateur bien modifier'});
-                                        return;
-                                    }
-                                    if(UsersModify.adress_email != element.adress_email){
-                                        const sqlRequete = `UPDATE users SET adresse_email = "${UsersModify.adresse_email}"WHERE id = ${idCourant};`;
-                                        requeteSQL(sqlRequete);
-                                        res.status(200).json({message:'email utilisateur bien modifier'});
-                                        return;
-                                    }
-                                    if(UsersModify.image_url != element.image_url){
-                                        const sqlRequete = `UPDATE users SET image_url = "${UsersModify.image_url}"WHERE id = ${idCourant};`;
-                                        requeteSQL(sqlRequete);
-                                        res.status(200).json({message:'avatar utilisateur bien modifier'});
-                                        return;
-                                    }
-                                    
+                                    return res.status(200).json({message:'utilisateur bien modifier'});
                                 }else{
                                     res.status(400).json({message:"Probème avec l'adresse email"})
                                     return;

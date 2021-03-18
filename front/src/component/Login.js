@@ -1,12 +1,32 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {createHeader} from "../assets/js/Function";
-
+import '../styles/Login.css';
 function Login({isConected, setIsConected}){
- 
+  
   const [emailData, setEmailData] = useState('');
   const [passwordData, setPasswordData] = useState('');
-  
-  
+  const messagErreur = document.createElement('P');
+
+  let userExist = false;
+  const verifyEmailUsers = () => {
+    const verifUser = sessionStorage.getItem('usersOnBdd');
+    const verifUserJson = JSON.parse(verifUser)
+    console.log("verifUserJson",verifUserJson)
+    verifUserJson.forEach(item=>{
+      console.log('item : ', item)
+      if(emailData === item){
+        userExist = true;
+        return userExist;
+     }
+     
+    })
+    if(!userExist && document.getElementById('form-login').childElementCount<6){
+      messagErreur.className = 'message-erreur';
+      messagErreur.textContent = 'Adresse email inconue de la base de donnée';
+      document.getElementById('form-login').appendChild(messagErreur);
+      console.log(document.getElementById('form-login').childElementCount)
+      }
+  }
 
   const handleChangeEmail = (event) => {
     setEmailData(event.target.value);
@@ -16,6 +36,7 @@ function Login({isConected, setIsConected}){
   };
   const handleSubmit = (event) => {
       event.preventDefault()
+      verifyEmailUsers();
       logUser();
 
     };
@@ -42,25 +63,19 @@ function Login({isConected, setIsConected}){
     mot_de_passe: passwordData
    };
    const usersBDD = [];
-   const usersEmails = [];
    function findUser(){
     fetch('http://localhost:3001/api/auth/account')
       .then(res=>res.json())
       .then((result)=>{
         const allUsers = result.result;
-        allUsers.map((item)=>{
-          usersBDD.push(item);
-
+        allUsers.forEach((item)=>{
+          console.log('bdd : ', item.adresse_email)
+          usersBDD.push(item.adresse_email);
           return usersBDD;
         })
-        usersBDD.map((itemUser)=>{
-         
-          usersEmails.push(itemUser);
-          return usersEmails
-        })
-
+        sessionStorage.setItem('usersOnBdd', JSON.stringify(usersBDD))
       })
-      console.log(usersEmails[0]);
+     
       
 
   };
@@ -99,11 +114,11 @@ function Login({isConected, setIsConected}){
       <div> { !isConected ?
         <form id="form-login" className="form-log-sign" onSubmit={handleSubmit}>
             <label htmlFor="email-login"></label>
-            <input name="email-login" type="email" placeholder="*email" value={emailData} onChange={handleChangeEmail}/>
+            <input className='input-form input-log email-log' name="email-login" type="email" placeholder="*email" value={emailData} onChange={handleChangeEmail}/>
 
             <label htmlFor="password-login"></label>
-            <input name="password-login" type="password" placeholder="*mot de passe" value={passwordData} onChange={handleChangePassword}/>
-            <input name="submit-login" type="submit" value="envoyer"/>
+            <input className='input-form input-log password-log' name="password-login" type="password" placeholder="*mot de passe" value={passwordData} onChange={handleChangePassword}/>
+            <input className='input-form input-log submit-log' name="submit-login" type="submit" value="envoyer"/>
 
         </form> : window.location.href ="./main"
         }

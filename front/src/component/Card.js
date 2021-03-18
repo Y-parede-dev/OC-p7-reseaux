@@ -93,7 +93,7 @@ export default function RecipeReviewCard() {
         <Card key={Date.now()+item.id_post}id={`${item.id_post}`} className='card-content'> 
         <CardHeader
           /*metre photo de profil comme avatar*/avatar={ 
-            <img src={url.split("api")[0]+"images/"+item.avatar} className='avatar-on-post' /> 
+            <img  alt='Avatar utilisateur' src={url.split("api")[0]+"images/"+item.avatar} className='avatar-on-post' /> 
             
           }
           action={
