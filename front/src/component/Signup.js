@@ -1,15 +1,62 @@
 import '../styles/Signup.css';
-import {useState} from 'react';
-import {createHeader} from '../assets/js/Function';
+import {useEffect, useState} from 'react';
+import {createHeader, isValidEmailFront, isValidPasswordFront} from '../assets/js/Function';
 
 function Signup(){
-  
+
   const [nameData, setNameData] = useState('');
   const [prenomData, setPrenomData] = useState('');
   const [emailData, setEmailData] = useState('');
   const [passwordData, setPasswordData] = useState('');
   
-  const [isConected, setIsConected] = useState(false);
+  const messagErreur = document.createElement('P');
+
+
+  let userIsValid = false ;
+  let test = false;
+
+  let userExist = false;
+if (nameData!=='' && prenomData !=="" && emailData !== "" && passwordData !==""){
+  test = true;
+  
+}
+
+  const verifyInfoUsers = () => {
+    const verifUser = sessionStorage.getItem('usersOnBdd');
+    const verifUserJson = JSON.parse(verifUser)
+    console.log("verifUserJson",verifUserJson)
+    verifUserJson.forEach(item=>{
+      console.log('item : ', item)
+      if(emailData === item){
+        userExist = true;
+        return userExist;
+     };
+    });
+    if(userExist){
+      if(document.getElementById('form-signup').childElementCount<11){  
+        messagErreur.className = 'message-erreur';
+        messagErreur.textContent = 'Adresse email déjà dans la base de donnée';
+        document.getElementById('form-signup').appendChild(messagErreur);
+        console.log(document.getElementById('form-signup').childElementCount);
+      };
+    }else{
+      if(isValidEmailFront(emailData)){
+        if(isValidPasswordFront(passwordData)){
+          if (nameData!==""&& prenomData !== ""){
+            userIsValid = true;
+          };
+        } else{
+          messagErreur.className = 'message-erreur';
+          messagErreur.textContent ='Mot de passe trop faible veuillez entrez un mot de passe fort ( une Majuscule, une miniscule, min 8 lettres max 15 lettres, Au moins un charactere spécial ex (% µ ; § / ? ... etc))';
+          document.getElementById('form-signup').appendChild(messagErreur);  
+        };
+      }else{
+        messagErreur.className = 'message-erreur';
+        messagErreur.textContent ='Adresse email non fonctionnel veuillez entrez une adresse correct';
+        document.getElementById('form-signup').appendChild(messagErreur);
+      };
+    };
+  };
 
   const handleChangeName = (event) => {
     setNameData(event.target.value);
@@ -25,19 +72,11 @@ function Signup(){
   };
   const handleSubmit = (event) => {
     event.preventDefault();
+    verifyInfoUsers();
     saveUser();
-    console.log(isConected);
   
-    if(requete.nom!==''&&requete.prenom!==''&&requete.adresse_email!==""&&requete.mot_de_passe!==""){
-      console.log(isConected);
-      return setIsConected(true);
-      
-    };
+    
   };
-  // Remarque : le tableau vide de dépendances [] indique
-  // que useEffect ne s’exécutera qu’une fois, un peu comme
-  // componentDidMount()
-  
   
 const requete = {
     nom: nameData,
@@ -54,7 +93,22 @@ const myInit = {
 };
 console.log(requete);
 
-
+useEffect(()=>{
+  const usersBDD = [];
+  function findUser(){
+    fetch('http://localhost:3001/api/auth/account')
+      .then(res=>res.json())
+      .then((result)=>{
+        const allUsers = result.result;
+        allUsers.forEach((item)=>{
+          usersBDD.push(item.adresse_email);
+          return usersBDD;
+        })
+        sessionStorage.setItem('usersOnBdd', JSON.stringify(usersBDD))
+      })
+  };  
+  findUser();
+ }, [])
 function saveUser(){
   fetch("http://localhost:3001/api/auth/signup", myInit)
       .then(res => res.json())
@@ -85,10 +139,10 @@ function saveUser(){
         <input id="password-signup" className="input-form password" name='password' type='password' placeholder="*mot de passe" value={passwordData} onChange={handleChangePassword} />
         
         <label name="submit-label" htmlFor="submit"></label>
-        <button id="submit-signup"  className="input-form submit" name='submit' type='submit'>envoyer</button>
-          
+        {test && <button id="submit-signup"  className="input-form submit" name='submit' type='submit' >envoyer</button>
+          }
       </form>
-      {!isConected? "":window.location='../main'}
+      {!userIsValid? "":window.location='../login'}
     </div>
   )
 };

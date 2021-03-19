@@ -2,7 +2,7 @@ const dataBase = require('../BDD/dbConnect');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
-
+const verifInfoRequete = require('../assets/js/functionVerify')
 
 // reGex email
 const isValidEmail = (value) => {
@@ -53,26 +53,24 @@ const createUser = (req, res) => {
     }
 }
 exports.signup = (req, res, next)=>{
-    let isPresent = false;
+    
     dataBase.query(
         `SELECT users.adresse_email FROM users;`, function(present, result){
             // voir cree une fonction qui implémente adress mail 
             const adressMail = result;
-            adressMail.forEach((test)=>{
-                if(test.adresse_email != req.body.adresse_email){
-                    isPresent= false;
+            console.log(adressMail.adresse_email)
+            adressMail.forEach((item)=>{
+                console.log(item.adresse_email)
+                /*if(item.adresse_email != req.body.adresse_email){
+                    isNotPresent= false;
+                
                 }
                 else{
-                    isPresent = true;
+                    isNotPresent = true;
                     return res.status(409).json({message:'Adresse email deja dans la BDD'});
-                }
-                if(!isPresent){
-                    createUser(req, res);
-                }
-            }//
-        )        
-    }
-    )
+                }*/
+            }) 
+    })
 }
 exports.getAllAccount = (req,res,next)=>{
     dataBase.query( 
@@ -91,30 +89,20 @@ exports.getOneAccount = (req, res, next) => {
     const idCourant = req.params.id;
     const idReq = req.body.id;
     const idReqJson = JSON.stringify(idReq);
-
-    console.log('id req json ',typeof idReqJson)
-
-    console.log("id params ", typeof idCourant)
     
         dataBase.query(
             `SELECT * FROM users WHERE id = ${idCourant};`, function(err, result){
                 if(err){
                     // res.status(404).json({message:"GET ON EST BOGGER"});
                     console.log(err)
-                }
-                else{
-                   
-
+                }else{
                     res.status(200).json({message:'get one est ok', result})
-                }
-            }
-        )
-    
-}
+                };
+            });
+};
 
 exports.deleteAccount = (req,res,next)=>{
     const idCourant = req.params.id;
-
     const user_out = req.body;
     console.log('id courant : ',idCourant, 'user out id: ', user_out.id)
     if(idCourant == user_out.id){
@@ -122,32 +110,18 @@ exports.deleteAccount = (req,res,next)=>{
         dataBase.query( sql, function(err, result){
                 if(err){
                     res.status(400).json({message: "Erreur d' identifiant"});
-                }
-                else{
+                }else{
                     res.status(200).json({message:"supression OK"});
                     console.log('supression ok')
-                }
-            }
-        )
-    }
-    else {
+                };
+            });
+    }else {
         console.log('id!=id');
         res.status(400).json({message:'error serveur'})
-    }
-}
+    };
+};
 exports.modifyAccount = (req,res,next) => {
-    const requeteSQL=(requete)=>{
-        dataBase.query(requete,
-            function(err,result){
-                if(err){
-                    res.status(400).json({message:'probleme avec la modification'})
-                    return;
-                }
-                    
-        })
-    }
     const idCourant = req.params.id;
-
     const UsersModify = req.body;
     dataBase.query(`SELECT users.nom,users.prenom,users.adresse_email,users.mot_de_passe, users.image_url FROM users WHERE users.id = ${idCourant};`,
     function(err,result){
@@ -156,11 +130,8 @@ exports.modifyAccount = (req,res,next) => {
         }else{
             const RecupBD = result;
             RecupBD.forEach(element => {  
-                console.log(element)
-                console.log(UsersModify)
                 bcrypt.compare(req.body.mot_de_passe, element.mot_de_passe)
                 .then(valid=>{
-                    console.log(valid)
                     if(valid){
                         if(
                             element.prenom != UsersModify.prenom ||
@@ -169,43 +140,16 @@ exports.modifyAccount = (req,res,next) => {
                             element.image_url != UsersModify.image_url )
                             {
                                 if(isValidEmail(UsersModify.adresse_email)){
-                                    if(UsersModify.prenom!= element.prenom){
-                                        const sqlRequete = `UPDATE users SET prenom = "${UsersModify.prenom}" WHERE id = ${idCourant};`;
-                                        requeteSQL(sqlRequete);
-                                       /* res.status(200).json({message:'prenom utilisateur bien modifier'});
-                                        return;*/
-                                        if(UsersModify.nom != element.nom) {
-                                            const sqlRequete = `UPDATE users SET nom = "${UsersModify.nom}" WHERE id = ${idCourant};`;
-                                            requeteSQL(sqlRequete);
-                                            /*res.status(200).json({message:'nom utilisateur bien modifier'});
-                                         return;*/
-                                            if(UsersModify.adresse_email != element.adresse_email){
-                                                const sqlRequete = `UPDATE users SET adresse_email = "${UsersModify.adresse_email}"WHERE id = ${idCourant};`;
-                                                requeteSQL(sqlRequete);
-                                                /*res.status(200).json({message:'email utilisateur bien modifier'});
-                                                return;*/
-                                                if(UsersModify.image_url != element.image_url){
-                                                    const sqlRequete = `UPDATE users SET image_url = "${UsersModify.image_url}"WHERE id = ${idCourant};`;
-                                                    requeteSQL(sqlRequete);
-                                                    /*res.status(200).json({message:'avatar utilisateur bien modifier'});
-                                                    return;*/
-                                                }
-
-                                            }
-
-                                        }
-                                        
-                                    }
+                                    verifInfoRequete(UsersModify, element, idCourant)
                                     return res.status(200).json({message:'utilisateur bien modifier'});
                                 }else{
                                     res.status(400).json({message:"Probème avec l'adresse email"})
                                     return;
-                                }
-                                
+                                };
                             }else{
                                 res.status(200).json({message:'tout est ok, rien a étais modifier'})
                                 return;
-                            }
+                            };
                     }else{
                         if(isValidPassword(req.body.mot_de_passe)){
                             bcrypt.hash(UsersModify.mot_de_passe, 10)
@@ -215,18 +159,18 @@ exports.modifyAccount = (req,res,next) => {
                                 };
                             dataBase.query(`UPDATE users SET mot_de_passe = "${user.pass}" WHERE id = ${idCourant} `)
                             return res.status(201).json({message:'Mot de passe Modifier avec succés'});
-                            })
+                            });
                             console.log('ok mdp')
                         }else{
                             res.status(400).json({error:"probleme avec le password"})
                             return
-                        }
-                    }
-                })
-            })     
-        }
-    })
-}
+                        };
+                    };
+                });
+            });
+        };
+    });
+};
         /*-------------------------------------------partie connection----------------------------------------------*/
 exports.login = (req, res, next) => {
 

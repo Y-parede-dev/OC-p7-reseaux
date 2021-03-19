@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {createHeader} from "../assets/js/Function";
 import '../styles/Login.css';
 function Login({isConected, setIsConected}){
@@ -24,7 +24,6 @@ function Login({isConected, setIsConected}){
       messagErreur.className = 'message-erreur';
       messagErreur.textContent = 'Adresse email inconue de la base de donnée';
       document.getElementById('form-login').appendChild(messagErreur);
-      console.log(document.getElementById('form-login').childElementCount)
       }
   }
 
@@ -62,26 +61,23 @@ function Login({isConected, setIsConected}){
     adresse_email : emailData,
     mot_de_passe: passwordData
    };
-   const usersBDD = [];
-   function findUser(){
-    fetch('http://localhost:3001/api/auth/account')
-      .then(res=>res.json())
-      .then((result)=>{
-        const allUsers = result.result;
-        allUsers.forEach((item)=>{
-          console.log('bdd : ', item.adresse_email)
-          usersBDD.push(item.adresse_email);
-          return usersBDD;
+   useEffect(()=>{
+    const usersBDD = [];
+    function findUser(){
+      fetch('http://localhost:3001/api/auth/account')
+        .then(res=>res.json())
+        .then((result)=>{
+          const allUsers = result.result;
+          allUsers.forEach((item)=>{
+            usersBDD.push(item.adresse_email);
+            return usersBDD;
+          })
+          sessionStorage.setItem('usersOnBdd', JSON.stringify(usersBDD))
         })
-        sessionStorage.setItem('usersOnBdd', JSON.stringify(usersBDD))
-      })
-     
-      
-
-  };
-  console.log(usersBDD);
-  
-  findUser();
+    };  
+    findUser();
+   }, [])
+   
   const myInit = { 
       method: 'POST',
       headers: createHeader(),

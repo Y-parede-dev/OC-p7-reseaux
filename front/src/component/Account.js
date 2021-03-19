@@ -1,8 +1,11 @@
 import {useEffect, useState} from 'react';
 import {createHeader} from '../assets/js/Function';
+
 import '../styles/Account.css'
 
+
 const url = "http://localhost:3001/api/auth/account/";
+
 function Account({isConected}){
     const [user, setUser] = useState([]);
 
