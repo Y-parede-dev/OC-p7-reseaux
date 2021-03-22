@@ -1,10 +1,10 @@
-#form-modif {
+.form-modif {
     display: flex;
     flex-direction: column;
     width: 30%;
     margin: 20px auto;
 }
-#form-modif> button {
+.form-modif> button {
     width: 20%;
     color: white;
     background: #008CBA;
@@ -16,10 +16,10 @@
     transition: all 1s ease;
 
 }
-#form-modif> button:hover{
+.form-modif> button:hover{
     transform: scale(1.5)    
 }
-#form-modif> input {
+.form-modif> input {
     width: 30%;
     margin: auto;
 }

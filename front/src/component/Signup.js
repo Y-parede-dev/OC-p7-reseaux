@@ -13,13 +13,13 @@ function Signup(){
 
 
   let userIsValid = false ;
-  let test = false;
+  let testValue = false;
 
   let userExist = false;
-if (nameData!=='' && prenomData !=="" && emailData !== "" && passwordData !==""){
-  test = true;
-  
-}
+  if (nameData!=='' && prenomData !=="" && emailData !== "" && passwordData !==""){
+    testValue = true;
+    
+  }
 
   const verifyInfoUsers = () => {
     const verifUser = sessionStorage.getItem('usersOnBdd');
@@ -73,9 +73,10 @@ if (nameData!=='' && prenomData !=="" && emailData !== "" && passwordData !=="")
   const handleSubmit = (event) => {
     event.preventDefault();
     verifyInfoUsers();
-    saveUser();
-  
-    
+    if(userIsValid){
+      saveUser();
+      window.location.href= '../login';
+    }
   };
   
 const requete = {
@@ -109,7 +110,7 @@ useEffect(()=>{
   };  
   findUser();
  }, [])
-function saveUser(){
+const saveUser=()=>{
   fetch("http://localhost:3001/api/auth/signup", myInit)
       .then(res => res.json())
       .then(
@@ -139,10 +140,10 @@ function saveUser(){
         <input id="password-signup" className="input-form password" name='password' type='password' placeholder="*mot de passe" value={passwordData} onChange={handleChangePassword} />
         
         <label name="submit-label" htmlFor="submit"></label>
-        {test && <button id="submit-signup"  className="input-form submit" name='submit' type='submit' >envoyer</button>
+        {testValue && <button id="submit-signup"  className="input-form submit" name='submit' type='submit' >envoyer</button>
           }
       </form>
-      {!userIsValid? "":window.location='../login'}
+      
     </div>
   )
 };

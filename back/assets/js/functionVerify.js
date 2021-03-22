@@ -1,4 +1,5 @@
-const dataBase = require('../../BDD/dbConnect');
+giconst dataBase = require('../../BDD/dbConnect');
+const fs = require('fs');
 
 const requeteSQL=(requete)=>{
     dataBase.query(requete,
@@ -9,7 +10,7 @@ const requeteSQL=(requete)=>{
             };
     });
 };
-const  verifInfoRequete = (userM, elt ,idCourant)=>{
+const verifInfoRequete = (userM, elt ,idCourant)=>{
     if(userM.prenom!= elt.prenom){
         const sqlRequete = `UPDATE users SET prenom = "${userM.prenom}" WHERE id = ${idCourant};`;
        requeteSQL(sqlRequete);

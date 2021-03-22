@@ -19,3 +19,5 @@ export const isValidPasswordFront = (value) => {
     let reGex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$/;
     return reGex.test(value);
 };
+// verif info user
+

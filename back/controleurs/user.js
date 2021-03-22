@@ -2,7 +2,9 @@ const dataBase = require('../BDD/dbConnect');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
-const verifInfoRequete = require('../assets/js/functionVerify')
+
+const verifInfoRequete = require('../assets/js/functionVerify');
+
 
 // reGex email
 const isValidEmail = (value) => {
@@ -14,7 +16,7 @@ const isValidPassword = (value) => {
     let reGex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$/;
     return reGex.test(value)
 }
-const createUser = (req, res) => {
+exports.signup = (req, res, next)=>{
     const corpRequete = req.body;
     //console.log(corpRequete)
     if(isValidEmail(corpRequete.adresse_email) && isValidPassword(corpRequete.mot_de_passe)){
@@ -27,12 +29,12 @@ const createUser = (req, res) => {
                 prenom:corpRequete.prenom,
                 password: hash
             };
-          
             const sqlRequete = `INSERT INTO users(nom, prenom, adresse_email, mot_de_passe)VALUES(
                 "${user.nom}",
                 "${user.prenom}",
                 "${user.email}",
-                "${user.password}");`;
+                "${user.password}",
+                );`;
                 //imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}` // sert a enregistre l'image envoyer par l'utilisateur
 
             dataBase.query(sqlRequete, function(err, result){
@@ -51,26 +53,6 @@ const createUser = (req, res) => {
         res.status(404).json({message:'Verifiez votre adresse email et / ou votre mot de pass'});
         return;
     }
-}
-exports.signup = (req, res, next)=>{
-    
-    dataBase.query(
-        `SELECT users.adresse_email FROM users;`, function(present, result){
-            // voir cree une fonction qui implémente adress mail 
-            const adressMail = result;
-            console.log(adressMail.adresse_email)
-            adressMail.forEach((item)=>{
-                console.log(item.adresse_email)
-                /*if(item.adresse_email != req.body.adresse_email){
-                    isNotPresent= false;
-                
-                }
-                else{
-                    isNotPresent = true;
-                    return res.status(409).json({message:'Adresse email deja dans la BDD'});
-                }*/
-            }) 
-    })
 }
 exports.getAllAccount = (req,res,next)=>{
     dataBase.query( 
@@ -111,6 +93,13 @@ exports.deleteAccount = (req,res,next)=>{
                 if(err){
                     res.status(400).json({message: "Erreur d' identifiant"});
                 }else{
+                    const pathname = user_out.image_url;
+                    //requeteSQL(sqlRequete);
+                    if(pathname!=='user-base.png'){
+                        fs.unlink(`images/${pathname}`,()=>{
+
+                        })
+                    }
                     res.status(200).json({message:"supression OK"});
                     console.log('supression ok')
                 };
@@ -119,10 +108,16 @@ exports.deleteAccount = (req,res,next)=>{
         console.log('id!=id');
         res.status(400).json({message:'error serveur'})
     };
-};
+}; 
 exports.modifyAccount = (req,res,next) => {
     const idCourant = req.params.id;
     const UsersModify = req.body;
+
+    console.log(req.body)
+    console.log(UsersModify.image)
+
+    req.file ? console.log('oui'):console.log('non');
+
     dataBase.query(`SELECT users.nom,users.prenom,users.adresse_email,users.mot_de_passe, users.image_url FROM users WHERE users.id = ${idCourant};`,
     function(err,result){
         if(err){

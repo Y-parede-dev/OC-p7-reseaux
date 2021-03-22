@@ -7,6 +7,8 @@ import '../styles/Account.css'
 const url = "http://localhost:3001/api/auth/account/";
 
 function Account({isConected}){
+    
+        
     const [user, setUser] = useState([]);
 
     const handleSubmit = (path) =>{
@@ -15,8 +17,6 @@ function Account({isConected}){
     const userStorage = sessionStorage.getItem("token+id")
     const userStorageJson = JSON.parse(userStorage);
     useEffect(() => {
-       
-
         console.log(isConected)
        
         const userStorageId = userStorageJson.user_id;
@@ -64,7 +64,7 @@ function Account({isConected}){
                     <button onClick={()=>handleSubmit('modify')}>🛠 modifier</button>
                     <button onClick={()=>handleSubmit('modify-pass')}>🛠 modifier mot de passe</button>
                     <button onClick={()=>handleSubmit('del')}>⛔ suprimer le compte</button>
-                    <p className='contact-put-email'>Si vous Souhaitez changé vôtre adresse email veuillez envoyez un email au <a className="developpeur" href='mailto:magin.code@gmail.com'>développeur du site</a></p>
+                    <p className="link-dev">Pour modifier vôtre adresse email veuillez contactez <a href="mailto:magin.code@gmail.comcd">le développeur du site</a></p>
                 </div>
             </div>
             }

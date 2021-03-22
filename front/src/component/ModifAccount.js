@@ -3,14 +3,14 @@ import '../styles/ModifAccount.css';
 
 
 const ModifAccount = ({user}) =>{
-    console.log(window.location.pathname)
+
     const [nameData, setNameData] = useState('');
     const [prenomData, setPrenomData] = useState('');
     const [emailData, setEmailData] = useState('');
     const [passwordData, setPasswordData] = useState('');
-    const [imgData, setImgData] = useState('');
-
-    console.log("je suis user", user)
+    const [imgNameData, setImgNameData] = useState('');
+    const [imgData, setImgData] = useState([]);
+    
     const handleChangeName = (event) => {
         setNameData(event.target.value);
     };
@@ -24,14 +24,19 @@ const ModifAccount = ({user}) =>{
         setPasswordData(event.target.value);
     };
     const handleChangeImg = (event) => {
-        setImgData(event.target.value.split('path')[1]);
+        setImgNameData(event.target.value.split('path\\')[1]);
+        let imageData = event.target.files[0];
+        setImgData(imageData);
+        console.log( imageData)
     };
+
+
     const handleSubmit = (event) => {
         event.preventDefault();
         modifUser();
         alert('modification éffectuées');
         sessionStorage.removeItem('UIC');
-        console.log('img data = ',imgData, " type = ",typeof imgData)
+        console.log('img data = ',imgNameData, " type = ",typeof imgNameData)
     };
     const userStorage = sessionStorage.getItem("token+id");
     const userStorageJson = JSON.parse(userStorage);
@@ -41,7 +46,11 @@ const ModifAccount = ({user}) =>{
         prenom:prenomData,
         adresse_email :emailData,
         mot_de_passe: passwordData,
-        image_url: imgData
+        image_url: imgNameData,
+        image: {
+            nom:imgData.name,
+            type:imgData.type
+        }
      };
     
     const userIsCo = sessionStorage.getItem('userIsCo');
@@ -51,7 +60,6 @@ const ModifAccount = ({user}) =>{
     });
     const UIC = sessionStorage.getItem('UIC');
     const UICParse = JSON.parse(UIC);
-    console.log(UICParse.nom);
     
     if(requete.nom === ""){
         requete.nom = UICParse.nom;
@@ -59,10 +67,10 @@ const ModifAccount = ({user}) =>{
     if(requete.prenom === ""){
         requete.prenom = UICParse.prenom;
     };
-    if(requete.adresse_email === ""){
-        requete.adresse_email = UICParse.adresse_email;
+    if(requete.adresse_email === ""/*ajouter reGex */){
+       requete.adresse_email = UICParse.adresse_email;
     };
-    if(requete.mot_de_passe === ""){
+    if(requete.mot_de_passe === ""/*ajouter reGex */){
         requete.mot_de_passe = userStorageJson.password;
     };
     if(requete.image_url === "" ){
@@ -84,7 +92,6 @@ const ModifAccount = ({user}) =>{
         .then(res=>res.json())
         .then(
             (result)=>{
-                console.log(result)
             },
        
             (error) => {
@@ -94,7 +101,7 @@ const ModifAccount = ({user}) =>{
     };
     return(
         <div >{ window.location.pathname === '/modify-pass'?
-            <form onSubmit={ handleSubmit} id='form-modif'>
+            <form onSubmit={ handleSubmit} id='form-modif-pass' className="form-modif">
                
                 
                 <label name='mot-de-passe-modif'></label>
@@ -102,7 +109,7 @@ const ModifAccount = ({user}) =>{
                 
                 <button type='submit'>Validé la modification</button>
 
-            </form> : <form onSubmit={ handleSubmit} id='form-modif'>
+            </form> : <form onSubmit={ handleSubmit} id='form-modif' className="form-modif">
                
                <label htmlFor="nom-modif"></label>
                <input className="input-form" name='nom-modif' type="text" placeholder= '*Nom' value={nameData} onChange={handleChangeName}/>
@@ -111,10 +118,10 @@ const ModifAccount = ({user}) =>{
                <input className="input-form" name='prenom-modif' type="text" placeholder='*Prenom' value={prenomData} onChange={handleChangePrenom}/>
 
                <label htmlFor="email-modif"></label>
-               <input className="input-form" name='email-modif' type="text" placeholder='*Email' value={emailData} onChange={handleChangeEmail}/>
-              
-               <label name='avatar-modif'>Avatar</label>
-               <input className="input-file " type= "file" onChange={handleChangeImg} accept="image/png, image/jpeg, image/gif"/>
+               <input className="input-form" name='email-modif' type="text" placeholder='*email' value={emailData} onChange={handleChangeEmail}/>
+
+               <label name='avatar-modif'></label>
+               <input className="input-file " type= "file" onChange={handleChangeImg} />
                
                <button className="input-form submit-modif" type='submit'>Validé la modification</button>
 
@@ -124,23 +131,3 @@ const ModifAccount = ({user}) =>{
   )
 };
 export default ModifAccount;
-/*<div key= {Date.now() *3}>
-      <form key={Date.now()} onSubmit={handleSubmit} id="form-modif"">
-        <label htmlFor='nom-modif'></label>
-        <input id="nom-modif" className="nom-modif" name="nom-modif" type='text' placeholder="*nom" value={nameData} onChange={handleChangeName} />
-        
-        <label name="prenom-label" htmlFor='prenom'></label>
-        <input id="prenom-signup" className="prenom" name="prenom" type='text' placeholder="*prenom" value={prenomData} onChange={handleChangePrenom} />
-
-        <label name="email-label" htmlFor='email'></label>
-        <input id="email-signup" className="email" name="email" type='text' placeholder="*email" value={emailData} onChange={handleChangeEmail} />
-
-        <label name="password-label" htmlFor="password"></label>
-        <input id="password-signup" className="password" name='password' type='password' placeholder="*mot de passe" value={passwordData} onChange={handleChangePassword} />
-        
-        <label name="submit-label" htmlFor="submit"></label>
-        <button id="submit-signup"  className="submit" name='submit' type='submit'>envoyer</button>
-          
-      </form>
-      {!isConected? "":window.location='../main'}
-    </div> */
