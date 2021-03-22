@@ -1,4 +1,4 @@
-giconst dataBase = require('../../BDD/dbConnect');
+const dataBase = require('../../BDD/dbConnect');
 const fs = require('fs');
 
 const requeteSQL=(requete)=>{
