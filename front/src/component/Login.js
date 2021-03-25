@@ -8,6 +8,7 @@ function Login({isConected, setIsConected}){
   const messagErreur = document.createElement('P');
 
   let userExist = false;
+
   const verifyEmailUsers = () => {
     const verifUser = sessionStorage.getItem('usersOnBdd');
     const verifUserJson = JSON.parse(verifUser)
@@ -33,10 +34,11 @@ function Login({isConected, setIsConected}){
   const handleChangePassword = (event) => {
     setPasswordData(event.target.value);
   };
-  const handleSubmit = (event) => {
+  const  handleSubmit = (event) => {
       event.preventDefault()
       verifyEmailUsers();
-      logUser();
+     
+     logUser();
 
     };
     const connected = (result) => {
@@ -44,7 +46,9 @@ function Login({isConected, setIsConected}){
       if(result.isConected){
         setIsConected(result.isConected);
         sessionStorage.setItem('isCo', true);
+        
         console.log('is conected : ', isConected);
+        
       }else {
         alert('Verifiez votre mot de passe et /ou votre adresse email');
       };
@@ -53,6 +57,7 @@ function Login({isConected, setIsConected}){
     const saveLocal = (result) => {
       const resultJson = JSON.stringify(result);
       sessionStorage.setItem('token+id', resultJson);
+      getUserCo(result);
 
     };
   
@@ -61,10 +66,11 @@ function Login({isConected, setIsConected}){
     adresse_email : emailData,
     mot_de_passe: passwordData
    };
+   const urlGet = 'http://localhost:3001/api/auth/account';
    useEffect(()=>{
     const usersBDD = [];
     function findUser(){
-      fetch('http://localhost:3001/api/auth/account')
+      fetch(urlGet)
         .then(res=>res.json())
         .then((result)=>{
           const allUsers = result.result;
@@ -76,7 +82,26 @@ function Login({isConected, setIsConected}){
         })
     };  
     findUser();
-   }, [])
+   }, []);
+ 
+   const getUserCo = (resultat)=>{
+
+    
+      const uIsCo = sessionStorage.getItem('token+id');
+      const uIsCoP= JSON.parse(uIsCo);
+      console.log(uIsCoP)
+
+      fetch(urlGet +'/'+ resultat.user_id)
+        .then(res=>res.json())
+        .then((resu)=>{
+          console.log(resu.result)
+          sessionStorage.setItem('userIsCo', JSON.stringify(resu.result))
+        
+      })
+    
+  }
+   
+
    
   const myInit = { 
       method: 'POST',
@@ -86,7 +111,6 @@ function Login({isConected, setIsConected}){
       body: JSON.stringify(requete)
   };
   console.log(requete);
-  
   
 
   const logUser = () => {

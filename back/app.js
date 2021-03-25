@@ -45,7 +45,6 @@ app.use((req, res, next) => {
 // callback de l'application
 // remplacement de bodyparser.json() par express.json()
 app.use(express.json());
-app.use(bodyParser.json());
 app.use('/images', express.static(path.join(__dirname, "images")));
 app.use("/api/post", postRoutes);
 app.use("/api/auth", usersRoutes);

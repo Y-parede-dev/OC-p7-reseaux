@@ -16,7 +16,7 @@ function Signup(){
   let testValue = false;
 
   let userExist = false;
-  if (nameData!=='' && prenomData !=="" && emailData !== "" && passwordData !==""){
+  if (userIsValid = true){
     testValue = true;
     
   }
@@ -77,6 +77,7 @@ function Signup(){
       saveUser();
       window.location.href= '../login';
     }
+    else{console.log('bug')}
   };
   
 const requete = {

@@ -2,9 +2,27 @@
   height: 15vmin;
   pointer-events: none;
 }
+
+.scrol-fixed{
+  z-index: 999;
+  position: fixed;
+  top:0;
+  
+  left:0;
+  right:0;
+}
+.scrol-fixed>li>a>p{
+  display: none
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo, .icon {
     animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@media screen and(max-width:700px){
+  p,.none-on-small{
+    display: none;
   }
 }
 
@@ -16,15 +34,14 @@
   flex-direction: column;
 }
 .App-header {
-  background-color: #E63F03;
+  background-color: #2f435e;
   height: fit-content;
   width: 100%;
-  display: fixed;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color:  #ececec;
 }
 
 .header-title {
@@ -39,31 +56,30 @@
     padding: 15px 0;
     margin: auto;
     width: 100%;
-    //height: 48px;
-    background: #FF591C;
+    background: #44566c;
 }
 
 
 .ul-sign-log > li > a {
     text-decoration: none;
-    color:  white;
+    color:   #ececec;
     font-weight: bold;
     max-width: 200px;
     min-width: 150px;
     font-size: 1.35rem;
     padding: 25px;
+    border-radius: 60px;
 
 }
 
-.ul-sign-log > li > a:active{
-    color:red
-}
 
 .ul-sign-log > li > a:hover{
-    border-radius: 60px;
-    background: #E63F03;
+    background: #201b22;
 }
+.ul-sign-log > li > a:focus{
+    background: #201b22;
 
+}
 
 @keyframes App-logo-spin {
   from {
@@ -71,5 +87,10 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+@media screen and (max-width:700px){
+  .none-on-small{
+    display: none;
   }
 }

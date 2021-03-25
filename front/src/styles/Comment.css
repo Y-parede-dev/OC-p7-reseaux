@@ -1,3 +1,22 @@
+
+.header-comment {
+    background: orangered;
+    padding: 8px;
+}
+.like-unlike {
+    text-align: left;
+    margin: 0 20px;
+}
+button.like, button.btn-comment {
+    font-size: 1.2rem;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    box-shadow: .5px .5px 10px -6px black;
+}
+
 .avatar-comment {
     width: 30px;
     margin: auto;
@@ -6,3 +25,4 @@
 .comment-content {
     list-style: none
 }
+.comment {display: none}

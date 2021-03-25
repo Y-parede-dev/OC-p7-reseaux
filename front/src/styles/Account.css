@@ -1,4 +1,8 @@
+.section-profil{
+    color: white;
+}
 .content-profil {
+    background: #44566c;
     border:solid 0px #696969;
     margin: 50px auto 50px;
     max-width: 500px;

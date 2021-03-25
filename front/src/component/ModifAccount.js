@@ -46,11 +46,7 @@ const ModifAccount = ({user}) =>{
         prenom:prenomData,
         adresse_email :emailData,
         mot_de_passe: passwordData,
-        image_url: imgNameData,
-        image: {
-            nom:imgData.name,
-            type:imgData.type
-        }
+        image_url: imgNameData
      };
     
     const userIsCo = sessionStorage.getItem('userIsCo');

@@ -4,9 +4,8 @@ const fs = require('fs');
 exports.newPost = (req,res,next) => {
 const post = req.body;
 
-console.log(post.content)
-    dataBase.query(`INSERT INTO posts(content ,image_url, user_id)
-                    VALUES("${post.content}", "${post.image_url}",${post.user_id})`,
+    dataBase.query(`INSERT INTO posts(content ,image_url, url_web, user_id, date_post)
+                    VALUES("${post.content}", "${post.image_url}", "${post.url_web}",${post.user_id}, "${post.date_post}")`,
                     function(err,result){
         if(err){
             res.status(400).json({message:"POST EST BOGGER"});
@@ -14,19 +13,19 @@ console.log(post.content)
             return;
         }else{
             res.status(200).json({message:"le post a bien étais enregistré dans la BDD"})
-            console.log(post)
         }
     })
 }
 exports.getAllPost = (req,res,next)=>{
-    dataBase.query(`select posts.id AS id_post ,posts.content AS content_post, users.nom AS nom_post,users.image_url AS avatar, users.prenom AS prenom_post from posts, users WHERE posts.user_id = users.id;`, function(err, result){ // recupere le post 
+    dataBase.query(`SELECT posts.id AS id_post ,posts.content AS content_post, posts.image_url AS image_post, posts.url_web, date_post ,
+                    users.id AS user_id, users.nom AS nom_post,users.image_url AS avatar, users.prenom AS prenom_post 
+                    from posts INNER JOIN users ON users.id= posts.user_id ORDER BY posts.id DESC;`, function(err, result){ // recupere le post 
         if(err){
             res.status(404).json({message:"GET ALL EST BUGER"});
             console.log(err)
             return;
         }else{
             res.status(200).json({message:"voici le resultat", result});
-            console.log(result)
         }
     }) 
 }
@@ -44,13 +43,11 @@ exports.getOneUserPost = (req,res,next)=>{
         dataBase.query(reqSQL, function(err, result){
             if(err){
                 res.status(404).json({message:"GET ONE EST BUGER"});
-                console.log(err)
                 return;
             }else{
                 const resLength = result.length;
                 if(resLength>0){
                     res.status(202).json({message:"voici le resultat de get one", result, resLength});
-                    console.log(result);
                     return;
                 }else{
                     res.status(200).json({message:"cet utilisateur n'a rien poster pour le moment"});
@@ -83,7 +80,6 @@ exports.modifyPost = (req,res,next)=>{
             }
         })
     }else{
-        console.log("pour modifier le post conecter vous avec le compte de l'auteur");
         res.status(500).json({message:"verifier votre id"})
     }   
 }
@@ -111,6 +107,5 @@ exports.deletePost=(req,res,next)=>{
         })
     }else {
         res.status(500).json({message:"id non identique"});
-        console.log('verifier vos id');
     }
 }

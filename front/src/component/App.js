@@ -42,7 +42,7 @@ function App() {
         
 
       </Router>
-      {!isConected || isConected == false? <p>🔴 Veuillez vous connecter pour accéder au site </p> : <p>🟢 connected</p>}
+      {!isConected || isConected == false? <p className="is-connected">🔴 Veuillez vous connecter pour accéder au site </p> : <p className="is-connected">🟢 connected</p>}
     </div>
   );
 };

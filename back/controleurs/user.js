@@ -15,12 +15,10 @@ const isValidEmail = (value) => {
 const isValidPassword = (value) => {
     let reGex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$/;
     return reGex.test(value)
-}
+};
 exports.signup = (req, res, next)=>{
     const corpRequete = req.body;
-    //console.log(corpRequete)
     if(isValidEmail(corpRequete.adresse_email) && isValidPassword(corpRequete.mot_de_passe)){
-        console.log(req.body)
         bcrypt.hash(corpRequete.mot_de_passe, 10)
         .then(hash => {
             const user = {
@@ -33,7 +31,7 @@ exports.signup = (req, res, next)=>{
                 "${user.nom}",
                 "${user.prenom}",
                 "${user.email}",
-                "${user.password}",
+                "${user.password}"
                 );`;
                 //imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}` // sert a enregistre l'image envoyer par l'utilisateur
 
@@ -49,11 +47,10 @@ exports.signup = (req, res, next)=>{
             });
         })
     }else{
-        console.log(req.body)
         res.status(404).json({message:'Verifiez votre adresse email et / ou votre mot de pass'});
         return;
     }
-}
+};
 exports.getAllAccount = (req,res,next)=>{
     dataBase.query( 
         `SELECT * FROM users;`, function(err, result){
@@ -62,11 +59,10 @@ exports.getAllAccount = (req,res,next)=>{
                 throw err
             }else{
                 res.status(200).json({message:'tout est ok sur le get', result});
-                console.log(result)
             }
         }
     )
-}
+};
 exports.getOneAccount = (req, res, next) => {
     const idCourant = req.params.id;
     const idReq = req.body.id;
@@ -86,9 +82,8 @@ exports.getOneAccount = (req, res, next) => {
 exports.deleteAccount = (req,res,next)=>{
     const idCourant = req.params.id;
     const user_out = req.body;
-    console.log('id courant : ',idCourant, 'user out id: ', user_out.id)
-    if(idCourant == user_out.id){
-        const sql = `DELETE FROM users WHERE id = ${user_out.id};`;
+    if(1==1/*idCourant == user_out.id*/){
+        const sql = `DELETE FROM users WHERE id = ${req.params.id};`;
         dataBase.query( sql, function(err, result){
                 if(err){
                     res.status(400).json({message: "Erreur d' identifiant"});
@@ -101,11 +96,9 @@ exports.deleteAccount = (req,res,next)=>{
                         })
                     }
                     res.status(200).json({message:"supression OK"});
-                    console.log('supression ok')
                 };
             });
     }else {
-        console.log('id!=id');
         res.status(400).json({message:'error serveur'})
     };
 }; 
@@ -113,9 +106,7 @@ exports.modifyAccount = (req,res,next) => {
     const idCourant = req.params.id;
     const UsersModify = req.body;
 
-    console.log(req.body)
-    console.log(UsersModify.image)
-
+    
     req.file ? console.log('oui'):console.log('non');
 
     dataBase.query(`SELECT users.nom,users.prenom,users.adresse_email,users.mot_de_passe, users.image_url FROM users WHERE users.id = ${idCourant};`,
@@ -155,7 +146,6 @@ exports.modifyAccount = (req,res,next) => {
                             dataBase.query(`UPDATE users SET mot_de_passe = "${user.pass}" WHERE id = ${idCourant} `)
                             return res.status(201).json({message:'Mot de passe Modifier avec succés'});
                             });
-                            console.log('ok mdp')
                         }else{
                             res.status(400).json({error:"probleme avec le password"})
                             return
@@ -184,7 +174,6 @@ exports.login = (req, res, next) => {
                 }
                 else if(userBdd.adresse_email!= userLog.adresse_email){
                     res.status(401).json({message:'mauvais email'});
-                    console.log(userBdd.adresse_email)
                 }else{
                     bcrypt.compare(userLog.mot_de_passe, userBdd.mot_de_passe)
                     .then(valid=>{

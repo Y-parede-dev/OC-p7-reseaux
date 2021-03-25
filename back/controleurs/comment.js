@@ -11,14 +11,13 @@ exports.postComment = (req,res,next) => {
             return;
         }else{
             res.status(200).json({message:"commentaire poster"});
-            console.log(result);
             return;
         }
     })
 }
 exports.getComment = (req,res,next) => {
     
-    const sqlRequete = `SELECT comment.id AS id_comment, comment.post_id AS post_id_comment, comment.content AS content_comment, users.nom AS nom_comment, users.prenom AS prenom_comment FROM comment, users WHERE users.id = comment.user_id;`;
+    const sqlRequete = `SELECT comment.content AS comment_content, comment.id AS comment_id, comment.post_id AS post_id_comment, users.id AS comment_user_id,users.nom AS comment_user,users.prenom AS comment_user_prenom, users.image_url AS avatar_user FROM comment JOIN users ON users.id = comment.user_id`;
     dataBase.query(sqlRequete, function(err, result){
         if(err){
             res.status(400).json({message:'PROBLEME AVEC LE GET'});
@@ -26,7 +25,6 @@ exports.getComment = (req,res,next) => {
             return;
         }else{
             res.status(200).json({message:"Voici les commentaires", result});
-            console.log(result);
             return;
         }
     })
@@ -35,8 +33,7 @@ exports.getCommentOnePost = (req,res,next) => { //BOGGUES
     const post = req.body;
     const idCourant = parseInt(req.params.id);
     if(idCourant === post.post_id){
-        console.log(post.post_id)
-        console.log(idCourant)
+       
         const sqlRequete = `SELECT posts.content AS post, posts.id AS post_id,
                         users.nom, users.prenom,
                         comment.content 
@@ -50,7 +47,6 @@ exports.getCommentOnePost = (req,res,next) => { //BOGGUES
                 return;
             }else{
                 res.status(200).json({message:"Voici les commentaire de se post", result});
-                //console.log(result);
                 return;
             }
         })
@@ -72,8 +68,7 @@ exports.modifyComment = (req,res,next)=>{
             }else{
                 const resultReq = result;
                 resultReq.forEach(element => {
-                    console.log('comment',comment.user_id)
-                    console.log("elt     ",element.user_id)
+                    
                     if(element.user_id === comment.user_id){
                         const sqlRequeteUpp = `UPDATE comment SET content = "${comment.content}" WHERE id = ${comment.comment_id};`;
                         dataBase.query(sqlRequeteUpp, function(err, result){
@@ -83,13 +78,11 @@ exports.modifyComment = (req,res,next)=>{
                                 return;
                             }else{
                                 const resultat = result.message;
-                                console.log(resultat);
                                 res.status(200).json({message:'Voici le resultat',resultat});
                                 return;
                             }
                         })
                     }else{
-                        console.log('test');
                         return res.status(401).json({message:"Cet utilisateur ne peut pas modifier se post"});
                     }
                 });
@@ -108,8 +101,6 @@ exports.deleteComment = (req, res, next)=>{
             if(err){
                 return res.status(400).json({message:"error requete sql"})
             }else{
-                console.log(result)
-
                 res.status(200).json({message:'supression ok'})
             }
         })

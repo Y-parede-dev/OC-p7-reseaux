@@ -53,11 +53,10 @@ function Account({isConected}){
             <div>{user.map(item=>(
                     
                 <div className='content-profil' key={Date.now()}>
-                    <h2 className='profil'>PROFIL  {sessionStorage.setItem('userIsCo', JSON.stringify(user))}</h2>
+                    <h2 className='profil'>PROFIL </h2>
                     <p className='profil-info'><span className='profil-info-static'>nom :</span> <span className='profil-info-dynamique'>{item.nom}</span></p>
                     <p className='profil-info'><span className='profil-info-static'>prenom :</span> <span className='profil-info-dynamique'>{item.prenom}</span></p>
                     <p className='profil-info'><span className='profil-info-static'>adresse email :</span> <span className='profil-info-dynamique'>{item.adresse_email}</span></p>
-                    <p type='password' className='profil-info profil-info-password'><span className='profil-info-static'>mot de passe :</span> <span className='profil-info-dynamique password-clair'>{userStorageJson.password}</span></p>
                     <img className="avatar-profil" src={url.split('api')[0]+"images/"+item.image_url} alt='Avatar utilisateur'/>
                 </div>))}
                 <div key={Date.now() + Date.now()}>

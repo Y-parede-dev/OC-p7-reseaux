@@ -1,25 +1,77 @@
-.cards {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.header-post, .header-comment, a.btn-more-params-post:hover,.dropdown-content, .dropbtn,button.like, button.btn-comment {
+    color:white!important;
+
+}
+.header-post, .header-comment, a.btn-more-params-post:hover, .dropdown:hover .dropbtn {
+    background: #44566c;
+}
+
+.header-post {
+    display: grid;
+    grid-template-columns: .01fr .5fr 1fr;
+    padding: 10px;
 }
 .avatar-on-post {
     width: 60px;
+    border-radius: 51px;
+    background: dodgerblue;
+    margin: auto 10px;
 }
-.card-content {
-    margin:15px;
-    width:30%;
-    //max-height: 350px;
-}
-.MuiCardHeader-root{
-    color: white !important;
-    background: #FF6219 !important;
+.post-name-date {
     text-align: left;
-    
 }
-.MuiCardHeader-root> span {
-    font-size: 2rem !important;
+p.post-name {
+    margin: 16px 0 5px;
+}
+p.post-date {
+    margin: 5px 0 16px;
+}
+button.dropbtn {
+    display: flex;
+    margin: 16px 10px auto auto;
+    background: transparent;
+    border: none;
+    box-shadow: 0.2px 0.2px 10px -7.2px;
+}
+/*button.dropbtn:hover {
+    transform: scale(1.5);
+    border: none;
+    box-shadow: black 0.2px 0.2px 13px -5.2px;
+}*/
+button.dropbtn:active {
+    transform: scale(1.5);
+    border: none;
+    box-shadow: black 0.2px 0.2px 13px -5.2px;
+}
+button.dropbtn:selected {
+    transform: scale(1.2);    border: none;
+    box-shadow: black 0.2px 0.2px 13px -5.2px;
+}
+
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: .5fr .5fr .5fr .5fr; 
+    align-items: center;
+    justify-content: center;
+}
+
+
+.card-content {
+    background: white;
+    margin:15px;
+    min-width:42%;
+    box-shadow: .5px .5px 10px -6px;
+}
+.media_post {
+    display: flex;
+    justify-content: center;
+}
+iframe.iframe-media {
+    width: 100%;
+    border: none;
+    margin: 0;
 }
 .comment-title {
     display: flex;
@@ -27,10 +79,53 @@
     text-align: center !important;
     margin: 0 auto!important;
 }
-.makeStyles-expand-3 {
-    margin: 0!important;
+
+/*            bouton params.                 */
+
+a.btn-more-params-post, .dropbtn {
+    display: inline-block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
 }
-.MuiCardContent-root:last-child {
-    background-color: gray;
-    color: white;
+
+
+
+.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+.bk
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+.show {display:block!important;}
+@media screen and (max-width:1080px){
+    .card-content {
+        min-width:50%;
+    }
+}
+@media screen and (max-width:822px){
+    .card-content {
+        min-width:80%;
+    }
+}
+@media screen and (max-width:560px){
+    .card-content {
+        min-width:95%;
+    }
 }
