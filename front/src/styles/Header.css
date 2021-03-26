@@ -62,24 +62,23 @@
 
 .ul-sign-log > li > a {
     text-decoration: none;
-    color:   #ececec;
+    color: #ececec;
     font-weight: bold;
     max-width: 200px;
-    min-width: 150px;
+    width: 171px;
     font-size: 1.35rem;
     padding: 25px;
-    border-radius: 60px;
-
+    border-radius: 73px;
 }
 
-
-.ul-sign-log > li > a:hover{
-    background: #201b22;
+.ul-sign-log > li > a:hover, .ul-sign-log > li > a:focus{
+    background: #2f435e;
 }
-.ul-sign-log > li > a:focus{
+.focus-on-position {
     background: #201b22;
 
 }
+
 
 @keyframes App-logo-spin {
   from {
@@ -93,4 +92,8 @@
   .none-on-small{
     display: none;
   }
+  .ul-sign-log > li > a {
+    width: 51px;
+   
+}
 }

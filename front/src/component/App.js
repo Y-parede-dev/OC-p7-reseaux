@@ -11,27 +11,15 @@ import '../styles/App.css';
 import DeleteAccount from './DeleteAccount';
 
 function App() {
+  console.log(document.URL)
+
   const isCo = sessionStorage.getItem('isCo');
   const isCOJson = JSON.parse(isCo);
-  
-  console.log("is co json  ", isCOJson);
   const [isConected, setIsConected] = useState(isCOJson);
-  console.log('is :', isConected);
-  
-  const returnConect = document.createElement('P');
-  
-  if(isConected || isConected == true){
-
-    returnConect.innerHTML = 
-    console.log('good');
-  };
-
   return (
     <div className="App">
       <Router>
-        
         <Header isConected = {isConected} setIsConected = {setIsConected}/>
-        
         <Route path="/signup" exact component={Signup}/>
         <Route path="/login" exact component={() => <Login isConected={isConected} setIsConected={setIsConected}  />} /> 
         <Route path="/main" exact component={() => <Main isConected={isConected} setIsConected={setIsConected}  />} />
@@ -39,8 +27,6 @@ function App() {
         <Route path="/modify" exact component={() => <ModifAccount onClick={ModifAccount} /*isConected={isConected} setIsConected={setIsConected} */ />} />
         <Route path="/modify-pass" exact component={() => <ModifAccount onClick={ModifAccount} /*isConected={isConected} setIsConected={setIsConected} */ />} />
         <Route path="/del" exact component={() => <DeleteAccount onClick={DeleteAccount} /*isConected={isConected} setIsConected={setIsConected} */ />} />
-        
-
       </Router>
       {!isConected || isConected == false? <p className="is-connected">🔴 Veuillez vous connecter pour accéder au site </p> : <p className="is-connected">🟢 connected</p>}
     </div>

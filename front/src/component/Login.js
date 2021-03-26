@@ -12,9 +12,7 @@ function Login({isConected, setIsConected}){
   const verifyEmailUsers = () => {
     const verifUser = sessionStorage.getItem('usersOnBdd');
     const verifUserJson = JSON.parse(verifUser)
-    console.log("verifUserJson",verifUserJson)
     verifUserJson.forEach(item=>{
-      console.log('item : ', item)
       if(emailData === item){
         userExist = true;
         return userExist;
@@ -47,7 +45,6 @@ function Login({isConected, setIsConected}){
         setIsConected(result.isConected);
         sessionStorage.setItem('isCo', true);
         
-        console.log('is conected : ', isConected);
         
       }else {
         alert('Verifiez votre mot de passe et /ou votre adresse email');
@@ -89,12 +86,10 @@ function Login({isConected, setIsConected}){
     
       const uIsCo = sessionStorage.getItem('token+id');
       const uIsCoP= JSON.parse(uIsCo);
-      console.log(uIsCoP)
 
       fetch(urlGet +'/'+ resultat.user_id)
         .then(res=>res.json())
         .then((resu)=>{
-          console.log(resu.result)
           sessionStorage.setItem('userIsCo', JSON.stringify(resu.result))
         
       })
@@ -110,7 +105,6 @@ function Login({isConected, setIsConected}){
       cache: 'default',
       body: JSON.stringify(requete)
   };
-  console.log(requete);
   
 
   const logUser = () => {
@@ -120,9 +114,6 @@ function Login({isConected, setIsConected}){
           (result) => {
             saveLocal(result)
             connected(result)
-            console.log(isConected)
-            console.log(result)
-            //localStorage.clear()
           },
           (error) => {
             console.log(error)

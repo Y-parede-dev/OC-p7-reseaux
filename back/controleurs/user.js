@@ -76,23 +76,21 @@ exports.getOneAccount = (req, res, next) => {
                 }else{
                     res.status(200).json({message:'get one est ok', result})
                 };
-            });
+            }); 
 };
 
 exports.deleteAccount = (req,res,next)=>{
     const idCourant = req.params.id;
     const user_out = req.body;
-    if(1==1/*idCourant == user_out.id*/){
+    if(idCourant == user_out.id){
         const sql = `DELETE FROM users WHERE id = ${req.params.id};`;
         dataBase.query( sql, function(err, result){
                 if(err){
                     res.status(400).json({message: "Erreur d' identifiant"});
                 }else{
                     const pathname = user_out.image_url;
-                    //requeteSQL(sqlRequete);
-                    if(pathname!=='user-base.png'){
-                        fs.unlink(`images/${pathname}`,()=>{
-
+                    if(pathname!=='user-base.png' || pathname!=='avatar-admin.png'){
+                        fs.unlink(`images/avatars/${pathname}`,()=>{
                         })
                     }
                     res.status(200).json({message:"supression OK"});
@@ -105,15 +103,13 @@ exports.deleteAccount = (req,res,next)=>{
 exports.modifyAccount = (req,res,next) => {
     const idCourant = req.params.id;
     const UsersModify = req.body;
-
-    
-    req.file ? console.log('oui'):console.log('non');
-
+    const file = req.file;
     dataBase.query(`SELECT users.nom,users.prenom,users.adresse_email,users.mot_de_passe, users.image_url FROM users WHERE users.id = ${idCourant};`,
     function(err,result){
         if(err){
             throw err;
         }else{
+            console.log(req.body)
             const RecupBD = result;
             RecupBD.forEach(element => {  
                 bcrypt.compare(req.body.mot_de_passe, element.mot_de_passe)
@@ -123,10 +119,17 @@ exports.modifyAccount = (req,res,next) => {
                             element.prenom != UsersModify.prenom ||
                             element.nom != UsersModify.nom ||
                             element.adresse_email != UsersModify.adresse_email ||
-                            element.image_url != UsersModify.image_url )
+                            element.image_url != file.filename )
                             {
                                 if(isValidEmail(UsersModify.adresse_email)){
-                                    verifInfoRequete(UsersModify, element, idCourant)
+                                    verifInfoRequete(UsersModify, file, element, idCourant);
+                                    const pathname = element.image_url;
+                                    //requeteSQL(sqlRequete);
+                                    if(pathname!=='user-base.png' && pathname!=='avatar-admin.png'){
+                                        fs.unlink(`images/avatars/${pathname}`,()=>{
+                
+                                        })
+                                    }
                                     return res.status(200).json({message:'utilisateur bien modifier'});
                                 }else{
                                     res.status(400).json({message:"Probème avec l'adresse email"})

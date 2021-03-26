@@ -8,7 +8,6 @@ const ModifAccount = ({user}) =>{
     const [prenomData, setPrenomData] = useState('');
     const [emailData, setEmailData] = useState('');
     const [passwordData, setPasswordData] = useState('');
-    const [imgNameData, setImgNameData] = useState('');
     const [imgData, setImgData] = useState([]);
     
     const handleChangeName = (event) => {
@@ -24,9 +23,11 @@ const ModifAccount = ({user}) =>{
         setPasswordData(event.target.value);
     };
     const handleChangeImg = (event) => {
-        setImgNameData(event.target.value.split('path\\')[1]);
+        console.log(event.target.files[0])
+        
         let imageData = event.target.files[0];
         setImgData(imageData);
+        
         console.log( imageData)
     };
 
@@ -36,18 +37,19 @@ const ModifAccount = ({user}) =>{
         modifUser();
         alert('modification éffectuées');
         sessionStorage.removeItem('UIC');
-        console.log('img data = ',imgNameData, " type = ",typeof imgNameData)
     };
     const userStorage = sessionStorage.getItem("token+id");
     const userStorageJson = JSON.parse(userStorage);
     const userStorageId = userStorageJson.user_id;
-    const requete = {
-        nom: nameData,
-        prenom:prenomData,
-        adresse_email :emailData,
-        mot_de_passe: passwordData,
-        image_url: imgNameData
-     };
+    const requete = new FormData();
+    
+    requete.append('nom',nameData);
+    requete.append('prenom',prenomData);
+    requete.append('adresse_email',emailData);
+    requete.append('mot_de_passe',passwordData);
+    requete.append('media',imgData);
+
+    
     
     const userIsCo = sessionStorage.getItem('userIsCo');
     const userIsCoParse = JSON.parse(userIsCo);
@@ -57,30 +59,31 @@ const ModifAccount = ({user}) =>{
     const UIC = sessionStorage.getItem('UIC');
     const UICParse = JSON.parse(UIC);
     
-    if(requete.nom === ""){
-        requete.nom = UICParse.nom;
+    if(nameData === ""){
+        requete.set('nom',UICParse.nom);
     };
-    if(requete.prenom === ""){
-        requete.prenom = UICParse.prenom;
+    if(prenomData === ""){
+        requete.set('prenom',UICParse.prenom);
+
     };
-    if(requete.adresse_email === ""/*ajouter reGex */){
-       requete.adresse_email = UICParse.adresse_email;
+    if(emailData === ""/*ajouter reGex */){
+        requete.set('adresse_email',UICParse.adresse_email);       
     };
-    if(requete.mot_de_passe === ""/*ajouter reGex */){
-        requete.mot_de_passe = userStorageJson.password;
+    if(passwordData === ""/*ajouter reGex */){
+        requete.set('mot_de_passe', userStorageJson.password)
     };
-    if(requete.image_url === "" ){
-        requete.image_url = UICParse.image_url;
+    if(!imgData){
+        requete.set('image_url',UICParse.image_url);       
+        
     };
     const headerWithToken = new Headers();
-     headerWithToken.append('Content-type','application/json');
      headerWithToken.append('Authorization', 'Bearer ' + userStorageJson.token);
     const putInit = {
         method: 'PUT',
         headers: headerWithToken,
         mode: 'cors',
         cache: 'default',
-        body: JSON.stringify(requete)
+        body: requete
     };
     const url = "http://localhost:3001/api/auth/account/"+ userStorageId;
     function modifUser() {

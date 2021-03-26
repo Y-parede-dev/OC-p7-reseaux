@@ -18,7 +18,6 @@ export default function Comment(postId) {
     //puis on le transforme en number
     const urlComm = "http://localhost:3001/api/comment/"
     const postIdToNumber = parseInt(postIdRecup, 10);
-    console.log(postId.postId,' = ',postIdToNumber)
 
     useEffect(() => {
         const myHeaders = new Headers();
@@ -31,7 +30,6 @@ export default function Comment(postId) {
             .then(res => res.json())
             .then(
             (result) => {
-                console.log( result.result)
                 setIsLoaded(true);
                 setComments(result.result);
             },
@@ -44,7 +42,6 @@ export default function Comment(postId) {
             }
             )
         },[]);
-        comments.forEach(it=>console.log(it))
     if (error) {
       return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
@@ -59,7 +56,7 @@ export default function Comment(postId) {
                             
                             postIdToNumber == item.post_id_comment && 
                         <li className='comment-content' key={Date.now()+ item.post_id_comment+item.comment_id }>
-                            <img alt="avatar user comment" className="avatar-comment" src={urlComm.split('api')[0]+'images/'+item.avatar_user}></img>
+                            <img alt="avatar user comment" className="avatar-comment" src={urlComm.split('api')[0]+'images/avatars/'+item.avatar_user}></img>
                             <div className='comment-user-txt'>
                             <span className="comment-user">{`${item.comment_user} ${item.comment_user_prenom} a commenter :` }</span><span className='comment-text'>{item.comment_content}</span>
                             </div>

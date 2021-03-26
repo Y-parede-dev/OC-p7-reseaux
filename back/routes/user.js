@@ -13,8 +13,8 @@ router.get('/account/:id', user_ctrl.getOneAccount); //get un comptes
 
 router.delete('/account/:id',auth,user_ctrl.deleteAccount); // delete 1 compte
   
-router.put('/account/:id'/*,auth*/ , multer , user_ctrl.modifyAccount); //modifier 1 compt
+router.put('/account/:id'/*,auth */, multer , user_ctrl.modifyAccount); //modifier 1 compt
 
 router.post('/login', user_ctrl.login); // connection
 
-module.exports = router;
+module.exports = router; 

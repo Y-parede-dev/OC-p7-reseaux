@@ -1,19 +1,5 @@
 import React,{ useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-//import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+
 import Comment from './Comment';
 
 import '../styles/Card.css';
@@ -40,13 +26,11 @@ export default function RecipeReviewCard() {
     document.getElementById(idPost).classList.toggle("show");
     document.getElementById(idPost).classList.toggle("comment");
     
-    console.log(idPost)
   }
   const btnToglComment = (idP)=> {
     let idPost = `comment-${idP}`
     document.getElementById(idPost).classList.toggle("show");
     
-    console.log(idPost)
   }
   
   useEffect(() => {
@@ -61,12 +45,7 @@ export default function RecipeReviewCard() {
       .then(res => res.json())
       .then(
         (result) => {
-          console.log(result);
-          // boucle de test
-          result.result.forEach(it=>{(
-
-            console.log("nom post", it.nom_post)
-          )});
+          
 
           setIsLoaded(true);
           setItems(result.result);
@@ -78,7 +57,6 @@ export default function RecipeReviewCard() {
       )
   }, []);
 
-    console.log(items)
   if (error) {
     return <div>Erreur : {error.message}</div>;
   } else if (!isLoaded) {
@@ -89,7 +67,7 @@ export default function RecipeReviewCard() {
         
         <div id={`post-${item.id_post}`} key={Date.now()+((item.id_post+item.user_id)*2)} className='card-content'>
           <div className='header-post'>
-            <img alt="Avatar Utilisateur" src={url.split("api")[0]+"images/"+item.avatar} className='avatar-on-post'/>
+            <img alt="Avatar Utilisateur" src={url.split("api")[0]+"images/avatars/"+item.avatar} className='avatar-on-post'/>
             <div className="post-name-date">
               <p className="post-name">{item.nom_post +' '+ item.prenom_post}</p>
               <p className="post-date">{item.date_post}</p>
@@ -111,8 +89,8 @@ export default function RecipeReviewCard() {
                 </div>
               </div>
           </div>
-          <div className='content-post'>
-                  <p>{item.content_post}</p>
+          <div className='content-post'>{item.content_post!=''&&
+                  <p>{item.content_post}</p>}
                   <div className="media_post">
                   {item.url_web!= null && item.url_web!= "null" 
                   ?<iframe 
@@ -124,19 +102,15 @@ export default function RecipeReviewCard() {
                     allowFullScreen="allowfullscreen"
                   >
                   </iframe>
-                  :<div>{item.image_url!= null && item.image_url!= "null" 
-                  ?<iframe
-                  className="iframe-media"
-
-                   
-                    src={item.image_url!='undefined' ?item.image_url:''}
-                    allowfullscreen="allowfullscreen">
-                      </iframe>
+                  :<div className="media-post">{item.image_post!= null && item.image_post!= "null" 
+                  ?<img width='500' height="350" className="iframe-media" alt='file post' src={item.image_post!='undefined' ?url.split('api')[0]+"images/posts/" + item.image_post:'' }/>
                     :<p>Il y a "R" Frère</p>
                     }
                     </div>
                   }
                   </div>
+
+                  
           </div>
           <div className='header-comment'>
               <div className="like-unlike">

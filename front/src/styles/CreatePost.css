@@ -7,6 +7,7 @@
     min-height: 300px;
     background: #44566c;
     margin: 20px auto;
+    position: relative;
 }
 .title-form-post {
     color: white;
@@ -18,15 +19,23 @@
 textarea.form-control{
     height: 150px
 }
-.image-post{
-    cursor: pointer;
+.image-post, .image-post-label{
     position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 1;
-    background: url('../assets/img/iconImg.svg') no-repeat center ;
+    cursor: pointer;
+
 
 }
+.image-post{
+    bottom: 93px;
+    opacity: 0;
+    left: -105px;
+}
+.image-post-label{
+    left: 20px;
+    bottom: 108px;
+    font-size: 1.2rem
+}
+
 .image-post>button {
     display: none
 }

@@ -1,0 +1,16 @@
+
+#form-create-comment {
+    display: flex;
+    position: relative;
+}
+textarea.form-control-comment {
+    display: flex;
+    width: 96%;
+    margin: 30px auto;
+    height: 79px;
+}
+input.form-control-comment.form-control-comment-submit {
+    position: absolute;
+    right: 20px;
+    bottom: 30px
+}

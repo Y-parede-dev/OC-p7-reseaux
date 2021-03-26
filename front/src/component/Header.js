@@ -11,13 +11,10 @@ const disconnect = () =>{
 window.onscroll = ()=>{fixOnScroll()};
 let srll = false;
 sessionStorage.setItem('scroll', srll)
-console.log(window.location.href.split('/')[3])
-if(window.location.href.split('/')[3] == 'account'){
-    if(document.getElementById('Account')){
-     document.getElementById('Account').focus()
+const curentPage = window.location.href.split('/')[3];
 
-    }
-}
+const classForLinkBase = 'selected-li';
+const classForLinkAdvenced = 'selected-li focus-on-position';
 const fixOnScroll =()=>{
     let elt = document.getElementById('sign-log');
     if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200){
@@ -55,12 +52,12 @@ function Header({isConected, setIsConected}){
             </ul>: <ul onScroll={fixOnScroll} id='sign-log' className=" ul-sign-log">
                 
                 <li>
-                    <a className='selected-li' id="Acceuil" href='./main'>
+                    <a className={curentPage == 'main'? classForLinkAdvenced : classForLinkBase} id="Acceuil" href='./main'>
                         <i className="fas-custom-header-isCo fas-home-custom fas fa-home"></i>
                         <p className='none-on-small'>Acceuil</p></a>
                 </li>
                 <li>
-                    <a className='selected-li' id="Account" href='./account'>
+                    <a className={curentPage == 'account' || curentPage == 'modify'? classForLinkAdvenced : classForLinkBase} id="Account" href='./account'>
                         <i className="fas-custom-header-isCo fas-adress-card-custom fas fa-address-card"></i>
                         <p className='none-on-small'>Mon compte</p></a>
                 </li>

@@ -5,14 +5,14 @@ import CreatePost from './CreatePost';
 function Main({isConected, setIsConected}){
     
     return(
-        <div>
+        <main>
             { isConected &&
-            <div key={Date.now()}>
+            <div className="content-main" key={Date.now()}>
                 <CreatePost />
                 <RecipeReviewCard />
             </div>
             }
-        </div>
+        </main>
     )
 };
 export default Main;

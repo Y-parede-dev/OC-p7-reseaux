@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { createHeader } from "../assets/js/Function";
+import '../styles/CreateComment.css';
 function CreateComment(postId){
     const [contentComment, setContentComment] = useState('');
     const recupUserCo = sessionStorage.getItem('userIsCo');
     const PrecupUserCo = JSON.parse(recupUserCo);
-    console.log(postId.postId)
     const handleSubmit = (event) => {
         event.preventDefault();
         const requete = {
@@ -35,10 +35,10 @@ function CreateComment(postId){
   
     return(
         
-        <form id="form-create-comment">
+        <form onSubmit={handleSubmit} id="form-create-comment">
             <label htmlFor="content-new-comment"></label>
-            <textarea className="form-control form-control-comment" type="text" name="content-new-comment" value={contentComment} onChange={handleChangeContent}/>
-            <input className="form-control form-control-submit" name="submit-login" type="submit" value="envoyer"/>
+            <textarea className="form-control-comment" type="text" name="content-new-comment" value={contentComment} onChange={handleChangeContent}/>
+            <input className="form-control-comment form-control-comment-submit" name="submit-login" type="submit" value="envoyer"/>
 
         </form>
     )

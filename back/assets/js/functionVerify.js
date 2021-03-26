@@ -10,7 +10,7 @@ const requeteSQL=(requete)=>{
             };
     });
 }; 
-const verifInfoRequete = (userM, elt ,idCourant)=>{
+const verifInfoRequete = (userM, file, elt ,idCourant)=>{
     if(userM.prenom!= elt.prenom){
         const sqlRequete = `UPDATE users SET prenom = "${userM.prenom}" WHERE id = ${idCourant};`;
        requeteSQL(sqlRequete);
@@ -20,13 +20,13 @@ const verifInfoRequete = (userM, elt ,idCourant)=>{
             if(userM.adresse_email != elt.adresse_email){
                 const sqlRequete = `UPDATE users SET adresse_email = "${userM.adresse_email}" WHERE id = ${idCourant};`;
                 requeteSQL(sqlRequete);
-                if(userM.image_url != elt.image_url){
-                    const sqlRequete = `UPDATE users SET image_url = "${userM.image_url}"WHERE id = ${idCourant};`;
+                if(file.filename != elt.image_url){
+                    const sqlRequete = `UPDATE users SET image_url = "${file.filename}"WHERE id = ${idCourant};`;
                     requeteSQL(sqlRequete);
                 };
             }else{
-                if(userM.image_url != elt.image_url){
-                    const sqlRequete = `UPDATE users SET image_url = "${userM.image_url}"WHERE id = ${idCourant};`;
+                if(file.filename != elt.image_url){
+                    const sqlRequete = `UPDATE users SET image_url = "${file.filename}"WHERE id = ${idCourant};`;
                     requeteSQL(sqlRequete);
                 };
             };
@@ -34,13 +34,13 @@ const verifInfoRequete = (userM, elt ,idCourant)=>{
             if(userM.adresse_email != elt.adresse_email){
                 const sqlRequete = `UPDATE users SET adresse_email = "${userM.adresse_email}"WHERE id = ${idCourant};`;
                 requeteSQL(sqlRequete);
-                if(userM.image_url != elt.image_url){
-                    const sqlRequete = `UPDATE users SET image_url = "${userM.image_url}"WHERE id = ${idCourant};`;
+                if(file.filename != elt.image_url){
+                    const sqlRequete = `UPDATE users SET image_url = "${file.filename}"WHERE id = ${idCourant};`;
                     requeteSQL(sqlRequete);
                 };
             }else{
-                if(userM.image_url != elt.image_url){
-                    const sqlRequete = `UPDATE users SET image_url = "${userM.image_url}"WHERE id = ${idCourant};`;
+                if(file.filename != elt.image_url){
+                    const sqlRequete = `UPDATE users SET image_url = "${file.filename}"WHERE id = ${idCourant};`;
                     requeteSQL(sqlRequete);
                 };
             };
@@ -52,13 +52,13 @@ const verifInfoRequete = (userM, elt ,idCourant)=>{
             if(userM.adresse_email != elt.adresse_email){
                 const sqlRequete = `UPDATE users SET adresse_email = "${userM.adresse_email}"WHERE id = ${idCourant};`;
                 requeteSQL(sqlRequete);
-                if(userM.image_url != elt.image_url){
-                    const sqlRequete = `UPDATE users SET image_url = "${userM.image_url}"WHERE id = ${idCourant};`;
+                if(file.filename != elt.image_url){
+                    const sqlRequete = `UPDATE users SET image_url = "${file.filename}"WHERE id = ${idCourant};`;
                     requeteSQL(sqlRequete);
                 };
             }else {
-                if(userM.image_url != elt.image_url){
-                    const sqlRequete = `UPDATE users SET image_url = "${userM.image_url}"WHERE id = ${idCourant};`;
+                if(file.filename != elt.image_url){
+                    const sqlRequete = `UPDATE users SET image_url = "${file.filename}"WHERE id = ${idCourant};`;
                     requeteSQL(sqlRequete);
                 };
             };
@@ -66,13 +66,13 @@ const verifInfoRequete = (userM, elt ,idCourant)=>{
             if(userM.adresse_email != elt.adresse_email){
                 const sqlRequete = `UPDATE users SET adresse_email = "${userM.adresse_email}"WHERE id = ${idCourant};`;
                 requeteSQL(sqlRequete);
-                if(userM.image_url != elt.image_url){
-                    const sqlRequete = `UPDATE users SET image_url = "${userM.image_url}"WHERE id = ${idCourant};`;
+                if(file.filename != elt.image_url){
+                    const sqlRequete = `UPDATE users SET image_url = "${file.filename}"WHERE id = ${idCourant};`;
                     requeteSQL(sqlRequete);
                 };
             }else{
-                if(userM.image_url != elt.image_url){
-                    const sqlRequete = `UPDATE users SET image_url = "${userM.image_url}"WHERE id = ${idCourant};`;
+                if(file.filename != elt.image_url){
+                    const sqlRequete = `UPDATE users SET image_url = "${file.filename}"WHERE id = ${idCourant};`;
                     requeteSQL(sqlRequete);
                 };
             };

@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import {createHeader, isValidEmailFront, isValidPasswordFront} from '../assets/js/Function';
 
 function Signup(){
-
+  sessionStorage.clear()
   const [nameData, setNameData] = useState('');
   const [prenomData, setPrenomData] = useState('');
   const [emailData, setEmailData] = useState('');
@@ -24,9 +24,7 @@ function Signup(){
   const verifyInfoUsers = () => {
     const verifUser = sessionStorage.getItem('usersOnBdd');
     const verifUserJson = JSON.parse(verifUser)
-    console.log("verifUserJson",verifUserJson)
     verifUserJson.forEach(item=>{
-      console.log('item : ', item)
       if(emailData === item){
         userExist = true;
         return userExist;
@@ -37,7 +35,6 @@ function Signup(){
         messagErreur.className = 'message-erreur';
         messagErreur.textContent = 'Adresse email déjà dans la base de donnée';
         document.getElementById('form-signup').appendChild(messagErreur);
-        console.log(document.getElementById('form-signup').childElementCount);
       };
     }else{
       if(isValidEmailFront(emailData)){
@@ -93,7 +90,6 @@ const myInit = {
     cache: 'default',
     body: JSON.stringify(requete)
 };
-console.log(requete);
 
 useEffect(()=>{
   const usersBDD = [];
@@ -114,15 +110,7 @@ useEffect(()=>{
 const saveUser=()=>{
   fetch("http://localhost:3001/api/auth/signup", myInit)
       .then(res => res.json())
-      .then(
-        (result) => {
-          console.log(result)
-        },
-       
-        (error) => {
-          console.log(error)
-        }
-      )
+      
 };
 
   return(

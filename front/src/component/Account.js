@@ -17,14 +17,12 @@ function Account({isConected}){
     const userStorage = sessionStorage.getItem("token+id")
     const userStorageJson = JSON.parse(userStorage);
     useEffect(() => {
-        console.log(isConected)
        
         const userStorageId = userStorageJson.user_id;
         
         //const myHeaders = new Headers();
         const urlRequete = url+userStorageId;
         
-        //console.log('type of id req',typeof requete.id)
         const myInit = { method: 'GET',
                         headers: createHeader(),
                         mode: 'cors',
@@ -38,7 +36,6 @@ function Account({isConected}){
             (result) => {
                 
                 setUser(result.result);
-                console.log( user)
 
             },
            
@@ -57,7 +54,7 @@ function Account({isConected}){
                     <p className='profil-info'><span className='profil-info-static'>nom :</span> <span className='profil-info-dynamique'>{item.nom}</span></p>
                     <p className='profil-info'><span className='profil-info-static'>prenom :</span> <span className='profil-info-dynamique'>{item.prenom}</span></p>
                     <p className='profil-info'><span className='profil-info-static'>adresse email :</span> <span className='profil-info-dynamique'>{item.adresse_email}</span></p>
-                    <img className="avatar-profil" src={url.split('api')[0]+"images/"+item.image_url} alt='Avatar utilisateur'/>
+                    <img className="avatar-profil" src={url.split('api')[0]+"images/avatars/"+item.image_url} alt='Avatar utilisateur'/>
                 </div>))}
                 <div key={Date.now() + Date.now()}>
                     <button onClick={()=>handleSubmit('modify')}>🛠 modifier</button>

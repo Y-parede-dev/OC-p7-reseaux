@@ -11,7 +11,7 @@ const MIME_TYPES = {
 // Creation du stockage pour les images des sauces envoyer par les utilisateur
 const storage = multer.diskStorage({
     destination: (req, file, callback)=>{
-        callback(null, './images/avatars')
+        callback(null, './images/posts')
     },
     filename: (req, file, callback)=>{
         const name = file.originalname.split(' ').join('_');
@@ -20,4 +20,4 @@ const storage = multer.diskStorage({
     }
 }); 
 
-module.exports = multer({ storage }).single("media");
+module.exports = multer({ storage }).single("image_url");

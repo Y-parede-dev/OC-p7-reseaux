@@ -61,7 +61,6 @@ export default function RecipeReviewCard() {
     let idPost = `myDropdown-${idP}`
     document.getElementById(idPost).classList.toggle("show");
     
-    console.log(idPost)
   }
   
   useEffect(() => {
@@ -76,12 +75,7 @@ export default function RecipeReviewCard() {
       .then(res => res.json())
       .then(
         (result) => {
-          console.log(result);
-          // boucle de test
-          result.result.forEach(it=>{(
-
-            console.log("nom post", it.nom_post)
-          )});
+         
 
           setIsLoaded(true);
           setItems(result.result);
