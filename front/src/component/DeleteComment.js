@@ -1,11 +1,11 @@
 const DeleteComment = ()=>{
     const userStorage = sessionStorage.getItem("token+id");
     const userStorageJson = JSON.parse(userStorage);
-    const recupPost = sessionStorage.getItem('post-modif');
-    const recupPostParse = JSON.parse(recupPost);
+    const recupComment = sessionStorage.getItem('comment-modif');
+    const recupCommentParse = JSON.parse(recupComment);
     
     const requete = {
-        id:recupPostParse.id_post
+        id:recupCommentParse.id_post
     }
     const myHeaders = new Headers();
     myHeaders.append('Authorization', 'Bearer ' + userStorageJson.token);
@@ -17,11 +17,11 @@ const DeleteComment = ()=>{
         cache: 'default',
         body: JSON.stringify(requete)
     };
-    fetch("http://localhost:3001/api/comment/" + recupPostParse.id_post, myInit)
+    fetch("http://localhost:3001/api/comment/" + recupCommentParse.id_comment, myInit)
     .then(res=>res.json())
 
     .catch(err=>console.log(err))
-    sessionStorage.removeItem('post-modif')
+    sessionStorage.removeItem('comment-modif')
 }
 
 export default DeleteComment;

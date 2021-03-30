@@ -45,7 +45,6 @@ export default function RecipeReviewCard() {
     }
   }
 
-  console.log(postOnModif.id_post)
   useEffect(() => {
     setUserCoId(pUserIdToken.user_id);
     const myHeaders = new Headers();
@@ -94,7 +93,7 @@ export default function RecipeReviewCard() {
                     {userCoId == item.user_id ?
                     <div className="dropdown-content" id={`myDropdown-${item.id_post}`}>
                       <input type='button' className='btn-more-params-post' onClick={()=>displayModifPost(item)} href="../modify-post" value="modifier" />
-                      <input type="button" className='btn-more-params-post' onClick={()=>DeletePost()} value='suprimer' />
+                      <input type="button" className='btn-more-params-post btn-more-params-post-del' onClick={()=>DeletePost()} value='suprimer' />
                     </div> :
                       <div className="dropdown-content" id={`myDropdown-${item.id_post}`}>
                       <a className='btn-more-params-post' href="#">signaler</a>
@@ -103,7 +102,7 @@ export default function RecipeReviewCard() {
                   </div>
                 </div>
             </div>
-            <div className="test">{item.id_post != postOnModif.id_post?
+            <div className="content-or-modif">{item.id_post != postOnModif.id_post?
               <div className='content-post'>{item.content_post!=''&&
                 <p className="text-post">{item.content_post}</p>}
                 <div className="media_post">
@@ -138,7 +137,7 @@ export default function RecipeReviewCard() {
                     
               </div>
               <div className='comment-before'>
-                <Comment id={`comment-${item.id_post}`} postId={item.id_post}/>
+                <Comment  id={`comment-${item.id_post}`} postId={item.id_post} userCoId ={userCoId}/>
               </div>
             
           </div>

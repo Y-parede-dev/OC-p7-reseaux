@@ -7,6 +7,7 @@
 }
 
 .header-post {
+    position: relative;
     display: grid;
     grid-template-columns: .01fr .5fr 1fr;
     padding: 10px;
@@ -47,40 +48,26 @@ button.dropbtn:selected {
     transform: scale(1.2);    border: none;
     box-shadow: black 0.2px 0.2px 13px -5.2px;
 }
-
-
-.cards {
-    display: flex;
-    flex-direction: column;
-    grid-template-columns: .5fr .5fr .5fr .5fr; 
-    align-items: center;
-    justify-content: center;
+.parametre-post-open {
+    background: red;
+    color: black;
+    position: absolute;
+    right: 161px;
+    top: 51px;
 }
-
-
-.card-content {
-    margin: 15px;
-    color: white;
-    min-width: 42%;
-    box-shadow: black 0.5px 0.5px 10px -6px;
-}
-.media_post {
-    display: flex;
-    justify-content: center;
-}
-iframe.iframe-media {
-    width: 100%;
+.btn-more-params-post {
+    background: #f9f9f9;
     border: none;
-    margin: 0;
+    padding: 8px;
 }
-.comment-title {
-    display: flex;
-    justify-content: center;
-    text-align: center !important;
-    margin: 0 auto!important;
+.btn-more-params-post:hover {
+    background: #44566c;
+    color:white;
+    
+    }
+.dropdown {
+    display: inline-block;
 }
-
-/*            bouton params.                 */
 
 a.btn-more-params-post, .dropbtn {
     display: inline-block;
@@ -89,13 +76,8 @@ a.btn-more-params-post, .dropbtn {
     text-decoration: none;
 }
 
-
-
-.dropdown {
-    display: inline-block;
-}
-
 .dropdown-content {
+    z-index: 2;
     display: none;
     position: absolute;
     background-color: #f9f9f9;
@@ -110,10 +92,45 @@ a.btn-more-params-post, .dropbtn {
     display: block;
     text-align: left;
 }
+input.btn-more-params-post.btn-more-params-post-del {
+    color: red;
+}
 .bk
-
 .dropdown-content a:hover {background-color: #f1f1f1}
-.show {display:block!important;}
+.show {
+    display:flex!important;
+    flex-direction: column;
+    }
+.cards {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: .5fr .5fr .5fr .5fr; 
+    align-items: center;
+    justify-content: center;
+}
+
+
+.card-content {
+    margin: 15px;
+    color: white;
+    min-width: 44%;
+    box-shadow: black 0.5px 0.5px 10px -6px;
+}
+.media_post {
+    display: flex;
+    justify-content: center;
+}
+iframe.iframe-media {
+    border: none;
+    margin: 0;
+}
+.comment-title {
+    display: flex;
+    justify-content: center;
+    text-align: center !important;
+    margin: 0 auto!important;
+}
+
 @media screen and (max-width:1080px){
     .card-content {
         min-width:50%;

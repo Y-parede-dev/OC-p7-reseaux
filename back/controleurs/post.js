@@ -175,6 +175,9 @@ exports.deletePost=(req,res,next)=>{
     console.log(idCourant, "  -  ", postD )
     if(postD.id==idCourant){
         const reqSQL = `DELETE FROM posts WHERE id = ${postD.id}`;
+        fs.unlink(`images/posts/${imageDelete}`,()=>{
+            console.log(imageDelete, 'a etait supr.')
+        })
         dataBase.query(reqSQL, function(err, result){
             if(err){
                 res.status(400).json({message:'supresion impossible'});

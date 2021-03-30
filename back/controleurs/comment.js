@@ -58,38 +58,25 @@ exports.getCommentOnePost = (req,res,next) => {
 exports.modifyComment = (req,res,next)=>{
     const idCourant = req.params.id;
     const comment = req.body;
-    
-    if(idCourant == comment.post_id){
-        const sqlRequeteSelect = `SELECT * from comment WHERE user_id = ${req.body.user_id}; `
-        dataBase.query(sqlRequeteSelect, function(err, result){
+    console.log(idCourant, typeof idCourant)
+    console.log(req.body)
+    if(idCourant == comment.comment_id){
+            
+        const sqlRequeteUpp = `UPDATE comment SET content = "${comment.content}" WHERE id = ${comment.comment_id};`;
+        dataBase.query(sqlRequeteUpp, function(err, result){
             if(err){
-                res.status(400).json({message:"erreur ID.params != req.body.post_id"});
+                console.log(err)
+                res.status(400).json({message:"erreur Uppdate"});
                 return;
             }else{
-                const resultReq = result;
-                resultReq.forEach(element => {
-                    
-                    if(element.user_id === comment.user_id){
-                        const sqlRequeteUpp = `UPDATE comment SET content = "${comment.content}" WHERE id = ${comment.comment_id};`;
-                        dataBase.query(sqlRequeteUpp, function(err, result){
-                            if(err){
-                                console.log(err)
-                                res.status(400).json({message:"erreur Uppdate"});
-                                return;
-                            }else{
-                                const resultat = result.message;
-                                res.status(200).json({message:'Voici le resultat',resultat});
-                                return;
-                            }
-                        })
-                    }else{
-                        return res.status(401).json({message:"Cet utilisateur ne peut pas modifier se post"});
-                    }
-                });
+                res.status(200).json({message:"Uppdated Comment"});
+
             }
         })
+
+
     }else {
-        res.status(404).json({message:'Not found'});
+    res.status(400).json({message:'Erreur id'});
     }
 }
 exports.deleteComment = (req, res, next)=>{
