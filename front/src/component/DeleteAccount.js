@@ -1,6 +1,6 @@
 const DeleteAccount = () => {
     let isDelete = false;
-    if(window.confirm('Etes vous sur de vouloir suprimer votre compte? ')){
+    if(window.confirm('Etes vous sur de vouloir supprimer votre compte? ')){
         const userStorage = sessionStorage.getItem("token+id");
         const userStorageJson = JSON.parse(userStorage);
         const userStorageId = userStorageJson.user_id;

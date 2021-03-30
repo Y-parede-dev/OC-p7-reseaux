@@ -7,6 +7,7 @@ const ModifAccount = ({user}) =>{
     const [nameData, setNameData] = useState('');
     const [prenomData, setPrenomData] = useState('');
     const [emailData, setEmailData] = useState('');
+    const [dateData, setDateData] = useState('');
     const [passwordData, setPasswordData] = useState('');
     const [imgData, setImgData] = useState([]);
     
@@ -37,6 +38,7 @@ const ModifAccount = ({user}) =>{
         modifUser();
         alert('modification éffectuées');
         sessionStorage.removeItem('UIC');
+        window.location.href='./account';
     };
     const userStorage = sessionStorage.getItem("token+id");
     const userStorageJson = JSON.parse(userStorage);

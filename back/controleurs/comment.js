@@ -29,7 +29,7 @@ exports.getComment = (req,res,next) => {
         }
     })
 }
-exports.getCommentOnePost = (req,res,next) => { //BOGGUES
+exports.getCommentOnePost = (req,res,next) => {
     const post = req.body;
     const idCourant = parseInt(req.params.id);
     if(idCourant === post.post_id){

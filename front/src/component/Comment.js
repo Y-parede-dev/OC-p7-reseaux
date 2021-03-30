@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import '../styles/Comment.css';
 import CreateComment from './CreateComment';
+import DeleteComment from './DeleteComment';
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
@@ -9,7 +10,10 @@ function getRandomInt(max) {
 export default function Comment(postId) {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [userCoId, setUserCoId] = useState('');
     const [comments, setComments] = useState([]);
+    const [commentOnModif, setCommentOnModif] = useState('');
+
 
     //recup du post id 
     const postI = postId.postId;
@@ -42,6 +46,12 @@ export default function Comment(postId) {
             }
             )
         },[]);
+        const displayModifComment =(itemP)=>{
+            const item = itemP;
+            setCommentOnModif(item)
+        
+          }
+        
     if (error) {
       return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
@@ -52,13 +62,26 @@ export default function Comment(postId) {
             <div className="comment" id={`comment-${postIdToNumber}`}>
                 <CreateComment postId={postI}/>
                 <ul className='comment-ul'>
-                    {   comments.map(item=>(
+                   {comments.map(item=>(
                             
-                            postIdToNumber == item.post_id_comment && 
+                        postIdToNumber == item.post_id_comment && 
                         <li className='comment-content' key={Date.now()+ item.post_id_comment+item.comment_id }>
-                            <img alt="avatar user comment" className="avatar-comment" src={urlComm.split('api')[0]+'images/avatars/'+item.avatar_user}></img>
+                            <img alt="avatar user comment" className="avatar-comment" src={urlComm.split('api')[0]+'images/avatars/'+item.avatar_user} />
                             <div className='comment-user-txt'>
-                            <span className="comment-user">{`${item.comment_user} ${item.comment_user_prenom} a commenter :` }</span><span className='comment-text'>{item.comment_content}</span>
+                                <span className="comment-user">{`${item.comment_user} ${item.comment_user_prenom} a commenter :` }</span><span className='comment-text'>{item.comment_content}</span>
+                            </div>
+                            <div className="parametre-post-open">
+                                <div className="dropdown bkcol">
+                                    {userCoId == item.user_id ?
+                                    <div className="dropdown-content" id={`myDropdown-${item.id_post}`}>
+                                        <input type='button' className='btn-more-params-post' onClick={()=>displayModifComment(item)} href="../modify-post" value="modifier" />
+                                        <input type="button" className='btn-more-params-post' onClick={()=>DeleteComment()} value='suprimer' />
+                                    </div> :
+                                    <div className="dropdown-content" id={`myDropdown-${item.id_post}`}>
+                                        <a className='btn-more-params-post' href="#">signaler</a>
+                                    </div>
+                                         }
+                                </div>
                             </div>
                         </li>
                         ))

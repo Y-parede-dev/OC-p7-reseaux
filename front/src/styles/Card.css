@@ -59,10 +59,10 @@ button.dropbtn:selected {
 
 
 .card-content {
-    background: white;
-    margin:15px;
-    min-width:42%;
-    box-shadow: .5px .5px 10px -6px;
+    margin: 15px;
+    color: white;
+    min-width: 42%;
+    box-shadow: black 0.5px 0.5px 10px -6px;
 }
 .media_post {
     display: flex;
