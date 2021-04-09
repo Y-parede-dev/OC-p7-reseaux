@@ -5,9 +5,54 @@ button:focus, a:focus, input:focus, textarea:focus{
   text-align: center;
 }
 body,html,.App{
+  font-size: 1rem;
   background: #2f435e;
 }
-.is-connected{
-  color: white;
+.is-connected {
+    margin: 20px 0 200px;
+    color: white;
 }
 
+input {
+  border: none;
+  margin: 6px;
+  padding: 10px;
+  border-radius: 30px;
+  background: #44566c;
+  color: white;
+}
+input:focus::placeholder {
+    
+  color: #44566c;
+}
+input::placeholder {
+  color: white;
+}
+input.input-file {
+  background: transparent;
+}
+button {
+  font-size: 1rem;
+  cursor: pointer;
+  width: fit-content;
+  padding: 10px;
+  color: white;
+  background: #008CBA;
+  margin: 20px 0 20px;
+  border: none;
+  border-radius: 20px  ;
+  box-shadow: 0 0 10px -4px rgba(0,0,0,0.49);
+  transform: scale(1);
+  transition: all 400ms ease;
+}
+
+button:hover{
+    transform: scale(1.1);
+    box-shadow: 0 0 13px -1px rgba(0,0,0,0.49);
+
+}
+@media screen and (max-width:900px){
+  .no-mobile{
+    display: none;
+  }
+}

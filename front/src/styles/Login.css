@@ -1,3 +1,12 @@
 .message-erreur {
     color:red;
 }
+button.button-form.button-log.submit-log {
+    border: none;
+    border-radius: 30px;
+    padding: 10px;
+    color: white;
+    width: 80%;
+    margin: 10px auto;
+    background-color: deepskyblue;
+}

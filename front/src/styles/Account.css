@@ -1,6 +1,9 @@
 .section-profil{
     color: white;
 }
+.content-full-profil {
+    position: relative;
+}
 .content-profil {
     background: #44566c;
     border:solid 0px #696969;
@@ -19,7 +22,9 @@
 img.avatar-profil {
     position: absolute;
     width: 110px;
+    background: dodgerblue;
     margin: 30px 0 0 30px;
+    border-radius: 58px;
 }
 .password-clair {
     filter: blur(5px);
@@ -29,8 +34,72 @@ img.avatar-profil {
 .content-profil:hover {
     //margin: 50px auto 70px;
 
-    transform: scale(1.05); 
     border-radius: 0% 0% 0% 0% / 0% 0% 5% 5% ;
     box-shadow: 0px 8px 21px -12px rgba(0,0,0,.25);
     border: .0px solid;
+}
+.content-button-profil {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    top: 0;
+    right: -18vh;
+}
+.content-profil-modif {
+    display: flex;
+    justify-content: space-evenly;
+    width: 50%;
+    max-width: 600px;
+    margin: 20px auto;
+    box-shadow: 0px 8px 21px -12px rgb(0 0 0 / 25%);
+    background: #44566c;
+}
+img.avatar-profil-modif {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 30px 0;
+}
+button.button-account.button-account-del {
+    background: red;
+}
+@media screen and (max-width:900px){
+    .content-button-profil {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    top: 10px;
+    right: 10px;
+    
+    }
+    button.button-account {
+        width: 70px;
+        height: 70px;
+        border-radius: 50px;
+    }   
+}
+
+@media screen and (max-width:900px){
+    .content-profil-modif {
+        
+        width: 95%; 
+    }   
+}
+
+
+
+@media screen and (max-width:400px){
+    .content-button-profil {
+        display: flex;
+        justify-content: space-evenly;
+        position: relative;
+        flex-direction: row;
+  
+    }
+        h2.profil {
+        margin-top: 145px;
+    }
+    img.avatar-profil {
+        margin: 0 auto;
+    }
 }

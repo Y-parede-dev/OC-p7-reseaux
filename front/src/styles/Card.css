@@ -1,5 +1,23 @@
+@media screen and (max-width:1080px){
+    .card-content {
+        width: 50% !important;
+    }
+}
+@media screen and (max-width:822px){
+    .card-content {
+        min-width:80% !important;
+    }
+}
+@media screen and (max-width:560px){
+    .card-content {
+        width: 95% !important;
+    }
+}
+.display-none{
+    display: none;
+}
 .header-post, .header-comment, a.btn-more-params-post:hover,.dropdown-content, .dropbtn,button.like, button.btn-comment {
-    color:white!important;
+    color:white;
 
 }
 .header-post, .header-comment, a.btn-more-params-post:hover, .dropdown:hover .dropbtn {
@@ -9,7 +27,7 @@
 .header-post {
     position: relative;
     display: grid;
-    grid-template-columns: .01fr .5fr 1fr;
+    grid-template-columns: .01fr 1fr .1fr;
     padding: 10px;
 }
 .avatar-on-post {
@@ -32,20 +50,17 @@ button.dropbtn {
     margin: 16px 10px auto auto;
     background: transparent;
     border: none;
-    box-shadow: 0.2px 0.2px 10px -7.2px;
+    box-shadow: none;
 }
-/*button.dropbtn:hover {
-    transform: scale(1.5);
-    border: none;
-    box-shadow: black 0.2px 0.2px 13px -5.2px;
-}*/
+
 button.dropbtn:active {
     transform: scale(1.5);
     border: none;
-    box-shadow: black 0.2px 0.2px 13px -5.2px;
+    /*box-shadow: black 0.2px 0.2px 13px -5.2px;*/
 }
 button.dropbtn:selected {
-    transform: scale(1.2);    border: none;
+    transform: scale(1.2);   
+    border: none;
     box-shadow: black 0.2px 0.2px 13px -5.2px;
 }
 .parametre-post-open {
@@ -59,6 +74,10 @@ button.dropbtn:selected {
     background: #f9f9f9;
     border: none;
     padding: 8px;
+    color: black;
+    border-radius: 0;
+    width: 100%;
+    margin: 0;
 }
 .btn-more-params-post:hover {
     background: #44566c;
@@ -111,16 +130,16 @@ input.btn-more-params-post.btn-more-params-post-del {
 
 
 .card-content {
-    margin: 15px;
+    margin: 15px 0;
     color: white;
-    min-width: 44%;
+    width: 44%;
     box-shadow: black 0.5px 0.5px 10px -6px;
 }
 .media_post {
     display: flex;
     justify-content: center;
 }
-iframe.iframe-media {
+.iframe-media {
     border: none;
     margin: 0;
 }
@@ -130,19 +149,16 @@ iframe.iframe-media {
     text-align: center !important;
     margin: 0 auto!important;
 }
-
-@media screen and (max-width:1080px){
-    .card-content {
-        min-width:50%;
-    }
+button.like, button.btn-comment {
+    padding: 0;
 }
-@media screen and (max-width:822px){
-    .card-content {
-        min-width:80%;
-    }
+button.btn-comment {
+    margin: auto 17px;
 }
-@media screen and (max-width:560px){
-    .card-content {
-        min-width:95%;
-    }
+.like-count {
+   
+    color: white!important;
+}
+.is-liked {
+    color: red!important;
 }

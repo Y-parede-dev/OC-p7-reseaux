@@ -1,25 +1,56 @@
 .form-modif {
     display: flex;
     flex-direction: column;
-    width: 30%;
+    //box-shadow: 0 0 10px -7px;
     margin: 20px auto;
+    padding: 20px;
+}
+.avatar-modif {
+    color: white;
 }
 .form-modif> button {
-    width: 20%;
+    width: fit-content;
+    padding: 10px;
     color: white;
     background: #008CBA;
-    margin: 20px auto 0;
-    border:2px #008CBA;
-    border-radius: 2px  ;
-    box-shadow: 0 0 10px 0px rgba(0,0,0,0.49);
+    margin: 20px 0 20px;
+    border: none;
+    border-radius: 20px  ;
     transform: scale(1);
-    transition: all 1s ease;
+    transition: all 600ms ease;
 
 }
 .form-modif> button:hover{
-    transform: scale(1.5)    
+    transform: scale(1.1)    
 }
-.form-modif> input {
-    width: 30%;
-    margin: auto;
+input.input-form-modif {
+    background: #2f435e
+}
+input.input-form-modif:focus::placeholder {
+    
+    color: #44566c;
+}
+@media screen and (max-width:900px){
+    .form-modif {
+        margin: 137px auto 0;
+    }
+    img.avatar-profil-modif {
+        position: absolute;
+    }
+    .form-modif > button {
+        margin: auto;
+    }
+    
+}
+@media screen and (max-width:600px){
+    
+    input.input-form-modif {
+
+        max-width: 75%;
+        margin: 6px auto;
+    }
+    .form-modif {
+        
+        padding: 20px 0;
+    }
 }

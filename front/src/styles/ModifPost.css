@@ -10,7 +10,9 @@
 }
 #form-modif-post > textarea.form-control {
     grid-area: a;
+    background: #44566c;
 }
+
 
 #form-modif-post > .pos-lab-on-input{
     margin: 0;
@@ -23,9 +25,11 @@
     bottom: 95px;
 }
 .form-control-modif-post-annuler {
-    grid-area: bA;
+    grid-area: bA!important;
+    background-color: red;
 }
 .form-control-modif-post {
+    margin: 15px auto!important;
     grid-area: bS;
 }
 /*   #form-modif-post > pos-lab-on-input  */

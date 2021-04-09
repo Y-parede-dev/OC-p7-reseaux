@@ -2,6 +2,7 @@
 .header-comment {
     background: #44566c;
     padding: 8px;
+    margin-top: -3px;
 }
 .like-unlike {
     text-align: left;
@@ -32,7 +33,7 @@ ul.comment-ul>li {
     grid-template-areas: 
         "avatar user . params"
         "avatar comment comment params";
-    width: 55%;
+    width: 90%;
     margin: auto;
 }
 .comment-content {
@@ -46,3 +47,7 @@ ul.comment-ul>li {
 .content-comment-or-modif{grid-area: comment}
 .dropbtn-comment {grid-area: params; position: absolute; top:0; right: 0}
 .comment {display: none}
+.dropdown-content-comment{
+    position: absolute;
+    right: 0;
+}

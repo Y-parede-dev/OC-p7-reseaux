@@ -36,7 +36,7 @@ console.log(post)
 }
     
 exports.getAllPost = (req,res,next)=>{
-    dataBase.query(`SELECT posts.id AS id_post ,posts.content AS content_post, posts.image_url AS image_post, posts.url_web, date_post ,
+    dataBase.query(`SELECT posts.id AS id_post ,posts.likes ,posts.content AS content_post, posts.image_url AS image_post, posts.url_web, date_post ,
                     users.id AS user_id, users.nom AS nom_post,users.image_url AS avatar, users.prenom AS prenom_post 
                     from posts INNER JOIN users ON users.id= posts.user_id ORDER BY posts.id DESC;`, function(err, result){ 
         if(err){
@@ -78,52 +78,58 @@ exports.getOneUserPost = (req,res,next)=>{
         res.status(404).json({message:"not found"})
     }
 }
-/*
-params for modify = 
-user_id,
-post_id,
-content 
- */
 
-        /*if(post.content!= postDbElt.content){
-            const sqlRequete = `UPDATE posts SET content = "${postM.content}", image_url = "${req.file.filename}","${postM.url_web}"  WHERE id = ${idCourant};`;
-           requeteSQLModPost(sqlRequete);
-            if(req.file.filename != postDbElt.image_url) {
-                const sqlRequete = `UPDATE posts SET image_url = "${req.file.filename}" WHERE id = ${idCourant};`;
-                requeteSQLModPost(sqlRequete);
-                if(postM.url_web != postDbElt.url_web){
-                    const sqlRequete = `UPDATE posts SET url_web = "${postM.url_web}" WHERE id = ${idCourant};`;
-                    requeteSQLModPost(sqlRequete);
-                }
-            }else {
-                if(postM.url_web != postDbElt.url_web){
-                    const sqlRequete = `UPDATE posts SET url_web = "${postM.url_web}"WHERE id = ${idCourant};`;
-                    requeteSQLModPost(sqlRequete);
-                   
-                }
-            };
+exports.modifyPost = (req,res,next)=>{
+    const post = req.body;
+    const idCourant = req.params.id;
+    const sqlSelect = `SELECT posts.image_url FROM posts WHERE posts.id =${post.post_id}`
+    let imageDelete = '';
+    dataBase.query(sqlSelect,function(err,result){
+        if(err){
+            console.log(err);
         }else{
-            if(req.file.filename != postDbElt.image_url) {
-                const sqlRequete = `UPDATE posts SET image_url = "${req.file.filename}" WHERE id = ${idCourant};`;
-                requeteSQLModPost(sqlRequete);
+                
+            result.forEach(element => {
+                imageDelete = element.image_url;
+                return imageDelete
+
+            });
+            if(req.file && imageDelete!=req.file.filename){
+                fs.unlink(`images/posts/${imageDelete}`,()=>{
+                    console.log(imageDelete, 'a etait supr.')
+                })
+            }
+        }
+        console.log(imageDelete)
+
+    })
+    if(post.post_id == idCourant){
+        let reqSQL = "";
+        if(!req.file){
+            reqSQL = `UPDATE posts SET content = "${post.content}",url_web = "${post.url_web}" WHERE posts.id = ${post.post_id}`;
+        }else{
+            console.log(imageDelete)
+            reqSQL = `UPDATE posts SET content = "${post.content}", image_url ="${req.file.filename}",url_web = "${post.url_web}" WHERE id = ${post.post_id}`;
             
-                if(post.url_web != postDbElt.url_web) {
-                    const sqlRequete = `UPDATE posts SET url_web = "${post.url_web}" WHERE id = ${idCourant};`;
-                    requeteSQLModPost(sqlRequete);
-                }
+        }
+        dataBase.query(reqSQL, function(err, result){
+            if(err){
+                console.log(err);
+                res.status(400).json({message:"pb avec la modif du post"});
             }else{
-                if(postM.url_web != postDbElt.url_web){
-                    const sqlRequete = `UPDATE posts SET url_web = "${postM.url_web}"WHERE id = ${idCourant};`;
-                    requeteSQLModPost(sqlRequete);
-                    
-                }
-            };
-        };*/
-   
-    exports.modifyPost = (req,res,next)=>{
-        const post = req.body;
-        const idCourant = req.params.id;
-        const sqlSelect = `SELECT posts.image_url FROM posts WHERE posts.id =${post.post_id}`
+                console.log(result)
+                res.status(200).json({message:"modif est ok"})
+            }
+        })
+    }else{
+        res.status(500).json({message:"verifier votre id"})
+    }   
+}
+
+exports.deletePost=(req,res,next)=>{
+    const post = req.body;
+    console.log(post)
+    const sqlSelect = `SELECT posts.image_url FROM posts WHERE posts.id =${post.post_id}`
         let imageDelete = '';
         dataBase.query(sqlSelect,function(err,result){
             if(err){
@@ -135,49 +141,17 @@ content
                     return imageDelete
 
                 });
-                if(req.file && imageDelete!=req.file.filename){
+                
                     fs.unlink(`images/posts/${imageDelete}`,()=>{
                         console.log(imageDelete, 'a etait supr.')
                     })
-                }
-            }
-            console.log(imageDelete)
-
-        })
-        if(post.post_id == idCourant){
-            let reqSQL = "";
-            if(!req.file){
-                reqSQL = `UPDATE posts SET content = "${post.content}",url_web = "${post.url_web}" WHERE posts.id = ${post.post_id}`;
-            }else{
-                console.log(imageDelete)
-                reqSQL = `UPDATE posts SET content = "${post.content}", image_url ="${req.file.filename}",url_web = "${post.url_web}" WHERE id = ${post.post_id}`;
                 
             }
-            dataBase.query(reqSQL, function(err, result){
-                if(err){
-                    console.log(err);
-                    res.status(400).json({message:"pb avec la modif du post"});
-                }else{
-                    console.log(result)
-                    res.status(200).json({message:"modif est ok"})
-                }
-            })
-        }else{
-            res.status(500).json({message:"verifier votre id"})
-        }   
-    }
-/*
+            
 
- */
-exports.deletePost=(req,res,next)=>{
-    const postD = req.body;
-    const idCourant = req.params.id;
-    console.log(idCourant, "  -  ", postD )
-    if(postD.id==idCourant){
-        const reqSQL = `DELETE FROM posts WHERE id = ${postD.id}`;
-        fs.unlink(`images/posts/${imageDelete}`,()=>{
-            console.log(imageDelete, 'a etait supr.')
         })
+        const reqSQL = `DELETE FROM posts WHERE id = ${post.post_id}`;
+        
         dataBase.query(reqSQL, function(err, result){
             if(err){
                 res.status(400).json({message:'supresion impossible'});
@@ -189,7 +163,5 @@ exports.deletePost=(req,res,next)=>{
                 return;
             }
         })
-    }else {
-        res.status(500).json({message:"id non identique"});
-    }
+   
 }

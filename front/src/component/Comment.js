@@ -13,14 +13,12 @@ export default function Comment(postId) {
     const [commentOnModif, setCommentOnModif]= useState('');
 
     const userCoId = postId.userCoId;
-    console.log(userCoId)
 
-
-    //recup du post id 
+    const ifAdmin = sessionStorage.getItem('userIsCo')
+    const ifAdminP = JSON.parse(ifAdmin)
+   
     const postI = postId.postId;
-    // on le stringify 
     const postIdRecup = JSON.stringify(postI);
-    //puis on le transforme en number
     const postIdToNumber = parseInt(postIdRecup, 10);
     const urlComm = "http://localhost:3001/api/comment/"
 
@@ -88,19 +86,19 @@ export default function Comment(postId) {
                                     </div>
                                     <div className="parametre-comment-open">
                                         <div className="dropdown bkcol">
-                                            {userCoId == item.comment_user_id ?
+                                            {userCoId == item.comment_user_id || ifAdminP.isAdmin == true  ?
                                             
-                                            <div className="dropdown-content" id={`myDropdown-${item.comment_id}`}>
-                                                <input type='button' className='btn-more-params-post' onClick={()=>displayModifComment(item)} href="../modify-post" value="modifier" />
-                                                <input type="button" className='btn-more-params-post btn-more-params-post-del' onClick={()=>DeleteComment()} value='suprimer' />
+                                            <div className="dropdown-content dropdown-content-comment" id={`myDropdown-${item.comment_id}`}>
+                                                <input type='button' className='btn-more-params-post btn-more-params-comment' onClick={()=>displayModifComment(item)} href="../modify-post" value="modifier" />
+                                                <input type="button" className='btn-more-params-post btn-more-params-comment btn-more-params-comment-del' onClick={()=>DeleteComment(ifAdminP.isAdmin)} value='suprimer' />
                                             </div> :
-                                            <div className="dropdown-content" id={`myDropdown-${item.comment_id}`}>
-                                                <a className='btn-more-params-post' href="#">signaler</a>
+                                            <div className="dropdown-content dropdown-content-comment" id={`myDropdown-${item.comment_id}`}>
+                                                <a className='btn-more-params-post btn-more-params-comment btn-more-params-comment-sign' href="#">signaler</a>
                                             </div>
                                                 }
                                         </div>
                                     </div>
-                                </div>:<ModifComment />}
+                                </div>:<ModifComment ifAdmin ={ifAdminP.isAdmin} />}
                             </div>
                         </li>
                         ))

@@ -20,12 +20,6 @@
   }
 }
 
-@media screen and(max-width:700px){
-  p,.none-on-small{
-    display: none;
-  }
-}
-
 .fas-custom-header-isCo {
   font-size: 25px;
 }
@@ -43,9 +37,13 @@
   font-size: calc(10px + 2vmin);
   color:  #ececec;
 }
-
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .header-title {
-    font-size: 1.8rem;
+    font-size: 2.5rem;
 }
 .ul-sign-log {
     display: flex;
@@ -57,6 +55,7 @@
     margin: auto;
     width: 100%;
     background: #44566c;
+    border-bottom: solid white 1px;
 }
 
 
@@ -65,19 +64,22 @@
     color: #ececec;
     font-weight: bold;
     max-width: 200px;
-    width: 171px;
+    width: max-content;
     font-size: 1.35rem;
     padding: 25px;
     border-radius: 73px;
 }
+.ul-sign-log > li > .selected-li-co {
+    
+    max-width: 200px;
+    width: 170px;
+    
+}
 
-.ul-sign-log > li > a:hover, .ul-sign-log > li > a:focus{
+.ul-sign-log > li > a:hover, .ul-sign-log > li > a:focus,  .focus-on-position{
     background: #2f435e;
 }
-.focus-on-position {
-    background: #201b22;
 
-}
 
 
 @keyframes App-logo-spin {
@@ -91,9 +93,15 @@
 @media screen and (max-width:700px){
   .none-on-small{
     display: none;
+    }
+  .none-on-small{
+    display: none;
   }
   .ul-sign-log > li > a {
-    width: 51px;
-   
+    padding: 15px 5px;   
+  }
+  .ul-sign-log > li > .selected-li-co {    
+    width: 48px;
+    
 }
 }

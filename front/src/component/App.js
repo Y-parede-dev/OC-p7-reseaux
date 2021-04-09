@@ -4,8 +4,8 @@ import Main from './Main';
 import Signup from './Signup';
 import Login from './Login';
 import Account from './Account';
-import ModifAccount from './ModifAccount';
 import ModifPost from './ModifPost';
+import Footer from './Footer';
 
 
 import {BrowserRouter as Router, Route} from 'react-router-dom';
@@ -26,13 +26,12 @@ function App() {
         <Route path="/login" exact component={() => <Login isConected={isConected} setIsConected={setIsConected}  />} /> 
         <Route path="/main" exact component={() => <Main isConected={isConected} setIsConected={setIsConected}  />} />
         <Route path="/account" exact component={() => <Account onClick={Account} isConected={isConected} setIsConected={setIsConected}  />} />
-        <Route path="/modify" exact component={() => <ModifAccount onClick={ModifAccount} />} />
-        <Route path="/modify-pass" exact component={() => <ModifAccount onClick={ModifAccount}  />} />
+       
         <Route path="/del" exact component={() => <DeleteAccount onClick={DeleteAccount}  />} />
         <Route path="/modify-post" exact component={() => <ModifPost onClick={ModifPost} />} />
-
+        <Footer />
       </Router>
-      {!isConected || isConected == false? <p className="is-connected">🔴 Veuillez vous connecter pour accéder au site </p> : <p className="is-connected">🟢 connected</p>}
+      {!isConected || isConected == false? <p className="is-connected">🔴 {window.location.href.includes('/signup')? <span>Veuillez entrez un mot de passe fort  et un email valide<br/> <br/> pour pouvoir enregistrer un compte</span>:<span>Veuillez vous connecter pour accéder au site</span>} </p> : <p className="is-connected">🟢 connected</p>}
     </div>
   );
 };

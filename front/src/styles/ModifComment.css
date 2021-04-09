@@ -1,0 +1,19 @@
+
+#form-modif-comment {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1.5fr .5fr;
+  gap: 1rem 0px;
+  grid-template-areas:
+    "comment comment comment comment"
+    ". annul envoi .";
+}
+
+#form-modif-comment>textarea{
+    background: #44566c!important;
+    grid-area: comment; 
+}
+
+.form-control-modif-comment-annuler { grid-area: annul; background: red!important }
+
+.form-control-modif-comment { grid-area: envoi; }

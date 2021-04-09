@@ -18,36 +18,39 @@ const isValidPassword = (value) => {
 };
 exports.signup = (req, res, next)=>{
     const corpRequete = req.body;
-    if(isValidEmail(corpRequete.adresse_email) && isValidPassword(corpRequete.mot_de_passe)){
-        bcrypt.hash(corpRequete.mot_de_passe, 10)
-        .then(hash => {
-            const user = {
-                email:corpRequete.adresse_email,
-                nom:corpRequete.nom,
-                prenom:corpRequete.prenom,
-                password: hash
-            };
-            const sqlRequete = `INSERT INTO users(nom, prenom, adresse_email, mot_de_passe)VALUES(
-                "${user.nom}",
-                "${user.prenom}",
-                "${user.email}",
-                "${user.password}"
-                );`;
-                //imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}` // sert a enregistre l'image envoyer par l'utilisateur
-
-            dataBase.query(sqlRequete, function(err, result){
+    if(isValidPassword(corpRequete.mot_de_passe)){
+        if(isValidEmail(corpRequete.adresse_email)){
+            bcrypt.hash(corpRequete.mot_de_passe, 10)
+            .then(hash => {
+                const user = {
+                    email:corpRequete.adresse_email,
+                    nom:corpRequete.nom,
+                    prenom:corpRequete.prenom,
+                    password: hash
+                };
+                const sqlRequete = `INSERT INTO users(nom, prenom, adresse_email, mot_de_passe)VALUES(
+                    "${user.nom}",
+                    "${user.prenom}",
+                    "${user.email}",
+                    "${user.password}"
+                    );`;
+                    //imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}` // sert a enregistre l'image envoyer par l'utilisateur
     
-                if(err) {
-                    res.status(500).json({message:"POST EST BOGGER / Verifier votre adresse email il se peut qu'elle existe déjà dans la BDD"});
-                    return;
-                }else {
-                    res.status(201).json({message:'tout est ok sur le POST, Utilisateur enregistre'});
-                    return;
-                }
-            });
-        })
+                dataBase.query(sqlRequete, function(err, result){
+        
+                    if(err) {
+                        console.log(err)
+                    }else {
+                        res.status(201).json({message:'tout est ok sur le POST, Utilisateur enregistre'});
+                        return;
+                    }
+                });
+            })
+        }else{
+            res.status(400).json({message:'Vérifiez votre adresse email'})
+        }
     }else{
-        res.status(404).json({message:'Verifiez votre adresse email et / ou votre mot de pass'});
+        res.status(404).json({message:'Vérifiez votre mot de passe'});
         return;
     }
 };
@@ -65,8 +68,6 @@ exports.getAllAccount = (req,res,next)=>{
 };
 exports.getOneAccount = (req, res, next) => {
     const idCourant = req.params.id;
-    const idReq = req.body.id;
-    const idReqJson = JSON.stringify(idReq);
     
         dataBase.query(
             `SELECT * FROM users WHERE id = ${idCourant};`, function(err, result){
@@ -80,25 +81,21 @@ exports.getOneAccount = (req, res, next) => {
 };
 
 exports.deleteAccount = (req,res,next)=>{
-    const idCourant = req.params.id;
     const user_out = req.body;
-    if(idCourant == user_out.id){
-        const sql = `DELETE FROM users WHERE id = ${req.params.id};`;
-        dataBase.query( sql, function(err, result){
-                if(err){
-                    res.status(400).json({message: "Erreur d' identifiant"});
-                }else{
-                    const pathname = user_out.image_url;
-                    if(pathname!=='user-base.png' || pathname!=='avatar-admin.png'){
-                        fs.unlink(`images/avatars/${pathname}`,()=>{
-                        })
-                    }
-                    res.status(200).json({message:"supression OK"});
-                };
-            });
-    }else {
-        res.status(400).json({message:'error serveur'})
-    };
+    console.log(req.params.id)
+    const sql = `DELETE FROM users WHERE id = ${req.params.id};`;
+    dataBase.query( sql, function(err, result){
+            if(err){
+                res.status(400).json({message: "Erreur d' identifiant"});
+            }else{
+                const pathname = user_out.image_url;
+                if(pathname!=='user-base.png' || pathname!=='avatar-admin.png'){
+                    fs.unlink(`images/avatars/${pathname}`,()=>{
+                    })
+                }
+                res.status(200).json({message:"supression OK"});
+            };
+        });
 }; 
 exports.modifyAccount = (req,res,next) => {
     const idCourant = req.params.id;
@@ -110,8 +107,8 @@ exports.modifyAccount = (req,res,next) => {
             throw err;
         }else{
             console.log(req.body)
-            const RecupBD = result;
-            RecupBD.forEach(element => {  
+            const compareBD = result;
+            compareBD.forEach(element => {  
                 bcrypt.compare(req.body.mot_de_passe, element.mot_de_passe)
                 .then(valid=>{
                     if(valid){
@@ -125,7 +122,7 @@ exports.modifyAccount = (req,res,next) => {
                                     verifInfoRequete(UsersModify, file, element, idCourant);
                                     const pathname = element.image_url;
                                     //requeteSQL(sqlRequete);
-                                    if(pathname!=='user-base.png' && pathname!=='avatar-admin.png'){
+                                    if(file && pathname!=='user-base.png' && pathname!=='avatar-admin.png'){
                                         fs.unlink(`images/avatars/${pathname}`,()=>{
                 
                                         })
@@ -167,26 +164,26 @@ exports.login = (req, res, next) => {
     function(err,result){
         let isCo = false;
         if(err){
-            return res.status(400).json(err);
+            console.log("err")
+            return res.status(500).json(err);
         }else{
-            const RecupBD = result;
-            RecupBD.forEach(element =>{
-                const userBdd = element;
-                if(!element.adresse_email){
-                    return res.status(404).json({message:"l'utilisateur n'existe pas dans la BDD"})
-                }
-                else if(userBdd.adresse_email!= userLog.adresse_email){
-                    res.status(401).json({message:'mauvais email'});
-                }else{
+           
+            const compareBD = result;
+          
+            if(compareBD<1){
+                return res.status(401).json({message:'vérifiez votre adresse email'});
+            }else{
+                compareBD.forEach(element=>{
+                    const userBdd = element;
                     bcrypt.compare(userLog.mot_de_passe, userBdd.mot_de_passe)
                     .then(valid=>{
                         if(!valid){
-                            return res.status(401).json({message:'mauvais mot de passe'})
+                            return res.status(401).json({message:'vérifiez votre mot de passe'})
                         }
                         else{
                             isCo = true;
-                            //isConOnBdd = true; 
                             res.status(200).json({
+                                message:"login done",
                                 isConected : isCo,
                                 user_id : userBdd.id,
                                 password:userLog.mot_de_passe,
@@ -200,8 +197,9 @@ exports.login = (req, res, next) => {
                     })
                     .catch(
                         error=>res.status(500).json(error))
-                    }
-            })
+                })
+            }
+           
         }
     })
 }

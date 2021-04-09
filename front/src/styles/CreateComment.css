@@ -5,11 +5,18 @@
 }
 textarea.form-control-comment {
     display: flex;
-    width: 96%;
-    margin: 30px auto;
+    width: 96%!important;
+    margin: 30px auto !important;
     height: 79px;
+    resize: none;
+    font-size: 2rem;
+    background: #44566c;
+    border: none;
+    color: white;
+    border-radius: 10px;
 }
-input.form-control-comment.form-control-comment-submit {
+
+button.form-control-comment.form-control-comment-submit {
     position: absolute;
     right: 20px;
     bottom: 30px

@@ -80,16 +80,16 @@ exports.modifyComment = (req,res,next)=>{
     }
 }
 exports.deleteComment = (req, res, next)=>{
-    const paramsId = req.params.id;
     const comment = req.body;
-    if(paramsId == comment.post_id){
-        const sqlRequete = `DELETE FROM comment WHERE user_id = ${comment.user_id} AND post_id = ${comment.post_id} AND id = ${comment.comment_id};`;
-        dataBase.query(sqlRequete,function(err,result){
-            if(err){
-                return res.status(400).json({message:"error requete sql"})
-            }else{
-                res.status(200).json({message:'supression ok'})
-            }
-        })
-    }
+   
+        
+    const sqlRequete = `DELETE FROM comment WHERE id = ${comment.comment_id};`;
+    dataBase.query(sqlRequete,function(err,result){
+        if(err){
+            return res.status(400).json({message:"error requete sql"})
+        }else{
+            res.status(200).json({message:'supression ok'})
+        }
+    })
+    
 }

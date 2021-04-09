@@ -2,15 +2,13 @@ import { useState } from "react";
 import '../styles/ModifAccount.css';
 
 
-const ModifAccount = ({user}) =>{
-
+const ModifAccount = (userModif) =>{
+    console.log(userModif.userModif)
     const [nameData, setNameData] = useState('');
     const [prenomData, setPrenomData] = useState('');
     const [emailData, setEmailData] = useState('');
-    const [dateData, setDateData] = useState('');
     const [passwordData, setPasswordData] = useState('');
     const [imgData, setImgData] = useState([]);
-    
     const handleChangeName = (event) => {
         setNameData(event.target.value);
     };
@@ -29,14 +27,13 @@ const ModifAccount = ({user}) =>{
         let imageData = event.target.files[0];
         setImgData(imageData);
         
-        console.log( imageData)
     };
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
         modifUser();
-        alert('modification éffectuées');
+        
         sessionStorage.removeItem('UIC');
         window.location.href='./account';
     };
@@ -50,36 +47,29 @@ const ModifAccount = ({user}) =>{
     requete.append('adresse_email',emailData);
     requete.append('mot_de_passe',passwordData);
     requete.append('media',imgData);
-
-    
     
     const userIsCo = sessionStorage.getItem('userIsCo');
     const userIsCoParse = JSON.parse(userIsCo);
-    userIsCoParse.forEach(element => {
-        sessionStorage.setItem('UIC', JSON.stringify(element));
-    });
-    const UIC = sessionStorage.getItem('UIC');
-    const UICParse = JSON.parse(UIC);
-    
+   
     if(nameData === ""){
-        requete.set('nom',UICParse.nom);
+        requete.set('nom',userIsCoParse.nom);
     };
     if(prenomData === ""){
-        requete.set('prenom',UICParse.prenom);
+        requete.set('prenom',userIsCoParse.prenom);
 
     };
     if(emailData === ""/*ajouter reGex */){
-        requete.set('adresse_email',UICParse.adresse_email);       
+        requete.set('adresse_email',userIsCoParse.adresse_email);       
     };
     if(passwordData === ""/*ajouter reGex */){
         requete.set('mot_de_passe', userStorageJson.password)
     };
     if(!imgData){
-        requete.set('image_url',UICParse.image_url);       
+        requete.set('image_url', userIsCoParse.image_url);       
         
     };
     const headerWithToken = new Headers();
-     headerWithToken.append('Authorization', 'Bearer ' + userStorageJson.token);
+    headerWithToken.append('Authorization', 'Bearer ' + userStorageJson.token);
     const putInit = {
         method: 'PUT',
         headers: headerWithToken,
@@ -94,40 +84,34 @@ const ModifAccount = ({user}) =>{
         .then(
             (result)=>{
             },
-       
             (error) => {
               console.log(error)
             }
           )
     };
     return(
-        <div >{ window.location.pathname === '/modify-pass'?
-            <form onSubmit={ handleSubmit} id='form-modif-pass' className="form-modif">
-               
+        <div >
+            <form onSubmit={ handleSubmit} id='form-modif' className="form-modif">
                 
+                <label htmlFor="nom-modif"></label>
+                <input className="input-form-modif" name='nom-modif' type="text" placeholder= '*Nom' value={nameData} onChange={handleChangeName}/>
+                
+                <label htmlFor="prenom-modif"></label>
+                <input className="input-form-modif" name='prenom-modif' type="text" placeholder='*Prenom' value={prenomData} onChange={handleChangePrenom}/>
+
+                <label htmlFor="email-modif"></label>
+                <input className="input-form-modif" name='email-modif' type="text" placeholder='*@mail' value={emailData} onChange={handleChangeEmail}/>
+
                 <label name='mot-de-passe-modif'></label>
-                <input className="input-form" htmlFor="avatar-modif" type="password" placeholder='*Mot de passe FORT' value={passwordData} onChange={handleChangePassword}/>
+                <input className="input-form-modif" htmlFor="avatar-modif" type="password" placeholder='*Mot de passe FORT' value={passwordData} onChange={handleChangePassword}/>
+
+                <label className="avatar-modif" name='avatar-modif'>Avatar</label>
+                <input className="input-file" type= "file" onChange={handleChangeImg} />
                 
-                <button type='submit'>Validé la modification</button>
-
-            </form> : <form onSubmit={ handleSubmit} id='form-modif' className="form-modif">
-               
-               <label htmlFor="nom-modif"></label>
-               <input className="input-form" name='nom-modif' type="text" placeholder= '*Nom' value={nameData} onChange={handleChangeName}/>
-               
-               <label htmlFor="prenom-modif"></label>
-               <input className="input-form" name='prenom-modif' type="text" placeholder='*Prenom' value={prenomData} onChange={handleChangePrenom}/>
-
-               <label htmlFor="email-modif"></label>
-               <input className="input-form" name='email-modif' type="text" placeholder='*email' value={emailData} onChange={handleChangeEmail}/>
-
-               <label name='avatar-modif'></label>
-               <input className="input-file " type= "file" onChange={handleChangeImg} />
-               
-               <button className="input-form submit-modif" type='submit'>Validé la modification</button>
+                <button className="input-form submit-modif" type='submit'>Validé la modification</button>
 
            </form>
-            }
+            
        </div>
   )
 };

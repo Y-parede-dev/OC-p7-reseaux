@@ -10,13 +10,13 @@ module.exports = (req, res, next)=>{
         const decodedToken = jwt.verify(token, `${process.env.JSW_SECRET}`);
         const userId = decodedToken.user_id;
         
-        if(req.body.user_id && req.body.user_id !== userId || req.body.id && req.body.id !== userId){
+        if(req.body.user_id && req.body.user_id !== userId ){
             throw "user id non valable";
         } else {
             next(); 
         }
     } catch {
        
-        res.status(400).json({message:"Un pb avec le auth"});
+        res.status(400).json({message:"Veuillez vous reconecter votre jeton est expiré"});
     }
 }

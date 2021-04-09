@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { contentPostOrModif } from '../assets/js/Function';
 import '../styles/ModifPost.css';
 const ModifPost = () => {
     const [contentPost, setContentPost] = useState('');
@@ -30,36 +31,15 @@ const ModifPost = () => {
         requete.append('content',recupPostParse.content);
         requete.append('image_url',recupPostParse.image_url);
         requete.append('url_web',recupPostParse.url_web);
-        PrecupUserCo.forEach((item)=>{
-            requete.set('user_id',item.id);
-            return requete;
-        });
-    
+       
+        requete.set('user_id', PrecupUserCo.id);
+           
+        
         if(contentPostImg !=[]){
             requete.set('image_url', contentPostImg);
         }
-        console.log(contentPost.includes('http://www.'))
-        if(contentPost.includes('http://www.')||contentPost.includes('https://www')){
-            if(!contentPost.includes(' http')){
-                requete.set('url_web', contentPost);
+        contentPostOrModif(contentPost, requete);
 
-            }else{
-                if(contentPost.includes('https:')){
-                    requete.set('content', contentPost.split('https:')[0]);
-                    const urlWeb =  contentPost.split('https:')[1];
-                    requete.set('url_web', `https:${urlWeb}`);
- 
-                }else {
-                    requete.set('content', contentPost.split('http:')[0]);
-                    const urlWeb =  contentPost.split('http:')[1];
-                    requete.set('url_web', `http:${urlWeb}`);
-                }
-                
-            }
-               
-        }else {
-            requete.set('content', contentPost);
-        }
         
         const myHeaders = new Headers();
             myHeaders.append('Authorization', 'Bearer ' + userStorageJson.token);
@@ -75,6 +55,7 @@ const ModifPost = () => {
         
         .catch(err=>console.log(err))
         sessionStorage.removeItem('post-modif')
+        window.location.href = '#post-full';
     }
     const handleChangeContent = (event) =>{
         setContentPost(event.target.value);
@@ -89,9 +70,9 @@ const ModifPost = () => {
                 <label className="image-post-label pos-lab-on-input" htmlFor='image-modif-post'><i className="fas fa-image"></i></label>
                 <input className="form-control image-post image-post-modif pos-lab-on-input" type="file" name="image-modif-post" accept="image/*" onChange={handleChangeImg} />
                 
+                <button onClick={()=>window.location.href='./main'} className="form-control form-control-modif-post form-control-modif-post-annuler" name="annuler" type="button">annulez</button>
+                <button className="form-control form-control-modif-post" name="submit" type="submit">envoyer</button>
                 
-                <input className="form-control form-control-modif-post-annuler" name="annuler" type="button" value="anulez"/>
-                <input className="form-control form-control-modif-post" name="submit" type="submit" value="envoyer"/>
 
             </form>
         </section>

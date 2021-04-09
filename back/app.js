@@ -18,6 +18,7 @@ dotenv.config();
 const usersRoutes = require("./routes/user");
 const postRoutes = require("./routes/post");
 const commentRoutes = require("./routes/comment");
+const likesRoutes = require("./routes/likes");
 const bodyParser = require('body-parser');
 
 // connection a la base de donnée 
@@ -49,6 +50,8 @@ app.use('/images', express.static(path.join(__dirname, "images")));
 app.use("/api/post", postRoutes);
 app.use("/api/auth", usersRoutes);
 app.use("/api/comment", commentRoutes);
+app.use("/api", likesRoutes);
+
 
 
 //exportation de l'application express

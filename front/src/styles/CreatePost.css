@@ -11,13 +11,19 @@
 }
 .title-form-post {
     color: white;
+    font-size: 1.2rem;
 }
 .form-control {
     resize: none;
     margin: 15px;
 }
-textarea.form-control{
-    height: 150px
+textarea.form-control {
+    font-size: 2rem;
+    background: #2f435e;
+    height: 150px;
+    border: none;
+    color: white;
+    border-radius: 10px;
 }
 .image-post, .image-post-label{
     position: absolute;
@@ -32,7 +38,7 @@ textarea.form-control{
     left: -291px;
 }
 .image-post-label{
-    color: #2f435e;
+    color: white;
     left: 40px;
     bottom: 94px;
     font-size: 1.8rem
@@ -79,6 +85,12 @@ textarea.form-control{
 	padding: 14px 0;
 	opacity: 0;
 	cursor: pointer;
+}
+button.form-control.form-control-su {
+    margin: auto;
+    position: absolute;
+    bottom: 88px;
+    right: 36px;
 }
 
 /* quelques styles d'interactions */
