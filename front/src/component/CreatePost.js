@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {contentPostOrModif} from '../assets/js/Function'
 import '../styles/CreatePost.css';
 
-const CreatePost=()=>{
+const CreatePost=({postM, setPostM})=>{
     
     const [contentPost, setContentPost] = useState('');
     const [contentPostImg, setContentPostImg] = useState([]);
@@ -27,8 +27,16 @@ const CreatePost=()=>{
         
         console.log( imageData)
     };
+    
 
     const handleSubmit = (event) => {
+        
+        if(postM==true){
+            setPostM(false)
+
+        }else{
+            setPostM(true)
+        }
         event.preventDefault();
         const datePost = new Date();
         let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',hour:'numeric', minute:'numeric' };
@@ -59,18 +67,13 @@ const CreatePost=()=>{
                 body: requete
             };
         fetch("http://localhost:3001/api/post", myInit)
-        .then(res=>res.json())
-        
-        .catch(err=>console.log(err))
-        window.location.href = "#form-create-post";
+            .then(res=>res.json())
+            
+            .catch(err=>console.log(err))
     }
     const handleChangeContent = (event) =>{
         setContentPost(event.target.value);
-       
     }
-    
-  
-   
     return(
     
         <form id="form-create-post" onLoad={scrollFixPos} onSubmit={handleSubmit}> 

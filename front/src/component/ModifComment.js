@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { VerifState } from '../assets/js/Function';
+
 import '../styles/ModifComment.css';
-const ModifComment = () => {
+const ModifComment = ({ setCommentOnModif,commentUpp, setCommentUpp}) => {
     const [contentComment, setContentComment] = useState('');
 
     const userStorage = sessionStorage.getItem("token+id");
@@ -41,7 +43,9 @@ const ModifComment = () => {
         
         .catch(err=>console.log(err))
         sessionStorage.removeItem('comment-modif')
-        window.location.href = '#post-full';
+    
+        VerifState(commentUpp, setCommentUpp);
+        setCommentOnModif('')
     }
     const handleChangeContent = (event) =>{
         setContentComment(event.target.value);
@@ -54,7 +58,7 @@ const ModifComment = () => {
                 <label htmlFor="content-modif-comment"></label>
                 <textarea className="form-control" type="text" name="content-modif-comment" value={contentComment} onChange={handleChangeContent}/>
                 
-                <button onClick={()=>window.location.href='./main'}className="form-control form-control-modif-comment-annuler" name="annuler" type="button">annulez</button>
+                <button onClick={()=>setCommentOnModif('')}className="form-control form-control-modif-comment-annuler" name="annuler" type="button">annulez</button>
                 <button className="form-control form-control-modif-comment" name="submit" type="submit">envoyer</button>
                 
 

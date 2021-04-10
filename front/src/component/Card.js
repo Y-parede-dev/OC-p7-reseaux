@@ -9,23 +9,21 @@ import ModifPost from './ModifPost';
 import DeletePost from './DeletePost';
 import Likes from './Likes';
 import Signaler from './Signaler';
+import { GetPost } from './Api';
 
 
 const url="http://localhost:3001/api/post/";
 
-export default function RecipeReviewCard() {
+export default function RecipeReviewCard({postM, setPostM, url}) {
   const [onModif, setOnModif] = useState(false);
   const [postOnModif, setPostOnModif]= useState('');
   const [userCoId, setUserCoId] = useState('');
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
-
-  const [likesNumber, setLikesNumber] = useState(null);
-
+  
   const userIdToken = sessionStorage.getItem('token+id');
   const pUserIdToken = JSON.parse(userIdToken);
-  
   const userIsAdmin = sessionStorage.getItem('userIsCo');
   const userIsAdminP = JSON.parse(userIsAdmin);
 
@@ -51,30 +49,15 @@ export default function RecipeReviewCard() {
       setOnModif(true)
     }
   }
+  console.log(items)
 
   useEffect(() => {
     setUserCoId(pUserIdToken.user_id);
-    const myHeaders = new Headers();
 
-    const myInit = { method: 'GET',
-                   headers: myHeaders,
-                   mode: 'cors',
-                   cache: 'default' };
-    fetch(url, myInit)
-      .then(res => res.json())
-      .then(
-        (result) => {
-        setIsLoaded(true);
-        setItems(result.result);
-        result.result.forEach(it=>{
-          console.log(it.likes)
-          setLikesNumber(it.likes)
-        })
-          console.log(result.result)
-        } 
-      )
-    
-  }, []);
+    GetPost(url, setIsLoaded, setItems)
+    console.log(items)
+  }, [postM]);
+  
 
   if (error) {
     return <div>Erreur : {error.message}</div>;
@@ -102,7 +85,7 @@ export default function RecipeReviewCard() {
                     {userCoId == item.user_id || userIsAdminP == true ?
                     <div className="dropdown-content" id={`myDropdown-${item.id_post}`}>
                       <input type='button' className='btn-more-params-post' onClick={()=>displayModifPost(item)}  value="modifier" />
-                      <input type="button" className='btn-more-params-post btn-more-params-post-del' onClick={()=>DeletePost()} value='suprimer' />
+                      <input type="button" className='btn-more-params-post btn-more-params-post-del' onClick={()=>DeletePost({postM, setPostM})} value='suprimer' />
                     </div> :
                       <div className="dropdown-content" id={`myDropdown-${item.id_post}`}>
                       <input type='button' className='btn-more-params-post' onClick={()=>Signaler()} value="signaler" />
@@ -128,25 +111,19 @@ export default function RecipeReviewCard() {
                 >
                 </iframe>
                 :<div className="media-post">{item.image_post!= null && item.image_post!= "null" 
-                ?<img width='100%' height="auto" className="iframe-media" alt='file post' src={item.image_post!='undefined' ?url.split('api')[0]+"images/posts/" + item.image_post:'' }/>
-                  :<p>Il y a "R" Frère</p>
-                  }
+                  &&<img width='100%' height="auto" className="iframe-media" alt='file post' src={item.image_post!='undefined' ?url.split('api')[0]+"images/posts/" + item.image_post:'' }/>
+                 
+                    }
                   </div>
                   }
                 </div>
 
                       
-              </div>:<ModifPost />
+              </div>:<ModifPost postM={postM} setPostM={setPostM}/>
               }
               </div>
               <div className='header-comment'>
-                
-                  <div className="like-unlike">
-                    <button alt='like' onClick={()=>{Likes(item.id_post, item.likes)}} id={`like-${item.id_post}`} className='like'><i className="fas fa-heart"></i></button>
-                    <span className='like-count' id={`like-count-${item.id_post}`}>{item.likes}</span>
-                    <button alt='like' onClick={()=>btnToglComment(item.id_post)} className='btn-comment'><i className="far fa-comments"></i></button>
-                  </div>
-                    
+                  <Likes url={url} id_post={item.id_post} btnToglComment={btnToglComment} />
               </div>
               <div className='comment-before'>
                 <Comment  id={`comment-${item.id_post}`} postId={item.id_post} userCoId ={userCoId}/>

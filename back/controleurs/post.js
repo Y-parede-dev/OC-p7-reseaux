@@ -38,7 +38,7 @@ console.log(post)
 exports.getAllPost = (req,res,next)=>{
     dataBase.query(`SELECT posts.id AS id_post ,posts.likes ,posts.content AS content_post, posts.image_url AS image_post, posts.url_web, date_post ,
                     users.id AS user_id, users.nom AS nom_post,users.image_url AS avatar, users.prenom AS prenom_post 
-                    from posts INNER JOIN users ON users.id= posts.user_id ORDER BY posts.id DESC;`, function(err, result){ 
+                    FROM posts INNER JOIN users ON users.id= posts.user_id ORDER BY posts.id DESC;`, function(err, result){ 
         if(err){
             res.status(404).json({message:"GET ALL EST BUGER"});
             console.log(err)
@@ -48,17 +48,33 @@ exports.getAllPost = (req,res,next)=>{
         }
     }) 
 }
+exports.getLikePost = (req,res,next)=>{ dataBase.query(`SELECT posts.likes 
+    FROM posts WHERE posts.id = ${req.params.id} ORDER BY posts.id DESC;`, function(err, result){ 
+        if(err){
+            res.status(404).json({message:"GET ALL EST BUGER"});
+            console.log(err)
+        return;
+        }else{
+            res.status(200).json({message:"voici le resultat", result});
+        }
+    }) 
+}
 exports.getOneUserPost = (req,res,next)=>{
-    const post = req.body;
-    const idCourant = req.params.user;
-    if(idCourant == post.user_id){
-        const reqSQL = `SELECT posts.content,
-                    users.nom,
-                    users.prenom
+    
+        const reqSQL = `SELECT posts.id AS id_post, 
+                    posts.likes ,
+                    posts.content AS content_post,
+                    posts.image_url AS image_post,
+                    posts.url_web, date_post ,
+                    users.id AS user_id,
+                    users.nom AS nom_post,
+                    users.image_url AS avatar,
+                    users.prenom AS prenom_post 
+        
                     FROM posts
                     INNER JOIN
                     users ON posts.user_id = users.id
-                    WHERE users.id = ${post.user_id}`;
+                    WHERE users.id = ${req.params.id}`;
         dataBase.query(reqSQL, function(err, result){
             if(err){
                 res.status(404).json({message:"GET ONE EST BUGER"});
@@ -74,9 +90,7 @@ exports.getOneUserPost = (req,res,next)=>{
                 }
             }
         })
-    }else {
-        res.status(404).json({message:"not found"})
-    }
+    
 }
 
 exports.modifyPost = (req,res,next)=>{

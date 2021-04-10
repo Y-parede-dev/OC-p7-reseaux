@@ -4,6 +4,7 @@ import {createHeader} from '../assets/js/Function';
 import '../styles/Account.css'
 import ModifAccount from './ModifAccount';
 import DeleteAccount from './DeleteAccount';
+import RecipeReviewCard from './Card';
 
 
 const url = "http://localhost:3001/api/auth/account/";
@@ -18,6 +19,8 @@ function Account({isConected}){
     const handleSubmit = () =>{
         setUserModif(true)
     }
+     const urlPostOne = `http://localhost:3001/api/auth/post/485`;
+
     const userStorage = sessionStorage.getItem("token+id")
     const userStorageJson = JSON.parse(userStorage);
     useEffect(() => {
@@ -49,34 +52,40 @@ function Account({isConected}){
             )
             //eslint-disable-next-line react-hooks/exhaustive-deps
         },[])
+        console.log(user)
     return(
-        <section className='section-profil'>{ isConected &&
-            <div className="content-full-profil">{user.map(item=>(
-                    !userModif?
-                <div className='content-profil' key={Date.now()}>
-                    <h2 className='profil'>PROFIL </h2>
-                    <p className='profil-info'><span className='profil-info-static'>nom :</span> <span className='profil-info-dynamique'>{item.nom}</span></p>
-                    <p className='profil-info'><span className='profil-info-static'>prenom :</span> <span className='profil-info-dynamique'>{item.prenom}</span></p>
-                    <p className='profil-info'><span className='profil-info-static'>adresse email :</span> <span className='profil-info-dynamique'>{item.adresse_email}</span></p>
-                    <img className="avatar-profil" src={url.split('api')[0]+"images/avatars/"+item.image_url} alt='Avatar utilisateur'/>
+        <div>
+            <section className='section-profil'>{ isConected &&
+                <div className="content-full-profil">{user.map(item=>(
+                        !userModif?
+                    <div className='content-profil' key={Date.now()}>
+                        <h2 className='profil'>PROFIL </h2>
+                        <p className='profil-info'><span className='profil-info-static'>nom :</span> <span className='profil-info-dynamique'>{item.nom}</span></p>
+                        <p className='profil-info'><span className='profil-info-static'>prenom :</span> <span className='profil-info-dynamique'>{item.prenom}</span></p>
+                        <p className='profil-info'><span className='profil-info-static'>adresse email :</span> <span className='profil-info-dynamique'>{item.adresse_email}</span></p>
+                        <img className="avatar-profil" src={url.split('api')[0]+"images/avatars/"+item.image_url} alt='Avatar utilisateur'/>
 
-                    <div className='content-button-profil' key={Date.now() + Date.now()}>
-                        <button alt='modifier le compte' className='button-account' onClick={()=>handleSubmit()}>🛠<span className='no-mobile'> modifier</span></button>
-                        <button alt="suprimez le compte" className='button-account button-account-del' onClick={()=>DeleteAccount()}>⛔<span className='no-mobile'> suprimer le compte</span></button>
+                        <div className='content-button-profil' key={Date.now() + Date.now()}>
+                            <button alt='modifier le compte' className='button-account' onClick={()=>handleSubmit()}>🛠<span className='no-mobile'> modifier</span></button>
+                            <button alt="suprimez le compte" className='button-account button-account-del' onClick={()=>DeleteAccount()}>⛔<span className='no-mobile'> suprimer le compte</span></button>
+                        </div>
                     </div>
-                </div>
-                : <div className='content-profil-modif' key={Date.now()}>
-                    <img className="avatar-profil avatar-profil-modif" src={url.split('api')[0]+"images/avatars/"+item.image_url} alt='Avatar utilisateur'/>
+                    : <div className='content-profil-modif' key={Date.now()}>
+                        <img className="avatar-profil avatar-profil-modif" src={url.split('api')[0]+"images/avatars/"+item.image_url} alt='Avatar utilisateur'/>
 
-                    <ModifAccount userModif={userModif} 
+                        <ModifAccount userModif={userModif} 
+                        
+                        />
+                    </div>
+                    ))}
                     
-                    />
                 </div>
-                ))}
-                
-            </div>
-            }
-        </section>
+                }
+            </section>
+            <section>
+                <RecipeReviewCard url={urlPostOne}/>
+            </section>
+        </div>
     )
 }
 

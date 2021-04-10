@@ -91,6 +91,9 @@
   }
 }
 @media screen and (max-width:700px){
+  .header-title {
+    font-size: 2rem;
+}
   .none-on-small{
     display: none;
     }

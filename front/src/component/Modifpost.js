@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { contentPostOrModif } from '../assets/js/Function';
 import '../styles/ModifPost.css';
-const ModifPost = () => {
+const ModifPost = ({postM, setPostM}) => {
     const [contentPost, setContentPost] = useState('');
     const [contentPostImg, setContentPostImg] = useState([]);
 
@@ -23,6 +23,12 @@ const ModifPost = () => {
     };
 
     const handleSubmit = (event) => {
+        if(postM==true){
+            setPostM(false)
+
+        }else{
+            setPostM(true)
+        }
         event.preventDefault();
        
         const requete =new FormData();
@@ -55,7 +61,6 @@ const ModifPost = () => {
         
         .catch(err=>console.log(err))
         sessionStorage.removeItem('post-modif')
-        window.location.href = '#post-full';
     }
     const handleChangeContent = (event) =>{
         setContentPost(event.target.value);

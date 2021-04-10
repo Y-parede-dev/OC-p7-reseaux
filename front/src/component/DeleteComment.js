@@ -1,4 +1,6 @@
-const DeleteComment = (ifAdmin)=>{
+import { VerifState } from "../assets/js/Function";
+
+const DeleteComment = ({commentUpp, setCommentUpp})=>{
     const userStorage = sessionStorage.getItem("token+id");
     const userStorageJson = JSON.parse(userStorage);
     const recupComment = sessionStorage.getItem('comment-modif');
@@ -25,7 +27,7 @@ const DeleteComment = (ifAdmin)=>{
         .then(res=>res.json())
 
         .catch(err=>console.log(err))
-        window.location.href = '#post-full';
+        VerifState(commentUpp, setCommentUpp)
 }
 
 export default DeleteComment;

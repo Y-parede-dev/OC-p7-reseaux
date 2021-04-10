@@ -79,4 +79,12 @@ export const isValidPasswordFront = (value) => {
         requete.set('content', contentPost);
     }
 }
+// verification d'etatt
+export const VerifState=(state, setState)=>{
+    if(state == true){
+        setState(false)
+    }else{
+        setState(true)
+    }
+}
 

@@ -3,28 +3,24 @@ import '../styles/Comment.css';
 import CreateComment from './CreateComment';
 import DeleteComment from './DeleteComment';
 import ModifComment from './ModifComment';
-
-
+import {GetComment} from './Api';
 
 export default function Comment(postId) {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [comments, setComments] = useState([]);
     const [commentOnModif, setCommentOnModif]= useState('');
-
+    const [commentUpp, setCommentUpp] = useState(false);
     const userCoId = postId.userCoId;
-
     const ifAdmin = sessionStorage.getItem('userIsCo')
     const ifAdminP = JSON.parse(ifAdmin)
-   
     const postI = postId.postId;
     const postIdRecup = JSON.stringify(postI);
     const postIdToNumber = parseInt(postIdRecup, 10);
-    const urlComm = "http://localhost:3001/api/comment/"
-
+    const urlComm = `http://localhost:3001/api/comment/${postI}`
     useEffect(() => {
+        GetComment(urlComm, setComments, setIsLoaded, setError)
         const myHeaders = new Headers();
-
         const myInit = { method: 'GET',
                         headers: myHeaders,
                         mode: 'cors',
@@ -35,42 +31,33 @@ export default function Comment(postId) {
             (result) => {
                 setIsLoaded(true);
                 setComments(result.result);
+                console.log(result)
             },
-          
             (error) => {
                 setIsLoaded(true);
                 setError(error);
-            }
-            )
-        },[]);
+            })
+        },[commentUpp]);
         const btnToglC = (item, idC)=> {
-            console.log(comments)
-            
             sessionStorage.setItem('comment-modif', JSON.stringify(item))
             let idComment = `myDropdown-${idC}`
             document.getElementById(idComment).classList.toggle("show");
             document.getElementById(idComment).classList.toggle("comment");
-            
           }
         const displayModifComment =(itemP)=>{
             const item = itemP;
             setCommentOnModif(item)
-        
           }
-        
     if (error) {
       return <div>Erreur : {error.message}</div>;
     } else if (!isLoaded) {
      return <div>Chargement...</div>;
     } else {
-        
         return (
             <div className="comment" id={`comment-${postIdToNumber}`}>
-                <CreateComment postId={postI}/>
+                <CreateComment commentUpp={commentUpp} setCommentUpp={setCommentUpp} postId={postI}/>
                 <ul className='comment-ul'>
                    {comments.map(item=>(
-                            
-                        postIdToNumber == item.post_id_comment && 
                         <li className='comment-content' key={Date.now()+ item.post_id_comment+item.comment_id }>
                             <img alt="avatar user comment" className="avatar-comment" src={urlComm.split('api')[0]+'images/avatars/'+item.avatar_user} />
                             <div className='comment-user-content'>
@@ -87,10 +74,9 @@ export default function Comment(postId) {
                                     <div className="parametre-comment-open">
                                         <div className="dropdown bkcol">
                                             {userCoId == item.comment_user_id || ifAdminP.isAdmin == true  ?
-                                            
                                             <div className="dropdown-content dropdown-content-comment" id={`myDropdown-${item.comment_id}`}>
                                                 <input type='button' className='btn-more-params-post btn-more-params-comment' onClick={()=>displayModifComment(item)} href="../modify-post" value="modifier" />
-                                                <input type="button" className='btn-more-params-post btn-more-params-comment btn-more-params-comment-del' onClick={()=>DeleteComment(ifAdminP.isAdmin)} value='suprimer' />
+                                                <input type="button" className='btn-more-params-post btn-more-params-comment btn-more-params-comment-del' onClick={()=>DeleteComment({commentUpp,setCommentUpp})} value='suprimer' />
                                             </div> :
                                             <div className="dropdown-content dropdown-content-comment" id={`myDropdown-${item.comment_id}`}>
                                                 <a className='btn-more-params-post btn-more-params-comment btn-more-params-comment-sign' href="#">signaler</a>
@@ -98,13 +84,11 @@ export default function Comment(postId) {
                                                 }
                                         </div>
                                     </div>
-                                </div>:<ModifComment ifAdmin ={ifAdminP.isAdmin} />}
+                                </div>:<ModifComment setCommentOnModif={setCommentOnModif} commentUpp={commentUpp} setCommentUpp={setCommentUpp} ifAdmin ={ifAdminP.isAdmin} />}
                             </div>
                         </li>
-                        ))
-                    }
+                        ))}
                 </ul>
-       
             </div>
         )
     };

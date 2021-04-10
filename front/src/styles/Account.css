@@ -96,10 +96,9 @@ button.button-account.button-account-del {
         flex-direction: row;
   
     }
-        h2.profil {
-        margin-top: 145px;
-    }
+       
     img.avatar-profil {
+        position: relative;
         margin: 0 auto;
     }
 }

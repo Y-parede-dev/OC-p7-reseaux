@@ -1,6 +1,6 @@
 import DeleteComment from "./DeleteComment";
 
-const DeletePost = ()=>{
+const DeletePost = ({setPostM, postM})=>{
     const userStorage = sessionStorage.getItem("token+id");
     const userStorageJson = JSON.parse(userStorage);
     const recupPost = sessionStorage.getItem('post-modif');
@@ -20,14 +20,18 @@ const DeletePost = ()=>{
         cache: 'default',
         body: JSON.stringify(requete)
     };
-  //  DeleteComment()
     fetch("http://localhost:3001/api/post/" + recupPostParse.id_post, myInit)
         .then(res=>res.json())
 
         .catch(err=>console.log(err))
     
     sessionStorage.removeItem('post-modif')
-    window.location.href = '#post-full' ;
+    if(postM ==true){
+        setPostM(false)
+    }else {
+        setPostM(true)
+
+    }
 }
 
 export default DeletePost;

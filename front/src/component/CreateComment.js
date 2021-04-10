@@ -1,22 +1,23 @@
 import { useState } from "react";
-import { createHeader } from "../assets/js/Function";
+import { createHeader, VerifState } from "../assets/js/Function";
 import '../styles/CreateComment.css';
-function CreateComment(postId){
+function CreateComment( {postId, commentUpp, setCommentUpp}){
+
     const [contentComment, setContentComment] = useState('');
     const userStorage = sessionStorage.getItem("token+id");
     const userStorageJson = JSON.parse(userStorage);
     const recupUserCo = sessionStorage.getItem('userIsCo');
     const PrecupUserCo = JSON.parse(recupUserCo);
     const handleSubmit = (event) => {
+
         event.preventDefault();
         const requete = {
             user_id: "",
             content: contentComment,
-            post_id:postId.postId
+            post_id:postId
         }
         
         requete.user_id = PrecupUserCo.id;
-        console.log(requete)
         
         const headerWithToken = new Headers();
         headerWithToken.append('Content-type','application/json');
@@ -29,11 +30,15 @@ function CreateComment(postId){
             cache: 'default',
             body: JSON.stringify(requete)
         };
+        VerifState(commentUpp, setCommentUpp)
+        
+        setContentComment('')
         fetch("http://localhost:3001/api/comment", myInit)
         .then(res=>res.json())
         
         .catch(err=>console.log(err))
-        window.location.href ='#post-full';
+        
+
     }
     const handleChangeContent = (event) =>{
         setContentComment(event.target.value);
