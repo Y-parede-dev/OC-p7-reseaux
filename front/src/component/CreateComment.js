@@ -9,7 +9,7 @@ function CreateComment( {postId, commentUpp, setCommentUpp}){
     const recupUserCo = sessionStorage.getItem('userIsCo');
     const PrecupUserCo = JSON.parse(recupUserCo);
     const handleSubmit = (event) => {
-
+        
         event.preventDefault();
         const requete = {
             user_id: "",

@@ -52,10 +52,36 @@ const CreatePost=({postM, setPostM})=>{
         requete.set('user_id',PrecupUserCo.id);
          
         
-        if(contentPostImg !=[]){
-            requete.set('image_url', contentPostImg);
-        }
+        
         contentPostOrModif(contentPost, requete);
+       
+        if(contentPost.includes('http://www.')||contentPost.includes('https://www')){
+            requete.set('image_url', null);
+            if(!contentPost.includes(' http')){
+                requete.set('url_web', contentPost);
+
+            }else{
+                if(contentPost.includes('https:')){
+                    
+                    requete.set('content', contentPost.split('https:')[0]);
+                    const urlWeb =  contentPost.split('https:')[1];
+                    requete.set('url_web', `https:${urlWeb}`);
+ 
+                }else {
+                    requete.set('content', contentPost.split('http:')[0]);
+                    const urlWeb =  contentPost.split('http:')[1];
+                    requete.set('url_web', `http:${urlWeb}`);
+                }
+                
+            }
+               
+        }else {
+            if(contentPostImg !=[]){
+                requete.set('image_url', contentPostImg);
+            }
+            requete.set('content', contentPost);
+        }
+        
         
         const myHeaders = new Headers();
             myHeaders.append('Authorization', 'Bearer ' + userStorageJson.token);
@@ -82,7 +108,6 @@ const CreatePost=({postM, setPostM})=>{
             <textarea className="form-control" type="text" name="content-post" value={contentPost} onChange={handleChangeContent}/>
             <label className="image-post-label" htmlFor='image-post'><i className="fas fa-image"></i></label>
             <input className="form-control image-post" type="file" name="image-post" accept="image/*" onChange={handleChangeImg} />
-            
             <button className="form-control form-control-su" name="submit-login" type="submit">envoyer</button>
 
         </form>

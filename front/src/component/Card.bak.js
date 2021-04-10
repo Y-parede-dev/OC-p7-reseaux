@@ -1,171 +1,140 @@
 import React,{ useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-//import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+
+import Loader from '../assets/js/Loader';
 import Comment from './Comment';
 
-import '../styles/Card.css';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
-}));
+import '../styles/Card.css';
+import ModifPost from './ModifPost';
+import DeletePost from './DeletePost';
+import Likes from './Likes';
+import Signaler from './Signaler';
+import { GetPost } from './Api';
+
+
 const url="http://localhost:3001/api/post/";
 
-export default function RecipeReviewCard() {
-  const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(true);
+export default function RecipeReviewCard({postM, setPostM, url}) {
+  const [onModif, setOnModif] = useState(false);
+  const [postOnModif, setPostOnModif]= useState('');
   const [userCoId, setUserCoId] = useState('');
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
-
+  
   const userIdToken = sessionStorage.getItem('token+id');
   const pUserIdToken = JSON.parse(userIdToken);
+  const userIsAdmin = sessionStorage.getItem('userIsCo');
+  const userIsAdminP = JSON.parse(userIsAdmin);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-    
-  };
-  const btnTogl = (idP)=> {
+  const btnTogl = (item, idP)=> {
+    sessionStorage.setItem('post-modif', JSON.stringify(item))
     let idPost = `myDropdown-${idP}`
+    document.getElementById(idPost).classList.toggle("show");
+    document.getElementById(idPost).classList.toggle("comment");
+    
+  }
+  const btnToglComment = (idP)=> {
+    let idPost = `comment-${idP}`
     document.getElementById(idPost).classList.toggle("show");
     
   }
-  
+
+  const displayModifPost =(itemP)=>{
+    const item = itemP;
+    setPostOnModif(item)
+    if(onModif){
+      setOnModif(false)
+    }else{
+      setOnModif(true)
+    }
+  }
+  console.log(items)
+
   useEffect(() => {
     setUserCoId(pUserIdToken.user_id);
-    const myHeaders = new Headers();
 
-    const myInit = { method: 'GET',
-                   headers: myHeaders,
-                   mode: 'cors',
-                   cache: 'default' };
-    fetch(url, myInit)
-      .then(res => res.json())
-      .then(
-        (result) => {
-         
+    GetPost(url, setIsLoaded, setItems)
+    console.log(items)
+  }, [postM]);
+  
 
-          setIsLoaded(true);
-          setItems(result.result);
-        },
-        (error) => {
-          setIsLoaded(true);
-          setError(error);
-        }
-      )
-  }, []);
-    
   if (error) {
     return <div>Erreur : {error.message}</div>;
-  } else if (!isLoaded) {
-    return <div>Chargement...</div>;
+  
   } else {
     return (
-      <div className='cards'>{items.map(item => (
-        //date.now
+      <div className="side-post"> {
         
-        <Card id={`post-${item.id_post}`} key={Date.now()+item.id_post+item.user_id} className='card-content'> 
-        <CardHeader
-          avatar={ 
-            <img  alt='Avatar utilisateur' src={url.split("api")[0]+"images/"+item.avatar} className='avatar-on-post' /> 
-            
-          }
-          action={
-            <div>
-            <IconButton 
-                aria-label="settings"
-                onClick={()=>btnTogl(item.id_post)}
-                className='dropbtn'
-              >
-              <MoreVertIcon />
-            </IconButton>
-            <div>
-              <div className="dropdown bkcol">
-                {userCoId == item.user_id ?
-                <div className="dropdown-content" id={`myDropdown-${item.id_post}`}>
-                  <a className='btn-more-params-post' href="#">modifier</a>
-                  <a className='btn-more-params-post' href="#">suprimer</a>
-                </div> :
-                  <div className="dropdown-content" id={`myDropdown-${item.id_post}`}>
-                  <a className='btn-more-params-post' href="#">signaler</a>
-                </div>
-                }
-                </div>
+        <div id="post-full" className='cards'>{items.map(item => ( 
+          
+          <div id={`post-${item.id_post}`} key={Date.now()+((item.id_post+item.user_id)*2)} className='card-content'>{!isLoaded?<Loader />
+          
+          :<div className='card-content-or-load'>
+            <div className='header-post'>
+              <img alt="Avatar Utilisateur" src={url.split("api")[0]+"images/avatars/"+item.avatar} className='avatar-on-post'/>
+              <div className="post-name-date">
+                <p className="post-name">{item.nom_post +' '+ item.prenom_post}</p>
+                <p className="post-date">{item.date_post}</p>
               </div>
+              <div className='parametre-post'>
+                <button aria-label='settings' className="dropbtn" onClick={()=>btnTogl(item, item.id_post)}><i className="fas fa-ellipsis-h"></i></button>
+              </div>
+              <div className="parametre-post-open">
+                  <div className="dropdown bkcol">
+                    {userCoId == item.user_id || userIsAdminP == true ?
+                    <div className="dropdown-content" id={`myDropdown-${item.id_post}`}>
+                      <input type='button' className='btn-more-params-post' onClick={()=>displayModifPost(item)}  value="modifier" />
+                      <input type="button" className='btn-more-params-post btn-more-params-post-del' onClick={()=>DeletePost({postM, setPostM})} value='suprimer' />
+                    </div> :
+                      <div className="dropdown-content" id={`myDropdown-${item.id_post}`}>
+                      <input type='button' className='btn-more-params-post' onClick={()=>Signaler()} value="signaler" />
+                    </div>
+                    }
+                  </div>
+                </div>
             </div>
-          }
-          title={item.nom_post +' '+ item.prenom_post}
-          subheader={item.date_post}
-        />
-        <CardMedia
-          className={classes.media}
-          image='test' //  a modifier
-          title="post"
-        />
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {item.content_post}
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
-          <Typography className="comment-title" paragraph>commentaires</Typography>
+            <div className="content-or-modif">{item.id_post != postOnModif.id_post?
+              <div className='content-post'>{item.content_post!=''&&
+                <p className="text-post">{item.content_post}</p>}
+                <div className="media_post">
+                {item.url_web!= null && item.url_web!= "null" 
+                ?
+                <iframe 
+                  alt='video poster par utilisateur'
+                  className="iframe-media"
+                  width="100%"
+                  height="400px"
+                  src={item.url_web!='undefined' ?item.url_web.split('watch?v=').join('embed/'):''}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowFullScreen="allowfullscreen"
+                >
+                </iframe>
+                :<div className="media-post">{item.image_post!= null && item.image_post!= "null" 
+                  &&<img width='100%' height="auto" className="iframe-media" alt='file post' src={item.image_post!='undefined' ?url.split('api')[0]+"images/posts/" + item.image_post:'' }/>
+                 
+                    }
+                  </div>
+                  }
+                </div>
 
-          <IconButton
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-            id={item.post_id}
-
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Comment postId={item.id_post}/>
-          </CardContent>
-        </Collapse>
-      </Card>
-      ))}
+                      
+              </div>:<ModifPost postM={postM} setPostM={setPostM}/>
+              }
+              </div>
+              <div className='header-comment'>
+                  <Likes url={url} id_post={item.id_post} btnToglComment={btnToglComment} />
+              </div>
+              <div className='comment-before'>
+                <Comment  id={`comment-${item.id_post}`} postId={item.id_post} userCoId ={userCoId}/>
+              </div>
+            
+          </div>
+        }</div>
+          
+        ))}
+      </div>
+    }
     </div>
     );
   };

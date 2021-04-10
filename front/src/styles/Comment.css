@@ -20,7 +20,10 @@ button.like, button.btn-comment {
 
 .avatar-comment {
     width: 44px;
+    height: 44px;
     grid-area: avatar;
+    border-radius: 25px;
+    background: dodgerblue;
 }
 ul.comment-ul{
     padding: 0;

@@ -6,7 +6,6 @@ exports.like = (req, res, next) => {
         if(err){
             console.log(err)
         }else{
-            console.log(result.length)
             if(result.length > 0){
                 dataBase.query(`DELETE FROM likes WHERE post_id = ${req.body.post_id} AND user_id=${req.body.user_id}`, function (err, result){
                     if(err){
@@ -38,16 +37,6 @@ exports.like = (req, res, next) => {
                     }
                 })
             }
-        }
-    })
-}
-exports.Getlike = (req, res, next) => {
-    console.log(req.params)
-    dataBase.query(`SELECT * FROM likes WHERE post_id = ${req.params.id}`, function(err, result){
-        if(err){
-            res.status(400)
-        }else{
-            res.status(200).json({message: 'voici tout les likes', likes:result})
         }
     })
 }
