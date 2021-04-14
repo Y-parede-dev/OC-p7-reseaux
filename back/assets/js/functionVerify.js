@@ -4,8 +4,8 @@ const requeteSQL=(requete)=>{
     dataBase.query(requete,
         function(err,result){
             if(err){
-                res.status(400).json({message:'probleme avec la modification'});
-                return;
+                console.log(err);
+            return err.sqlMessage;
             };
     });
 }; 

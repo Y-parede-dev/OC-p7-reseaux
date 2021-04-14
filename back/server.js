@@ -8,10 +8,10 @@ const normalizePort = val => { //creation du port Normalizer
 
   if (isNaN(port)) {
     return val;
-  }
+  };
   if (port >= 0) {
     return port;
-  }
+  };
   return false;
 };
 
@@ -21,7 +21,7 @@ app.set('port', port);   // ajout du port sur app
 const errorHandler = error => {  // gestion des erreurs
   if (error.syscall !== 'listen') {
     throw error;
-  }
+  };
   const address = server.address();
   const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
   switch (error.code) {
@@ -35,7 +35,7 @@ const errorHandler = error => {  // gestion des erreurs
       break;
     default:
       throw error;
-  }
+  };
 };
 
 const server = http.createServer(app); // creation du serveur

@@ -2,19 +2,14 @@ const dataBase = require('../BDD/dbConnect');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
-
 const verifInfoRequete = require('../assets/js/functionVerify');
-
-
-// reGex email
 const isValidEmail = (value) => {
     let reGex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     return reGex.test(value);
 };
-// reGex password (entre 8-15 caract. / au moins 1 chifre 1maj. une min et au moins un carct. spé.)
 const isValidPassword = (value) => {
     let reGex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_])([-+!*$@%_\w]{8,15})$/;
-    return reGex.test(value)
+    return reGex.test(value);
 };
 exports.signup = (req, res, next)=>{
     const corpRequete = req.body;
@@ -34,68 +29,61 @@ exports.signup = (req, res, next)=>{
                     "${user.email}",
                     "${user.password}"
                     );`;
-                    //imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}` // sert a enregistre l'image envoyer par l'utilisateur
-    
                 dataBase.query(sqlRequete, function(err, result){
-        
                     if(err) {
-                        console.log(err)
+                        console.log(err);
                     }else {
                         res.status(201).json({message:'tout est ok sur le POST, Utilisateur enregistre'});
                         return;
-                    }
+                    };
                 });
-            })
+            });
         }else{
-            res.status(400).json({message:'Vérifiez votre adresse email'})
-        }
+            res.status(400).json({message:'Vérifiez votre adresse email'});
+        };
     }else{
         res.status(404).json({message:'Vérifiez votre mot de passe'});
         return;
-    }
+    };
 };
 exports.getAllAccount = (req,res,next)=>{
     dataBase.query( 
         `SELECT * FROM users;`, function(err, result){
             if(err){
                 res.status(404).json({message:'GET EST BOGGER'});
-                throw err
+                throw err;
             }else{
                 res.status(200).json({message:'tout est ok sur le get', result});
-            }
+            };
         }
-    )
+    );
 };
 exports.getOneAccount = (req, res, next) => {
     const idCourant = req.params.id;
-    
         dataBase.query(
             `SELECT * FROM users WHERE id = ${idCourant};`, function(err, result){
                 if(err){
-                    // res.status(404).json({message:"GET ON EST BOGGER"});
-                    console.log(err)
+                    console.log(err);
                 }else{
                     res.status(200).json({message:'get one est ok', result})
                 };
-            }); 
+        }); 
 };
-
 exports.deleteAccount = (req,res,next)=>{
     const user_out = req.body;
-    console.log(user_out.user_id)
-    const sql = `DELETE FROM users WHERE id = ${req.body.user_id};`;
+    const sql = `DELETE FROM users WHERE id = ${user_out.user_id};`;
     dataBase.query( sql, function(err, result){
-            if(err){
-                res.status(400).json({message: "Erreur d' identifiant"});
-            }else{
-                const pathname = user_out.image_url;
-                if(pathname!=='user-base.png' || pathname!=='avatar-admin.png'){
-                    fs.unlink(`images/avatars/${pathname}`,()=>{
-                    })
-                }
-                res.status(200).json({message:"supression OK"});
-            };
-        });
+        if(err){
+            res.status(400).json({message: "Erreur d' identifiant"});
+        }else{
+            const pathname = user_out.image_url;
+            if(pathname!=='user-base.png' || pathname!=='avatar-admin.png'){
+                fs.unlink(`images/avatars/${pathname}`,()=>{
+                })
+            }
+            res.status(200).json({message:"supression OK"});
+        };
+    });
 }; 
 exports.modifyAccount = (req,res,next) => {
     const idCourant = req.params.id;
@@ -121,12 +109,10 @@ exports.modifyAccount = (req,res,next) => {
                                 if(isValidEmail(UsersModify.adresse_email)){
                                     verifInfoRequete(UsersModify, file, element, idCourant);
                                     const pathname = element.image_url;
-                                    //requeteSQL(sqlRequete);
                                     if(file && pathname!=='user-base.png' && pathname!=='avatar-admin.png'){
                                         fs.unlink(`images/avatars/${pathname}`,()=>{
-                
-                                        })
-                                    }
+                                        });
+                                    };
                                     return res.status(200).json({message:'utilisateur bien modifier'});
                                 }else{
                                     res.status(400).json({message:"Probème avec l'adresse email"})
@@ -156,7 +142,7 @@ exports.modifyAccount = (req,res,next) => {
         };
     });
 };
-        /*-------------------------------------------partie connection----------------------------------------------*/
+        /*-------------------------------------------LOGGIN----------------------------------------------*/
 exports.login = (req, res, next) => {
 
     const userLog = req.body;
@@ -164,24 +150,20 @@ exports.login = (req, res, next) => {
     function(err,result){
         let isCo = false;
         if(err){
-            console.log("err")
+            console.log("err");
             return res.status(500).json(err);
         }else{
-           
             const compareBD = result;
-          
             if(compareBD<1){
                 return res.status(401).json({message:'vérifiez votre adresse email'});
             }else{
                 compareBD.forEach(element=>{
                     const userBdd = element;
-                    console.log(userBdd)
                     bcrypt.compare(userLog.mot_de_passe, userBdd.mot_de_passe)
                     .then(valid=>{
                         if(!valid){
-                            return res.status(401).json({message:'vérifiez votre mot de passe'})
-                        }
-                        else{
+                            return res.status(401).json({message:'vérifiez votre mot de passe'});
+                        }else{
                             isCo = true;
                             res.status(200).json({
                                 message:"login done",
@@ -194,14 +176,13 @@ exports.login = (req, res, next) => {
                                     `${process.env.JSW_SECRET}`,
                                     {expiresIn:`${process.env.TOKEN_EXPIRE}`}
                                     )
-                            })
-                        }
+                            });
+                        };
                     })
                     .catch(
-                        error=>res.status(500).json(error))
-                })
-            }
-           
-        }
-    })
-}
+                        error=>res.status(500).json(error));
+                });
+            };
+        };
+    });
+};
