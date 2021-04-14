@@ -34,11 +34,6 @@ function Login({isConected, setIsConected}){
     adresse_email : emailData,
     mot_de_passe: passwordData
   };
-   
-
-
- 
-   
   const myInit = { 
       method: 'POST',
       headers: createHeader(),
@@ -54,7 +49,6 @@ function Login({isConected, setIsConected}){
       .then(
         (result) => {
           console.log(result.user_id)
-        
         setMessageData(result.message)
         SaveLocal(result)
         getUserCo();
@@ -66,19 +60,14 @@ function Login({isConected, setIsConected}){
       )
   };
   const getUserCo = ()=>{
-
     const uIsCo = sessionStorage.getItem('token+id');
     const uIsCoP= JSON.parse(uIsCo);
-  
     fetch('http://localhost:3001/api/auth/account/'+ uIsCoP.user_id)
       .then(res=>res.json())
       .then((resu)=>{
         resu.result.forEach((it)=>{console.log(it);sessionStorage.setItem('userIsCo',JSON.stringify(it))})        
-      
     })
-    
   }
-  
     return(
       <div> { !isConected ?
        <div>
@@ -96,7 +85,6 @@ function Login({isConected, setIsConected}){
         }
       </div>
     )
-
 };
 
 export default Login;

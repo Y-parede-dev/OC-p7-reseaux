@@ -1,6 +1,6 @@
 @media screen and (max-width:1080px){
     .card-content {
-        width: 50% !important;
+        width: 68% !important;
     }
 }
 @media screen and (max-width:822px){
@@ -11,6 +11,11 @@
 @media screen and (max-width:560px){
     .card-content {
         width: 95% !important;
+    }
+}
+@media screen and (min-width:1550px){
+    .card-content {
+        width: 44% !important;
     }
 }
 .display-none{
@@ -120,6 +125,10 @@ input.btn-more-params-post.btn-more-params-post-del {
     display:flex!important;
     flex-direction: column;
     }
+    p.text-post {
+    margin: 0;
+    padding: 16px 0;
+}
 .cards {
     display: flex;
     flex-direction: column;
@@ -132,7 +141,7 @@ input.btn-more-params-post.btn-more-params-post-del {
 .card-content {
     margin: 15px 0;
     color: white;
-    width: 44%;
+    width: 60%;
     box-shadow: black 0.5px 0.5px 10px -6px;
 }
 .media_post {
@@ -142,6 +151,7 @@ input.btn-more-params-post.btn-more-params-post-del {
 .iframe-media {
     border: none;
     margin: 0;
+    max-height: 500px;
 }
 .comment-title {
     display: flex;
@@ -161,4 +171,7 @@ button.btn-comment {
 }
 .is-liked {
     color: red!important;
+}
+.content-or-modif {
+    position: relative;
 }

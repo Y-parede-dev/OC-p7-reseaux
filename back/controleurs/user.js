@@ -82,8 +82,8 @@ exports.getOneAccount = (req, res, next) => {
 
 exports.deleteAccount = (req,res,next)=>{
     const user_out = req.body;
-    console.log(req.params.id)
-    const sql = `DELETE FROM users WHERE id = ${req.params.id};`;
+    console.log(user_out.user_id)
+    const sql = `DELETE FROM users WHERE id = ${req.body.user_id};`;
     dataBase.query( sql, function(err, result){
             if(err){
                 res.status(400).json({message: "Erreur d' identifiant"});
@@ -175,6 +175,7 @@ exports.login = (req, res, next) => {
             }else{
                 compareBD.forEach(element=>{
                     const userBdd = element;
+                    console.log(userBdd)
                     bcrypt.compare(userLog.mot_de_passe, userBdd.mot_de_passe)
                     .then(valid=>{
                         if(!valid){
@@ -185,13 +186,14 @@ exports.login = (req, res, next) => {
                             res.status(200).json({
                                 message:"login done",
                                 isConected : isCo,
+                                isAdmin: userBdd.isAdmin,
                                 user_id : userBdd.id,
-                                password:userLog.mot_de_passe,
-                                token:jwt.sign(
-                                    { user_id: userBdd.id },
+                                    password:userLog.mot_de_passe,
+                                    token:jwt.sign(
+                                    { user_id: userBdd.id,isAdmin: userBdd.isAdmin},
                                     `${process.env.JSW_SECRET}`,
                                     {expiresIn:`${process.env.TOKEN_EXPIRE}`}
-                                )
+                                    )
                             })
                         }
                     })

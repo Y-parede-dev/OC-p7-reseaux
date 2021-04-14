@@ -9,10 +9,8 @@ export const GetPost = async(url, setIsLoaded, setItems) => {
     .then(res => res.json())
     .then(
       (result) => {
-      setIsLoaded(true);
       setItems(result.result);
-      
-        console.log(result.result)
+      setIsLoaded(true)
       } 
     )
     return req

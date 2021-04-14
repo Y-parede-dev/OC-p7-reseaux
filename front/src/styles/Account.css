@@ -89,7 +89,7 @@ button.button-account.button-account-del {
 
 
 
-@media screen and (max-width:400px){
+@media screen and (max-width:550px){
     .content-button-profil {
         display: flex;
         justify-content: space-evenly;

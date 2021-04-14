@@ -53,12 +53,7 @@ exports.getCommentOnePost = (req,res,next) => {
     
 }
 exports.modifyComment = (req,res,next)=>{
-    const idCourant = req.params.id;
     const comment = req.body;
-    console.log(idCourant, typeof idCourant)
-    console.log(req.body)
-    if(idCourant == comment.comment_id){
-            
         const sqlRequeteUpp = `UPDATE comment SET content = "${comment.content}" WHERE id = ${comment.comment_id};`;
         dataBase.query(sqlRequeteUpp, function(err, result){
             if(err){
@@ -70,11 +65,6 @@ exports.modifyComment = (req,res,next)=>{
 
             }
         })
-
-
-    }else {
-    res.status(400).json({message:'Erreur id'});
-    }
 }
 exports.deleteComment = (req, res, next)=>{
     const comment = req.body;
@@ -83,7 +73,7 @@ exports.deleteComment = (req, res, next)=>{
     const sqlRequete = `DELETE FROM comment WHERE id = ${comment.comment_id};`;
     dataBase.query(sqlRequete,function(err,result){
         if(err){
-            return res.status(400).json({message:"error requete sql"})
+            console.log(err)
         }else{
             res.status(200).json({message:'supression ok'})
         }

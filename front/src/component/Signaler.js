@@ -1,5 +1,7 @@
-const Signaler = () => {
+import '../styles/Signaler.css'
+const Signaler = ({postId}) => {
 
+    
     const checkBox = () => {
         /*
         if(document.getElementById('propos-sexiste').checked){
@@ -8,18 +10,18 @@ const Signaler = () => {
     }
     
     return(
-        <form className='form-signaler'>
+        <form id={`signaler-${postId}`} className='comment form-signaler'>
             <div className='propos propos-sexiste'>
                 <input id='propos-sexiste' name='propos-sexiste' onClick={()=>checkBox()} type='checkbox' />
-                <label for='propos-sexiste'>propos-sexiste</label>
+                <label htmlFor='propos-sexiste'>propos-sexiste</label>
             </div>
             <div className='propos propos-raciste'>
                 <input id='propos-raciste' name='propos-raciste' type='checkbox' />
-                <label for='propos-raciste'>propos-raciste</label>
+                <label htmlFor='propos-raciste'>propos-raciste</label>
             </div>
             <div className='propos propos-difflamatoire'>
                 <input id='propos-difflamatoire' name='propos-difflamatoire' type='checkbox' />
-                <label for='propos-difflamatoire'>propos-difflamatoire</label>
+                <label htmlFor='propos-difflamatoire'>propos-difflamatoire</label>
             </div>
             <button type='submit'>envoyer</button>
         </form>

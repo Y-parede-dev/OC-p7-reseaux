@@ -27,12 +27,19 @@ export default function RecipeReviewCard({postM, setPostM, url}) {
   const userIsAdmin = sessionStorage.getItem('userIsCo');
   const userIsAdminP = JSON.parse(userIsAdmin);
 
-  const btnTogl = (item, idP)=> {
+  const btnTogl = (item, name, idP)=> {
     sessionStorage.setItem('post-modif', JSON.stringify(item))
-    let idPost = `myDropdown-${idP}`
+    let idPost = name + '-' + idP
     document.getElementById(idPost).classList.toggle("show");
-    document.getElementById(idPost).classList.toggle("comment");
+
     
+  }
+  const btnToglSignaler = (item, name, idP) => {
+    
+    sessionStorage.setItem('post-modif', JSON.stringify(item))
+    let idPost = name + '-' + idP
+    document.getElementById(idPost).classList.toggle("show-signaler");
+    document.querySelector('body').classList.toggle(".body");
   }
   const btnToglComment = (idP)=> {
     let idPost = `comment-${idP}`
@@ -53,8 +60,10 @@ export default function RecipeReviewCard({postM, setPostM, url}) {
 
   useEffect(() => {
     setUserCoId(pUserIdToken.user_id);
+    setTimeout(()=>{
+      GetPost(url, setIsLoaded, setItems)
 
-    GetPost(url, setIsLoaded, setItems)
+    },300)
     console.log(items)
   }, [postM]);
   
@@ -78,25 +87,34 @@ export default function RecipeReviewCard({postM, setPostM, url}) {
                 <p className="post-date">{item.date_post}</p>
               </div>
               <div className='parametre-post'>
-                <button aria-label='settings' className="dropbtn" onClick={()=>btnTogl(item, item.id_post)}><i className="fas fa-ellipsis-h"></i></button>
+                <button aria-label='settings' className="dropbtn" onClick={()=>btnTogl(item, "myDropdown", item.id_post)}><i className="fas fa-ellipsis-h"></i></button>
               </div>
               <div className="parametre-post-open">
                   <div className="dropdown bkcol">
-                    {userCoId == item.user_id || userIsAdminP == true ?
+                    {userCoId == item.user_id || userIsAdminP.isAdmin == true ?
                     <div className="dropdown-content" id={`myDropdown-${item.id_post}`}>
                       <input type='button' className='btn-more-params-post' onClick={()=>displayModifPost(item)}  value="modifier" />
                       <input type="button" className='btn-more-params-post btn-more-params-post-del' onClick={()=>DeletePost({postM, setPostM})} value='suprimer' />
                     </div> :
+                    <div>
                       <div className="dropdown-content" id={`myDropdown-${item.id_post}`}>
-                      <input type='button' className='btn-more-params-post' onClick={()=>Signaler()} value="signaler" />
+                        <input type='button' className='btn-more-params-post' onClick={()=>{btnToglSignaler(item, "signaler", item.id_post)}} value="signaler" />
+                      </div>
+                      <div>
+                        
+                      </div>
                     </div>
                     }
                   </div>
                 </div>
             </div>
             <div className="content-or-modif">{item.id_post != postOnModif.id_post?
-              <div className='content-post'>{item.content_post!=''&&
+              <div className='content-post'>
+                <Signaler className="comment" postId={item.id_post} id={`signaler-${item.id_post}`} />
+                {item.content_post!=''&&
+                
                 <p className="text-post">{item.content_post}</p>}
+                
                 <div className="media_post">
                 {item.url_web!= null && item.url_web!= "null" 
                 ?
@@ -126,7 +144,7 @@ export default function RecipeReviewCard({postM, setPostM, url}) {
                   <Likes url={url} id_post={item.id_post} btnToglComment={btnToglComment} />
               </div>
               <div className='comment-before'>
-                <Comment  id={`comment-${item.id_post}`} postId={item.id_post} userCoId ={userCoId}/>
+                <Comment  id={`comment-${item.id_post}`} postId={item.id_post} userCoId ={userCoId} btnToglSignaler={btnToglSignaler} />
               </div>
             
           </div>

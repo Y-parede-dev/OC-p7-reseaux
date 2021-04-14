@@ -3,7 +3,7 @@
     flex-direction: column;
     min-width: 30%;
     max-width: 95%;
-    width: 44%;
+    width: 60%;
     min-height: 300px;
     background: #44566c;
     margin: 20px auto;
@@ -18,7 +18,7 @@
     margin: 15px;
 }
 textarea.form-control {
-    font-size: 2rem;
+    font-size: 1.55rem;
     background: #2f435e;
     height: 150px;
     border: none;
@@ -28,8 +28,6 @@ textarea.form-control {
 .image-post, .image-post-label{
     position: absolute;
     cursor: pointer;
-
-
 }
 .image-post {
     bottom: 77px;
@@ -40,17 +38,15 @@ textarea.form-control {
 .image-post-label{
     color: white;
     left: 40px;
-    bottom: 94px;
+    bottom: 105px;
     font-size: 1.8rem
 }
-
 .image-post>button {
     display: none
 }
 .form-control-submit {
     width: 30%;
     margin:auto; 
-
 }
 .with-scroll{
     margin:213px auto auto;
@@ -58,15 +54,11 @@ textarea.form-control {
 .without-scroll{
     margin:21px auto auto;
 }
-
-
-
 /* styles de base si JS est activé */
 .js .input-file-container {
 	position: relative;
 	width: 225px;
 }
-
 .js .input-file-trigger {
 	display: block;
 	padding: 14px 45px;
@@ -76,7 +68,6 @@ textarea.form-control {
 	transition: all .4s;
 	cursor: pointer;
 }
-
 .js .input-file {
 	position: absolute;
 	top: 0;
@@ -89,10 +80,9 @@ textarea.form-control {
 button.form-control.form-control-su {
     margin: auto;
     position: absolute;
-    bottom: 88px;
+    bottom: 108px;
     right: 36px;
 }
-
 /* quelques styles d'interactions */
 .js .input-file:hover + .input-file-trigger,
 .js .input-file:focus + .input-file-trigger,
@@ -101,22 +91,18 @@ button.form-control.form-control-su {
 	background: #34495E;
 	color: #39D2B4;
 }
-
 /* styles du retour visuel */
 .file-return {
 	margin: 0;
 }
-
 .file-return:not(:empty) {
 	margin: 1em 0;
 }
-
 .js .file-return {
 	font-style: italic;
 	font-size: .9em;
 	font-weight: bold;
 }
-
 /* on complète l'information d'un contenu textuel uniquement lorsque le paragraphe n'est pas vide */
 .js .file-return:not(:empty):before {
 	content: "Selected file: ";
@@ -125,7 +111,7 @@ button.form-control.form-control-su {
 }
 @media screen and (max-width:1080px){
     #form-create-post {
-        width:50%;
+        width:68%;
     }
 }
 @media screen and (max-width:822px){
@@ -136,5 +122,10 @@ button.form-control.form-control-su {
 @media screen and (max-width:560px){
     #form-create-post {
         width:95%;
+    }
+}
+@media screen and (min-width:1550px){
+    #form-create-post {
+        width: 44% !important;
     }
 }

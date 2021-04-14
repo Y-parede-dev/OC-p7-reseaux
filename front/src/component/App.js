@@ -31,7 +31,7 @@ function App() {
         <Route path="/modify-post" exact component={() => <ModifPost onClick={ModifPost} />} />
         <Footer />
       </Router>
-      {!isConected || isConected == false? <p className="is-connected">🔴 {window.location.href.includes('/signup')? <span>Veuillez entrez un mot de passe fort  et un email valide<br/> <br/> pour pouvoir enregistrer un compte</span>:<span>Veuillez vous connecter pour accéder au site</span>} </p> : <p className="is-connected">🟢 connected</p>}
+      {!isConected || isConected == false? <p className="is-connected">🔴 {window.location.href.includes('/signup')? <span> pour pouvoir enregistrer un compte <br/> <br/> Veuillez entrez un mot de passe fort  et un email valide</span>:<span>Veuillez vous connecter pour accéder au site</span>} </p> : <p className="is-connected">🟢 connected</p>}
     </div>
   );
 };
