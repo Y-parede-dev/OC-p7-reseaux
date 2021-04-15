@@ -112,7 +112,7 @@ exports.modifyAccount = (req,res,next) => {
                                     if(file && pathname!=='user-base.png' && pathname!=='avatar-admin.png'){
                                         fs.unlink(`images/avatars/${pathname}`,()=>{
                                         });
-                                    };
+                                    }; 
                                     return res.status(200).json({message:'utilisateur bien modifier'});
                                 }else{
                                     res.status(400).json({message:"Probème avec l'adresse email"})
