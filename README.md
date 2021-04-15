@@ -28,7 +28,7 @@ yarn dev
 ```
 pour demarer le serveur backend
 
-### cd front  `yarn start`
+### front
 
 dans le terminal tapez
 ```
