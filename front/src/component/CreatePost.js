@@ -37,12 +37,9 @@ const CreatePost=({postM, setPostM})=>{
         return { result, uploader };
       }
     
-      const { result, uploader } = useDisplayImage();
+    const { result, uploader } = useDisplayImage();
     
-    const handleChangeImg = (event) => {
-        let imageData = event.target.files[0];
-        setContentPostImg(imageData);
-    };
+    
     const handleSubmit = (event) => {     
         if(postM==true){
             setPostM(false)
@@ -124,8 +121,9 @@ const CreatePost=({postM, setPostM})=>{
         <form id="form-create-post" onLoad={scrollFixPos} onSubmit={handleSubmit}> 
             <p className="title-form-post"></p>
             <label htmlFor="content-post"></label>
-            <textarea className="form-control" type="text" name="content-post" placeholder={contentPostImg !== "" ? "" : `Que souhaitez vous poster ${PrecupUserCo.prenom} ?`}  value={contentPost} onChange={handleChangeContent}/>
+            <textarea className="form-control" type="text" name="content-post" placeholder={contentPostImg !== "" ? "" : `Que souhaitez vous poster ${PrecupUserCo.prenom} ?`}  value={contentPost} onChange={(e)=>{setContentPost(e.target.value)}}/>
             {result && <img className='choise-image' ref={imageRef} src={result} alt="image choisie" />}
+            
             <label className="image-post-label" htmlFor='image-post'><i className="fas fa-image"></i></label>
             <input className="form-control image-post" type="file" name="image-post" accept="image/*" onChange={(e)=>{setContentPostImg(e.target.files[0]);uploader(e);}} />
             <button className="form-control form-control-su" name="submit-login" type="submit">envoyer</button>
