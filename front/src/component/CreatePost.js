@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {contentPostOrModif} from '../assets/js/Function'
 import '../styles/CreatePost.css';
 
 const CreatePost=({postM, setPostM})=>{
     
     const [contentPost, setContentPost] = useState('');
-    const [contentPostImg, setContentPostImg] = useState([]);
+    const [contentPostImg, setContentPostImg] = useState('');
     const userStorage = sessionStorage.getItem("token+id");
     const userStorageJson = JSON.parse(userStorage);
     const recupUserCo = sessionStorage.getItem('userIsCo');
@@ -17,12 +17,31 @@ const CreatePost=({postM, setPostM})=>{
         if(srll){
             elt.className ='with-scroll'
         }
-    }  
+    }
+    const imageRef = useRef(null);
+
+    function useDisplayImage() {
+        const [result, setResult] = useState("");
+    
+        function uploader(e) {
+          const imageFile = e.target.files[0];
+    
+          const reader = new FileReader();
+          reader.addEventListener("load", (e) => {
+            setResult(e.target.result);
+          });
+    
+          reader.readAsDataURL(imageFile);
+        }
+    
+        return { result, uploader };
+      }
+    
+      const { result, uploader } = useDisplayImage();
+    
     const handleChangeImg = (event) => {
-        console.log(event.target.files[0])
         let imageData = event.target.files[0];
         setContentPostImg(imageData);
-        console.log( imageData)
     };
     const handleSubmit = (event) => {     
         if(postM==true){
@@ -42,6 +61,7 @@ const CreatePost=({postM, setPostM})=>{
         requete.append('image_url',null);
         requete.append('url_web',null);  
         requete.set('user_id',PrecupUserCo.id);
+
         contentPostOrModif(contentPost, requete);   
         if(contentPost.includes('http://www.')||contentPost.includes('https://www')){
             requete.set('image_url', null);
@@ -77,8 +97,10 @@ const CreatePost=({postM, setPostM})=>{
                 }  
             }  
         }else {
-            if(contentPostImg !=[]){
+            if(contentPostImg != ''){
                 requete.set('image_url', contentPostImg);
+                console.log( contentPostImg)
+
             }
             requete.set('content', contentPost);
         }
@@ -102,11 +124,15 @@ const CreatePost=({postM, setPostM})=>{
         <form id="form-create-post" onLoad={scrollFixPos} onSubmit={handleSubmit}> 
             <p className="title-form-post"></p>
             <label htmlFor="content-post"></label>
-            <textarea className="form-control" type="text" name="content-post" placeholder={`Que souhaitez vous poster ${PrecupUserCo.prenom} ?`}  value={contentPost} onChange={handleChangeContent}/>
+            <textarea className="form-control" type="text" name="content-post" placeholder={contentPostImg !== "" ? "" : `Que souhaitez vous poster ${PrecupUserCo.prenom} ?`}  value={contentPost} onChange={handleChangeContent}/>
+            {result && <img className='choise-image' ref={imageRef} src={result} alt="image choisie" />}
             <label className="image-post-label" htmlFor='image-post'><i className="fas fa-image"></i></label>
-            <input className="form-control image-post" type="file" name="image-post" accept="image/*" onChange={handleChangeImg} />
+            <input className="form-control image-post" type="file" name="image-post" accept="image/*" onChange={(e)=>{setContentPostImg(e.target.files[0]);uploader(e);}} />
             <button className="form-control form-control-su" name="submit-login" type="submit">envoyer</button>
         </form>
     )
 };
 export default CreatePost;
+
+
+
