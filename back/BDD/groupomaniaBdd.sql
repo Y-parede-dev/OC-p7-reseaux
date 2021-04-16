@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 16 avr. 2021 à 11:18
+-- Généré le : ven. 16 avr. 2021 à 11:22
 -- Version du serveur :  8.0.21
 -- Version de PHP : 7.3.21
 
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `date_post` char(30) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_user_id_post` (`user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=280 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=281 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `posts`
@@ -93,8 +93,8 @@ CREATE TABLE IF NOT EXISTS `posts` (
 
 INSERT INTO `posts` (`id`, `content`, `user_id`, `image_url`, `likes`, `url_web`, `date_post`) VALUES
 (273, '', 577, NULL, 1, 'https://www.youtube.com/watch?v=EVeKB2EgAFg', 'jeudi 15 avril 2021, 22:29'),
-(274, '', 577, 'klsh_V01618518626090.png', 0, 'null', 'jeudi 15 avril 2021, 22:30'),
-(275, 'génial', 577, NULL, 1, 'null', 'jeudi 15 avril 2021, 22:31');
+(275, 'génial', 577, NULL, 1, 'null', 'jeudi 15 avril 2021, 22:31'),
+(280, 'Salut\n', 583, NULL, 0, 'null', 'vendredi 16 avril 2021, 13:21');
 
 -- --------------------------------------------------------
 
@@ -113,14 +113,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'user-base.png',
   PRIMARY KEY (`id`),
   UNIQUE KEY `adresse_email` (`adresse_email`)
-) ENGINE=InnoDB AUTO_INCREMENT=583 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=584 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `users`
 --
 
 INSERT INTO `users` (`id`, `isAdmin`, `nom`, `prenom`, `adresse_email`, `mot_de_passe`, `image_url`) VALUES
-(577, 1, 'Parede', 'Yoan', 'parede@yoan.fr', '$2b$10$8Q6vRJ8cp1TxzoYSmUY9R.vgJR0tofRTpqC2ZoZ1.1Kzg8MfxM3WG', 'teste1618518440616.png');
+(577, 1, 'Parede', 'Yoan', 'parede@yoan.fr', '$2b$10$8Q6vRJ8cp1TxzoYSmUY9R.vgJR0tofRTpqC2ZoZ1.1Kzg8MfxM3WG', 'avatar-admin1618572141213.png'),
+(583, 0, 'La fouine', 'Tareck', 'la@tareck.fr', '$2b$10$fPj3HX7RKNEp1FWFF7ISQuZtk666P1ZU9IF8ue3BZ2mDjBh.1IF.a', 'user-base.png');
 
 --
 -- Contraintes pour les tables déchargées
