@@ -81,7 +81,7 @@ function Login({isConected, setIsConected}){
 
         </form>
         <p className="message-erreur">{messageData}</p>
-        </div>: window.location.href='../main'       
+        </div>: window.location.href='./main'       
         }
       </div>
     )

@@ -28,7 +28,7 @@ export default function RecipeReviewCard({postM, setPostM, url}) {
   const userIsAdminP = JSON.parse(userIsAdmin);
 
   const btnTogl = (item, name, idP)=> {
-    sessionStorage.setItem('post-modif', JSON.stringify(item))
+    sessionStorage.setItem('post-modif', JSON.stringify(item));
     let idPost = name + '-' + idP
     document.getElementById(idPost).classList.toggle("show");
 
@@ -48,6 +48,8 @@ export default function RecipeReviewCard({postM, setPostM, url}) {
   }
 
   const displayModifPost =(itemP)=>{
+    sessionStorage.setItem('post-modif', JSON.stringify(itemP))
+
     const item = itemP;
     setPostOnModif(item)
     if(onModif){

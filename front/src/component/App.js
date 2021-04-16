@@ -18,6 +18,7 @@ function App() {
   const isCo = sessionStorage.getItem('isCo');
   const isCOJson = JSON.parse(isCo);
   const [isConected, setIsConected] = useState(isCOJson);
+  
   return (
     <div className="App">
       <Router>

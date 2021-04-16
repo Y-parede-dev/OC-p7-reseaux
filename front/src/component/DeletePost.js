@@ -1,5 +1,3 @@
-import DeleteComment from "./DeleteComment";
-
 const DeletePost = ({setPostM, postM})=>{
     const userStorage = sessionStorage.getItem("token+id");
     const userStorageJson = JSON.parse(userStorage);

@@ -19,7 +19,6 @@ function Account({isConected}){
     const handleSubmit = () =>{
         setUserModif(true)
     }
-     const urlPostOne = `http://localhost:3001/api/auth/post/485`;
 
     const userStorage = sessionStorage.getItem("token+id")
     const userStorageJson = JSON.parse(userStorage);
@@ -82,9 +81,7 @@ function Account({isConected}){
                 </div>
                 }
             </section>
-            <section>
-                <RecipeReviewCard url={urlPostOne}/>
-            </section>
+            
         </div>
     )
 }

@@ -29,14 +29,14 @@ function Signup(){
   const handleSubmit = async(event) => {
     event.preventDefault();
     saveUser();
-    window.location.href='../'
+    window.location.href='../login'
   };
   
 const requete = {
     nom: nameData,
     prenom:prenomData,
     adresse_email :emailData,
-    mot_de_passe: passwordData,
+    mot_de_passe: passwordData
  };
 const myInit = { 
     method: 'POST',
