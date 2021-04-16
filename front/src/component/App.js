@@ -13,7 +13,6 @@ import '../styles/App.css';
 import DeleteAccount from './DeleteAccount';
 
 function App() {
-  console.log(document.URL)
 
   const isCo = sessionStorage.getItem('isCo');
   const isCOJson = JSON.parse(isCo);

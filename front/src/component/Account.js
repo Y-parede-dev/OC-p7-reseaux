@@ -4,7 +4,6 @@ import {createHeader} from '../assets/js/Function';
 import '../styles/Account.css'
 import ModifAccount from './ModifAccount';
 import DeleteAccount from './DeleteAccount';
-import RecipeReviewCard from './Card';
 
 
 const url = "http://localhost:3001/api/auth/account/";
@@ -26,7 +25,6 @@ function Account({isConected}){
        
         const userStorageId = userStorageJson.user_id;
         
-        //const myHeaders = new Headers();
         const urlRequete = url+userStorageId;
         
         const myInit = { method: 'GET',
@@ -56,7 +54,7 @@ function Account({isConected}){
         <div>
             <section className='section-profil'>{ isConected &&
                 <div className="content-full-profil">{user.map(item=>(
-                        !userModif?
+                    !userModif?
                     <div className='content-profil' key={Date.now()}>
                         <h2 className='profil'>PROFIL </h2>
                         <p className='profil-info'><span className='profil-info-static'>nom :</span> <span className='profil-info-dynamique'>{item.nom}</span></p>
@@ -72,9 +70,7 @@ function Account({isConected}){
                     : <div className='content-profil-modif' key={Date.now()}>
                         <img className="avatar-profil avatar-profil-modif" src={url.split('api')[0]+"images/avatars/"+item.image_url} alt='Avatar utilisateur'/>
 
-                        <ModifAccount userModif={userModif} 
-                        
-                        />
+                        <ModifAccount userModif={userModif} />
                     </div>
                     ))}
                     
