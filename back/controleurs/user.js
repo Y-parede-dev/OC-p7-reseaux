@@ -60,7 +60,6 @@ exports.getAllAccount = (req,res,next)=>{
 };
 exports.getOneAccount = (req, res, next) => {
     const idCourant = req.params.id;
-    console.log(req.params.id)
         dataBase.query(
             `SELECT * FROM users WHERE id = ${idCourant};`, function(err, result){
                 if(err){
@@ -72,7 +71,7 @@ exports.getOneAccount = (req, res, next) => {
 };
 exports.deleteAccount = (req,res,next)=>{
     const user_out = req.body;
-    
+    console.log(user_out)
     const sql = `DELETE FROM users WHERE id = ${user_out.user_id};`;
     dataBase.query( sql, function(err, result){
         if(err){
