@@ -9,7 +9,6 @@ import DeleteAccount from './DeleteAccount';
 const url = "http://localhost:3001/api/auth/account/";
 
 function Account({isConected}){
-    
         
     const [user, setUser] = useState([]);
     const [userModif, setUserModif] = useState(false);
@@ -21,6 +20,8 @@ function Account({isConected}){
 
     const userStorage = sessionStorage.getItem("token+id")
     const userStorageJson = JSON.parse(userStorage);
+    const userIsAdmin = sessionStorage.getItem('userIsCo');
+    const userIsAdminP = JSON.parse(userIsAdmin);
     useEffect(() => {
        
         const userStorageId = userStorageJson.user_id;
@@ -61,7 +62,7 @@ function Account({isConected}){
                         <p className='profil-info'><span className='profil-info-static'>prenom :</span> <span className='profil-info-dynamique'>{item.prenom}</span></p>
                         <p className='profil-info'><span className='profil-info-static'>adresse email :</span> <span className='profil-info-dynamique'>{item.adresse_email}</span></p>
                         <img className="avatar-profil" src={url.split('api')[0]+"images/avatars/"+item.image_url} alt='Avatar utilisateur'/>
-
+                        {userIsAdminP.isAdmin == true&&<p className='admin'>⭐ Admin ⭐</p>}
                         <div className='content-button-profil' key={Date.now() + Date.now()}>
                             <button alt='modifier le compte' className='button-account' onClick={()=>handleSubmit()}>🛠<span className='no-mobile'> modifier</span></button>
                             <button alt="suprimez le compte" className='button-account button-account-del' onClick={()=>DeleteAccount()}>⛔<span className='no-mobile'> suprimer le compte</span></button>
