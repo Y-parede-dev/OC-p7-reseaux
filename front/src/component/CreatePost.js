@@ -121,7 +121,7 @@ const CreatePost=({postM, setPostM})=>{
         <form id="form-create-post" onLoad={scrollFixPos} onSubmit={handleSubmit}> 
             <p className="title-form-post"></p>
             <label htmlFor="content-post"></label>
-            <textarea className="form-control" type="text" name="content-post" placeholder={contentPostImg !== "" ? "" : `Que souhaitez vous poster ${PrecupUserCo.prenom} ?`}  value={contentPost} onChange={(e)=>{setContentPost(e.target.value)}}/>
+            <textarea className="form-control" type="text" name="content-post" placeholder={contentPostImg !== "" ? "" : `Que souhaitez vous poster ${PrecupUserCo && PrecupUserCo.prenom} ?`}  value={contentPost} onChange={(e)=>{setContentPost(e.target.value)}}/>
             {result && <img className='choise-image' ref={imageRef} src={result} alt="image choisie" />}
             
             <label className="image-post-label" htmlFor='image-post'><i className="fas fa-image"></i></label>
