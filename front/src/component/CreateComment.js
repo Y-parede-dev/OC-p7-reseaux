@@ -18,7 +18,9 @@ function CreateComment( {postId, commentUpp, setCommentUpp}){
         }
         
         requete.user_id = PrecupUserCo.id;
-        
+        if(contentComment.length>=1){
+
+        }
         const headerWithToken = new Headers();
         headerWithToken.append('Content-type','application/json');
         headerWithToken.append('Authorization', 'Bearer ' + userStorageJson.token);

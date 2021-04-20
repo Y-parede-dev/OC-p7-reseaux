@@ -3,31 +3,26 @@ const fs = require('fs');
 exports.newPost = (req,res,next) => {
 const post = req.body;
 const file = req.file;
+let FileName =null;
+let urlWEB = null;
+let reqSQL = `INSERT INTO posts(content, image_url, url_web, user_id, date_post) VALUES(?, ?, ?, ?, ?);`;
     if(req.file){
-        dataBase.query(`INSERT INTO posts(content ,image_url, url_web, user_id, date_post)
-                        VALUES("${post.content}", "${file.filename}", "${post.url_web}",${post.user_id}, "${post.date_post}");`,
-                        function(err,result){
-            if(err){
-                res.status(400).json({message:"POST EST BOGGER"});
-                console.log(err);
-                return;
-            }else{
-                res.status(200).json({message:"le post a bien étais enregistré dans la BDD"});
-            };
-        });
-    }else {
-        dataBase.query(`INSERT INTO posts(content , url_web, user_id, date_post)
-                        VALUES("${post.content}",  "${post.url_web}",${post.user_id}, "${post.date_post}");`,
-                        function(err,result){
-            if(err){
-                res.status(400).json({message:"POST EST BOGGER"});
-                console.log(err);
-                return;
-            }else{
-                res.status(200).json({message:"le post a bien étais enregistré dans la BDD"});
-            };
-        });
-    };
+        FileName = file.filename;
+
+    }
+    if(post.url_web!='' || post.url_web!=null || post.url_web!='null'){
+        urlWEB= post.url_web;
+    }
+    dataBase.query(reqSQL,[post.content, FileName, urlWEB, post.user_id, post.date_post],
+        function(err,result){
+        if(err){
+            res.status(400).json({message:"POST EST BOGGER"});
+            console.log(err);
+            return;
+        }else{
+            res.status(200).json({message:"le post a bien étais enregistré dans la BDD"});
+        };
+    });
 };
 exports.getAllPost = (req,res,next)=>{
     dataBase.query(`SELECT posts.id AS id_post ,posts.likes ,posts.content AS content_post, posts.image_url AS image_post, posts.url_web, date_post ,
@@ -43,7 +38,7 @@ exports.getAllPost = (req,res,next)=>{
     });
 };
 exports.getLikePost = (req,res,next)=>{ dataBase.query(`SELECT posts.likes 
-    FROM posts WHERE posts.id = ${req.params.id} ORDER BY posts.id DESC;`, function(err, result){ 
+    FROM posts WHERE posts.id = ? ORDER BY posts.id DESC;`, req.params.id, function(err, result){ 
         if(err){
             res.status(404).json({message:"GET ALL EST BUGER"});
             console.log(err);
@@ -67,8 +62,8 @@ exports.getOneUserPost = (req,res,next)=>{
                 FROM posts
                 INNER JOIN
                 users ON posts.user_id = users.id
-                WHERE users.id = ${req.params.id};`;
-    dataBase.query(reqSQL, function(err, result){
+                WHERE users.id = ?;`;
+    dataBase.query(reqSQL, req.params.id,function(err, result){
         if(err){
             res.status(404).json({message:"GET ONE EST BUGER"});
             return;
@@ -87,9 +82,9 @@ exports.getOneUserPost = (req,res,next)=>{
 exports.modifyPost = (req,res,next)=>{
     const post = req.body;
     const idCourant = req.params.id;
-    const sqlSelect = `SELECT posts.image_url FROM posts WHERE posts.id =${post.post_id};`;
+    const sqlSelect = `SELECT posts.image_url FROM posts WHERE posts.id = ?;`;
     let imageDelete = '';
-    dataBase.query(sqlSelect,function(err,result){
+    dataBase.query(sqlSelect, post.post_id, function(err,result){
         if(err){
             console.log(err);
         }else{
@@ -105,14 +100,12 @@ exports.modifyPost = (req,res,next)=>{
         };
     });
     if(post.post_id == idCourant){
-        let reqSQL = "";
-        if(!req.file){
-            reqSQL = `UPDATE posts SET content = "${post.content}",url_web = "${post.url_web}" WHERE posts.id = ${post.post_id}`;
-        }else{
-            console.log(imageDelete)
-            reqSQL = `UPDATE posts SET content = "${post.content}", image_url ="${req.file.filename}",url_web = "${post.url_web}" WHERE id = ${post.post_id}`;
-        };
-        dataBase.query(reqSQL, function(err, result){
+        let reqSQL = `UPDATE posts SET content = "?",image_url = "?",url_web = "?" WHERE posts.id = ?`;
+        let imgURL = null;
+        if(req.file){
+            imgURL = req.file.filename;
+        }
+        dataBase.query(reqSQL, [post.content, imgURL,post.url_web, post.post_id], function(err, result){
             if(err){
                 console.log(err);
                 res.status(400).json({message:"pb avec la modif du post"});
@@ -126,9 +119,9 @@ exports.modifyPost = (req,res,next)=>{
 };
 exports.deletePost=(req,res,next)=>{
     const post = req.body;
-    const sqlSelect = `SELECT posts.image_url FROM posts WHERE posts.id =${post.post_id};`;
+    const sqlSelect = `SELECT posts.image_url FROM posts WHERE posts.id =?;`;
         let imageDelete = '';
-        dataBase.query(sqlSelect,function(err,result){
+        dataBase.query(sqlSelect, post.post_id, function(err,result){
             if(err){
                 console.log(err);
             }else{
@@ -141,8 +134,8 @@ exports.deletePost=(req,res,next)=>{
                 });
             };
         });
-    const reqSQL = `DELETE FROM posts WHERE id = ${post.post_id}`;
-    dataBase.query(reqSQL, function(err, result){
+    const reqSQL = `DELETE FROM posts WHERE id = ?`;
+    dataBase.query(reqSQL, post.post_id, function(err, result){
         if(err){
             res.status(400).json({message:'supresion impossible'});
             console.log(err);

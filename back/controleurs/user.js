@@ -18,18 +18,13 @@ exports.signup = (req, res, next)=>{
             bcrypt.hash(corpRequete.mot_de_passe, 10)
             .then(hash => {
                 const user = {
-                    email:corpRequete.adresse_email,
+                    adresse_email:corpRequete.adresse_email,
                     nom:corpRequete.nom,
                     prenom:corpRequete.prenom,
-                    password: hash
+                    mot_de_passe: hash
                 };
-                const sqlRequete = `INSERT INTO users(nom, prenom, adresse_email, mot_de_passe)VALUES(
-                    "${user.nom}",
-                    "${user.prenom}",
-                    "${user.email}",
-                    "${user.password}"
-                    );`;
-                dataBase.query(sqlRequete, function(err, result){
+                const sqlRequete = `INSERT INTO users SET ?;`;
+                dataBase.query(sqlRequete, user, (err, result)=>{
                     if(err) {
                         console.log(err);
                     }else {
@@ -61,7 +56,7 @@ exports.getAllAccount = (req,res,next)=>{
 exports.getOneAccount = (req, res, next) => {
     const idCourant = req.params.id;
         dataBase.query(
-            `SELECT * FROM users WHERE id = ${idCourant};`, function(err, result){
+            `SELECT * FROM users WHERE id = ?;`, idCourant, function(err, result){
                 if(err){
                     console.log(err);
                 }else{
@@ -72,8 +67,8 @@ exports.getOneAccount = (req, res, next) => {
 exports.deleteAccount = (req,res,next)=>{
     const user_out = req.body;
     console.log(user_out)
-    const sql = `DELETE FROM users WHERE id = ${user_out.user_id};`;
-    dataBase.query( sql, function(err, result){
+    const sql = `DELETE FROM users WHERE id = ?;`;
+    dataBase.query( sql, user_out.user_id, function(err, result){
         if(err){
             res.status(400).json({message: "Erreur d' identifiant"});
         }else{
@@ -90,7 +85,7 @@ exports.modifyAccount = (req,res,next) => {
     const idCourant = req.params.id;
     const UsersModify = req.body;
     const file = req.file;
-    dataBase.query(`SELECT users.nom,users.prenom,users.adresse_email,users.mot_de_passe, users.image_url FROM users WHERE users.id = ${idCourant};`,
+    dataBase.query(`SELECT users.nom,users.prenom,users.adresse_email,users.mot_de_passe, users.image_url FROM users WHERE users.id = ?;`, idCourant,
     function(err,result){
         if(err){
             throw err;
@@ -147,7 +142,7 @@ exports.modifyAccount = (req,res,next) => {
 exports.login = (req, res, next) => {
 
     const userLog = req.body;
-    dataBase.query(`SELECT * FROM users WHERE users.adresse_email = "${userLog.adresse_email}";`,
+    dataBase.query(`SELECT * FROM users WHERE users.adresse_email = "?";`, userLog.adresse_email,
     function(err,result){
         let isCo = false;
         if(err){
