@@ -142,7 +142,7 @@ exports.modifyAccount = (req,res,next) => {
 exports.login = (req, res, next) => {
 
     const userLog = req.body;
-    dataBase.query(`SELECT * FROM users WHERE users.adresse_email = "?";`, userLog.adresse_email,
+    dataBase.query(`SELECT * FROM users WHERE users.adresse_email = ?;`, userLog.adresse_email,
     function(err,result){
         let isCo = false;
         if(err){
